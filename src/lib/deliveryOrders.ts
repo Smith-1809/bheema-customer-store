@@ -1,6 +1,7 @@
 import { DeliveryOrder, DeliveryOrderStatus, DeliveryOrderItem, DeliveryCustomerInfo, calculateOnlinePrice, calculateOnlineSavings } from '../types/delivery';
 import { getSupabase } from './supabase';
 import { playNewOrderAlert, playOrderConfirmedAlert, playOrderDeliveredAlert } from '../utils/deliveryAudio';
+import { sendTelegramOrderAlert } from './telegramAlerts';
 
 const STORAGE_KEY = 'bheema_online_delivery_orders';
 const LAST_ORDER_KEY = 'bheema_customer_last_order_id';
@@ -196,6 +197,11 @@ export const placeCodOrder = async (
       console.warn('Failed to insert delivery order into Supabase (queued locally):', err);
     }
   }
+
+  // 3. Instant Telegram push alert to all partners group (rings lock-screen even with app closed)
+  sendTelegramOrderAlert(newOrder).catch((err) => {
+    console.warn('Telegram background alert notification error:', err);
+  });
 
   return newOrder;
 };

@@ -281,78 +281,99 @@ export const subscribeToDeliveryOrders = (
   const supabase = getSupabase();
   if (!supabase) return () => {};
 
-  const channel = supabase
-    .channel('delivery_orders_realtime')
-    .on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'delivery_orders' },
-      (payload) => {
-        const row = payload.new;
-        const mapped: DeliveryOrder = {
-          id: row.id,
-          orderNumber: row.order_number,
-          createdAt: row.created_at,
-          updatedAt: row.updated_at,
-          customer: row.customer,
-          items: row.items,
-          itemCount: row.item_count,
-          totalRetailAmount: Number(row.total_retail_amount),
-          totalOnlineAmount: Number(row.total_online_amount),
-          discountSavings: Number(row.discount_savings),
-          appliedCoupon: row.applied_coupon || undefined,
-          couponDiscount: Number(row.coupon_discount || 0),
-          deliveryFee: Number(row.delivery_fee || 0),
-          finalPayable: Number(row.final_payable),
-          paymentMethod: 'COD',
-          status: row.status as DeliveryOrderStatus,
-          statusHistory: row.status_history || [],
-          riderName: row.rider_name || undefined,
-          cancellationReason: row.cancellation_reason || undefined,
-          adminNotes: row.admin_notes || undefined,
-          source: 'online_store',
-        };
+  try {
+    const channelId = `delivery_orders_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const channel = supabase
+      .channel(channelId)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'delivery_orders' },
+        (payload) => {
+          try {
+            const row = payload.new;
+            if (!row) return;
+            const mapped: DeliveryOrder = {
+              id: row.id,
+              orderNumber: row.order_number,
+              createdAt: row.created_at,
+              updatedAt: row.updated_at,
+              customer: row.customer,
+              items: row.items,
+              itemCount: row.item_count,
+              totalRetailAmount: Number(row.total_retail_amount),
+              totalOnlineAmount: Number(row.total_online_amount),
+              discountSavings: Number(row.discount_savings),
+              appliedCoupon: row.applied_coupon || undefined,
+              couponDiscount: Number(row.coupon_discount || 0),
+              deliveryFee: Number(row.delivery_fee || 0),
+              finalPayable: Number(row.final_payable),
+              paymentMethod: 'COD',
+              status: row.status as DeliveryOrderStatus,
+              statusHistory: row.status_history || [],
+              riderName: row.rider_name || undefined,
+              cancellationReason: row.cancellation_reason || undefined,
+              adminNotes: row.admin_notes || undefined,
+              source: 'online_store',
+            };
+            onOrderAdded(mapped);
+          } catch (err) {
+            console.error('Error handling realtime insert:', err);
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'delivery_orders' },
+        (payload) => {
+          try {
+            const row = payload.new;
+            if (!row) return;
+            const mapped: DeliveryOrder = {
+              id: row.id,
+              orderNumber: row.order_number,
+              createdAt: row.created_at,
+              updatedAt: row.updated_at,
+              customer: row.customer,
+              items: row.items,
+              itemCount: row.item_count,
+              totalRetailAmount: Number(row.total_retail_amount),
+              totalOnlineAmount: Number(row.total_online_amount),
+              discountSavings: Number(row.discount_savings),
+              appliedCoupon: row.applied_coupon || undefined,
+              couponDiscount: Number(row.coupon_discount || 0),
+              deliveryFee: Number(row.delivery_fee || 0),
+              finalPayable: Number(row.final_payable),
+              paymentMethod: 'COD',
+              status: row.status as DeliveryOrderStatus,
+              statusHistory: row.status_history || [],
+              riderName: row.rider_name || undefined,
+              cancellationReason: row.cancellation_reason || undefined,
+              adminNotes: row.admin_notes || undefined,
+              source: 'online_store',
+            };
+            onOrderUpdated(mapped);
+          } catch (err) {
+            console.error('Error handling realtime update:', err);
+          }
+        }
+      )
+      .subscribe((status, err) => {
+        if (err) {
+          console.warn('Realtime delivery subscription status:', status, err);
+        }
+      });
 
-        // Play chime for incoming new orders
-        playNewOrderAlert();
-        onOrderAdded(mapped);
+    return () => {
+      try {
+        supabase.removeChannel(channel);
+      } catch (err) {
+        console.warn('Error removing channel:', err);
       }
-    )
-    .on(
-      'postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'delivery_orders' },
-      (payload) => {
-        const row = payload.new;
-        const mapped: DeliveryOrder = {
-          id: row.id,
-          orderNumber: row.order_number,
-          createdAt: row.created_at,
-          updatedAt: row.updated_at,
-          customer: row.customer,
-          items: row.items,
-          itemCount: row.item_count,
-          totalRetailAmount: Number(row.total_retail_amount),
-          totalOnlineAmount: Number(row.total_online_amount),
-          discountSavings: Number(row.discount_savings),
-          appliedCoupon: row.applied_coupon || undefined,
-          couponDiscount: Number(row.coupon_discount || 0),
-          deliveryFee: Number(row.delivery_fee || 0),
-          finalPayable: Number(row.final_payable),
-          paymentMethod: 'COD',
-          status: row.status as DeliveryOrderStatus,
-          statusHistory: row.status_history || [],
-          riderName: row.rider_name || undefined,
-          cancellationReason: row.cancellation_reason || undefined,
-          adminNotes: row.admin_notes || undefined,
-          source: 'online_store',
-        };
-        onOrderUpdated(mapped);
-      }
-    )
-    .subscribe();
-
-  return () => {
-    supabase.removeChannel(channel);
-  };
+    };
+  } catch (err) {
+    console.error('Failed to subscribe to delivery orders realtime:', err);
+    return () => {};
+  }
 };
 
 /**

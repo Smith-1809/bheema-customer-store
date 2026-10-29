@@ -201,12 +201,20 @@ export function App() {
       <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-28">
         {/* Grand Hero Banner */}
         <FestiveHeroBanner
-          onSelectCategory={(cat) => setSelectedCategory(cat)}
+          onSelectCategory={(cat) => {
+            setSelectedCategory(cat);
+            setTimeout(() => {
+              const el = document.getElementById('cracker-catalog-section');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, 40);
+          }}
           onOpenComboModal={(bundleId) => setSelectedBundleId(bundleId)}
         />
 
         {/* Catalog Control Bar */}
-        <div className="flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
+        <div id="cracker-catalog-section" className="scroll-mt-28 flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
           <div className="flex items-center gap-2">
             <span className="text-xs sm:text-sm font-black text-slate-900">
               {selectedCategory === 'All' ? 'Complete Cracker Catalog' : selectedCategory}

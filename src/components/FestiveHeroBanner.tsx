@@ -1,6 +1,6 @@
 import React from 'react';
-import { Sparkles, Truck, ShieldCheck, Banknote, Clock, Flame, ChevronRight, Gift } from 'lucide-react';
-import { POPULAR_BUNDLES } from '../data/bundles';
+import { Gift, ChevronRight } from 'lucide-react';
+import heroBannerImg from '../assets/bheema-diwali-hero-banner-cropped.png';
 
 interface FestiveHeroBannerProps {
   onSelectCategory: (category: string) => void;
@@ -13,90 +13,58 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
 }) => {
   return (
     <div className="space-y-4 mb-6">
-      {/* Grand Diwali Hero Banner (Sunrise Saffron & Marigold Glow) */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 border border-amber-300/60 p-5 sm:p-7 shadow-xl shadow-orange-500/20 text-white">
-        {/* Festive Ambient Background Lighting & Diya Flare */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-white/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-yellow-300/20 rounded-full blur-2xl pointer-events-none" />
+      {/* Grand Diwali Hero Banner (Matches exact uploaded design) */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-amber-300/80 shadow-md shadow-amber-500/10 bg-[#FFFDF7]">
+        <img
+          src={heroBannerImg}
+          alt="Light Up Your Diwali with Bheema Fireworks"
+          className="w-full h-auto block select-none"
+        />
 
-        {/* Decorative Diya Flare Icon */}
-        <div className="absolute -top-4 -right-4 text-7xl opacity-20 pointer-events-none select-none">
-          🪔
-        </div>
+        {/* Interactive Click Target: Explore Sky Shots */}
+        <button
+          onClick={() => onSelectCategory('Comet / Shot')}
+          title="Explore Sky Shots"
+          aria-label="Explore Sky Shots"
+          className="absolute rounded-xl sm:rounded-2xl cursor-pointer transition-all hover:ring-2 hover:ring-amber-400 hover:bg-white/10 active:scale-95 focus:outline-none"
+          style={{
+            left: '2.5%',
+            width: '20.8%',
+            top: '80.5%',
+            height: '12.8%',
+          }}
+        />
 
-        <div className="relative z-10 max-w-2xl">
-          {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-amber-100 border border-white/30 text-[11px] sm:text-xs font-black tracking-wide uppercase mb-3 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
-            <span>Diwali 2026 Celebration Direct Delivery</span>
-          </div>
+        {/* Interactive Click Target: Sparkling Flower Pots */}
+        <button
+          onClick={() => onSelectCategory('FP')}
+          title="Sparkling Flower Pots"
+          aria-label="Sparkling Flower Pots"
+          className="absolute rounded-xl sm:rounded-2xl cursor-pointer transition-all hover:ring-2 hover:ring-orange-400 hover:bg-amber-500/10 active:scale-95 focus:outline-none"
+          style={{
+            left: '24.4%',
+            width: '19.8%',
+            top: '80.5%',
+            height: '12.8%',
+          }}
+        />
+      </div>
 
-          {/* Main Headline */}
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight mb-2 drop-shadow-sm">
-            Light Up Your Diwali with{' '}
-            <span className="text-yellow-200 underline decoration-yellow-300/60 decoration-wavy decoration-2">
-              Bheema Fireworks
-            </span>
-          </h2>
+      {/* Mobile Touch Quick Actions (Directly below banner for easy thumb taps) */}
+      <div className="grid grid-cols-2 gap-2 sm:hidden pt-0.5">
+        <button
+          onClick={() => onSelectCategory('Comet / Shot')}
+          className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-orange-600/20 active:scale-95"
+        >
+          <span>🚀 Explore Sky Shots</span>
+        </button>
 
-          <p className="text-xs sm:text-sm text-amber-50 leading-relaxed mb-4 font-medium">
-            Order fresh, authentic Sivakasi crackers delivered straight to your doorstep.
-            Enjoy <strong>Up to 90% Festive Discounts</strong> against Sivakasi MRP with zero risk through <strong>Cash on Delivery (COD)</strong>.
-          </p>
-
-          {/* Quick Perks Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-5">
-            <div className="p-2.5 rounded-xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-white/20 text-white">
-                <Banknote className="w-4 h-4 text-yellow-200" />
-              </span>
-              <div>
-                <span className="block text-[11px] font-black text-white">Cash on Delivery</span>
-                <span className="text-[10px] text-amber-100">Pay when delivered</span>
-              </div>
-            </div>
-
-            <div className="p-2.5 rounded-xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-white/20 text-white">
-                <Clock className="w-4 h-4 text-yellow-200" />
-              </span>
-              <div>
-                <span className="block text-[11px] font-black text-white">1 to 2 Hours</span>
-                <span className="text-[10px] text-amber-100">Superfast dispatch</span>
-              </div>
-            </div>
-
-            <div className="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-white/20 text-white">
-                <Sparkles className="w-4 h-4 text-yellow-200" />
-              </span>
-              <div>
-                <span className="block text-[11px] font-black text-yellow-200">Up to 90% OFF</span>
-                <span className="text-[10px] text-amber-100">Sivakasi Factory MRP</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-2.5">
-            <button
-              onClick={() => onSelectCategory('Comet / Shot')}
-              className="px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-yellow-300 font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-black/20 active:scale-95 transition-all"
-            >
-              <Flame className="w-4 h-4 text-orange-400" />
-              <span>Explore Sky Shots</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => onSelectCategory('FP')}
-              className="px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white border border-white/40 font-bold text-xs sm:text-sm flex items-center gap-2 active:scale-95 transition-all backdrop-blur-md"
-            >
-              <Sparkles className="w-4 h-4 text-yellow-200" />
-              <span>Sparkling Flower Pots</span>
-            </button>
-          </div>
-        </div>
+        <button
+          onClick={() => onSelectCategory('FP')}
+          className="py-2.5 px-3 rounded-xl bg-white border border-amber-300 text-orange-800 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95"
+        >
+          <span>✳️ Sparkling Flower Pots</span>
+        </button>
       </div>
 
       {/* Featured Festive Combo Boxes Strip */}

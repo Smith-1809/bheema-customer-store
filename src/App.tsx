@@ -15,6 +15,7 @@ import { StoreCartDrawer } from './components/StoreCartDrawer';
 import { CodCheckoutModal } from './components/CodCheckoutModal';
 import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { CustomerOrderTrackerModal } from './components/CustomerOrderTrackerModal';
+import { FestiveCrackerEffects } from './components/FestiveCrackerEffects';
 import { getSupabase } from './lib/supabase';
 import {
   Sparkles,
@@ -179,7 +180,10 @@ export function App() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+    <div className="min-h-screen bg-[#FFFDF7] text-slate-900 flex flex-col antialiased selection:bg-orange-500 selection:text-white relative">
+      {/* Festive Cracker Splashes & Side Margins Sparkler Crackles */}
+      <FestiveCrackerEffects />
+
       {/* Top Navbar */}
       <StorefrontNavbar
         cartCount={totalCartCount}
@@ -202,22 +206,22 @@ export function App() {
         />
 
         {/* Catalog Control Bar */}
-        <div className="flex items-center justify-between gap-3 mb-4 pt-2 border-t border-slate-800">
+        <div className="flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
           <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-extrabold text-white">
+            <span className="text-xs sm:text-sm font-black text-slate-900">
               {selectedCategory === 'All' ? 'Complete Cracker Catalog' : selectedCategory}
             </span>
-            <span className="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+            <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
               {filteredProducts.length} items
             </span>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
+            <ArrowUpDown className="w-3.5 h-3.5 text-orange-700" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="py-1 px-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-400 font-bold"
+              className="py-1 px-2.5 rounded-xl bg-white border border-amber-300 text-xs text-slate-900 focus:outline-none focus:border-orange-500 font-bold shadow-xs"
             >
               <option value="default">Default Catalog</option>
               <option value="price_asc">Price: Low to High</option>
@@ -229,10 +233,10 @@ export function App() {
 
         {/* Product Grid */}
         {filteredProducts.length === 0 ? (
-          <div className="p-12 text-center rounded-3xl bg-slate-900/40 border border-slate-800 space-y-3">
-            <Search className="w-10 h-10 mx-auto text-slate-600" />
-            <h4 className="font-bold text-base text-white">No crackers found</h4>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <div className="p-12 text-center rounded-3xl bg-white border border-amber-200 shadow-sm space-y-3">
+            <Search className="w-10 h-10 mx-auto text-amber-400" />
+            <h4 className="font-extrabold text-base text-slate-900">No crackers found</h4>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
               We couldn't find anything matching "{searchQuery}". Try searching for Flower Pot, Lakshmi, Shot, or GC.
             </p>
             <button
@@ -240,7 +244,7 @@ export function App() {
                 setSearchQuery('');
                 setSelectedCategory('All');
               }}
-              className="py-2 px-4 rounded-xl bg-slate-800 text-amber-300 font-bold text-xs hover:bg-slate-700 transition-colors"
+              className="py-2 px-4 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors shadow-xs"
             >
               Reset Filters
             </button>
@@ -264,14 +268,14 @@ export function App() {
 
       {/* Floating Bottom Sticky Bar on Mobile (when cart has items) */}
       {totalCartCount > 0 && (
-        <div className="fixed bottom-0 inset-x-0 z-30 p-3 bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent pointer-events-none md:hidden">
+        <div className="fixed bottom-0 inset-x-0 z-30 p-3 bg-gradient-to-t from-[#FFFDF7] via-[#FFFDF7]/95 to-transparent pointer-events-none md:hidden">
           <div className="max-w-md mx-auto pointer-events-auto">
             <button
               onClick={() => setIsCartOpen(true)}
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-between shadow-2xl shadow-amber-500/30 active:scale-[0.98] transition-all"
+              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black text-xs sm:text-sm flex items-center justify-between shadow-2xl shadow-orange-500/30 active:scale-[0.98] transition-all"
             >
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-lg bg-slate-950 text-amber-400 flex items-center justify-center font-extrabold text-xs">
+                <span className="w-6 h-6 rounded-lg bg-white text-orange-600 flex items-center justify-center font-extrabold text-xs shadow-xs">
                   {totalCartCount}
                 </span>
                 <span>View Cracker Bag</span>
@@ -281,7 +285,7 @@ export function App() {
                 <span className="font-extrabold text-base">
                   ₹{totalOnlineAmount.toLocaleString('en-IN')}
                 </span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </div>
             </button>
           </div>
@@ -348,12 +352,12 @@ export function App() {
 
       {/* Product Detail Quick View Modal */}
       {selectedProductDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div 
-            className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-scale-up"
+            className="w-full max-w-md bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up text-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-video bg-slate-950 flex items-center justify-center overflow-hidden">
+            <div className="relative aspect-video bg-gradient-to-br from-amber-50 to-orange-50/50 flex items-center justify-center overflow-hidden border-b border-amber-100">
               {productImages[selectedProductDetail.id] || selectedProductDetail.imageUrl ? (
                 <img
                   src={productImages[selectedProductDetail.id] || selectedProductDetail.imageUrl!}
@@ -362,8 +366,8 @@ export function App() {
                 />
               ) : (
                 <div className="text-center p-4">
-                  <Sparkles className="w-10 h-10 mx-auto text-amber-400 mb-2" />
-                  <span className="text-xs uppercase font-extrabold text-amber-300">
+                  <Sparkles className="w-10 h-10 mx-auto text-orange-500 mb-2" />
+                  <span className="text-xs uppercase font-extrabold text-amber-800">
                     {selectedProductDetail.category}
                   </span>
                 </div>
@@ -371,44 +375,44 @@ export function App() {
 
               <button
                 onClick={() => setSelectedProductDetail(null)}
-                className="absolute top-3 right-3 p-1.5 rounded-full bg-slate-950/80 text-white hover:bg-slate-800 transition-colors"
+                className="absolute top-3 right-3 p-1.5 rounded-full bg-white/90 text-slate-700 hover:bg-white shadow-sm transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
 
-              <span className="absolute bottom-3 left-3 px-2 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-500 text-white font-black text-xs border border-white/20">
+              <span className="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs border border-white/30 shadow-md">
                 {calculateDiscountPercent(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)}% OFF Sivakasi MRP
               </span>
             </div>
 
-            <div className="p-4 sm:p-5 space-y-3">
+            <div className="p-4 sm:p-5 space-y-3 bg-[#FFFDF7]">
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                <span className="text-[10px] uppercase font-bold text-amber-700 block">
                   {selectedProductDetail.category} • Item #{selectedProductDetail.serialNo}
                 </span>
-                <h3 className="font-black text-lg text-white mt-0.5">
+                <h3 className="font-black text-lg text-slate-900 mt-0.5">
                   {selectedProductDetail.name}
                 </h3>
               </div>
 
               <div className="flex items-baseline gap-2">
-                <span className="font-black text-2xl text-amber-400">
+                <span className="font-black text-2xl text-orange-600">
                   ₹{calculateOnlinePrice(selectedProductDetail.sellingPrice).toLocaleString('en-IN')}
                 </span>
                 <span className="text-sm text-slate-400 line-through">
                   ₹{calculateDisplayMrp(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category).toLocaleString('en-IN')}
                 </span>
-                <span className="text-xs font-bold text-emerald-400">
+                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
                   (Save ₹{calculateOnlineSavings(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)} • {calculateDiscountPercent(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)}% OFF)
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 space-y-1">
-                <div className="flex items-center gap-1.5 text-amber-300 font-bold">
-                  <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="p-3 rounded-xl bg-orange-50/70 border border-orange-200 text-xs text-slate-700 space-y-1">
+                <div className="flex items-center gap-1.5 text-orange-800 font-bold">
+                  <ShieldCheck className="w-3.5 h-3.5 text-orange-600" />
                   <span>Sivakasi Premium Quality Guarantee</span>
                 </div>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[11px] text-slate-600">
                   100% authentic festive fireworks with vibrant colors, high-altitude bursts, and safety certified packaging.
                 </p>
               </div>
@@ -419,9 +423,9 @@ export function App() {
                     handleAddToCart(selectedProductDetail);
                     setSelectedProductDetail(null);
                   }}
-                  className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition-all"
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-95 transition-all"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4 text-white" />
                   <span>Add to Bag</span>
                 </button>
               </div>
@@ -432,54 +436,54 @@ export function App() {
 
       {/* Combo Bundle Modal */}
       {activeBundle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div 
-            className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-scale-up max-h-[85vh] flex flex-col"
+            className="w-full max-w-lg bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up max-h-[85vh] flex flex-col text-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 sm:p-5 bg-gradient-to-r from-amber-500/20 via-slate-900 to-rose-500/20 border-b border-slate-800 flex items-center justify-between shrink-0">
+            <div className="p-4 sm:p-5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border-b border-orange-400 flex items-center justify-between shrink-0 shadow-xs">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                <div className="w-9 h-9 rounded-2xl bg-white/20 text-white flex items-center justify-center border border-white/30">
                   <Gift className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="font-black text-base text-white">{activeBundle.name}</h3>
-                  <span className="text-[11px] text-amber-300 font-semibold">{activeBundle.tagline}</span>
+                  <span className="text-[11px] text-amber-100 font-semibold">{activeBundle.tagline}</span>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedBundleId(null)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-white"
+                className="p-1.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-4 sm:p-5 overflow-y-auto space-y-3 flex-1">
-              <p className="text-xs text-slate-300">{activeBundle.description}</p>
+            <div className="p-4 sm:p-5 overflow-y-auto space-y-3 flex-1 bg-[#FFFDF7]">
+              <p className="text-xs text-slate-600">{activeBundle.description}</p>
 
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+              <span className="text-[10px] uppercase font-bold text-amber-800 tracking-wider block">
                 Varieties Included ({activeBundle.items.length} Varieties)
               </span>
 
-              <div className="space-y-1.5 divide-y divide-slate-850">
+              <div className="space-y-1.5 divide-y divide-amber-100">
                 {activeBundle.items.map((item, idx) => (
                   <div key={idx} className="pt-1.5 flex items-center justify-between text-xs">
-                    <span className="font-semibold text-white">
+                    <span className="font-semibold text-slate-800">
                       {item.defaultQty}x {item.productName}
                     </span>
-                    <span className="text-[10px] text-emerald-400 font-bold">10% Online Discount</span>
+                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">10% Online Discount</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="p-4 bg-slate-850 border-t border-slate-800 shrink-0">
+            <div className="p-4 bg-white border-t border-amber-200 shrink-0">
               <button
                 onClick={() => handleAddBundleToCart(activeBundle)}
-                className="w-full py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-95 transition-all"
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-95 transition-all"
               >
-                <Gift className="w-4 h-4" />
+                <Gift className="w-4 h-4 text-white" />
                 <span>Add Full Combo to Bag (1-Click)</span>
               </button>
             </div>
@@ -487,23 +491,23 @@ export function App() {
         </div>
       )}
 
-      {/* Festive Footer */}
-      <footer className="mt-auto border-t border-slate-800 bg-slate-950 text-slate-400 text-xs py-8 px-4 text-center space-y-3">
+      {/* Festive Footer (Sunrise Saffron & Marigold Light Theme) */}
+      <footer className="mt-auto border-t border-amber-200 bg-amber-50/70 text-slate-600 text-xs py-8 px-4 text-center space-y-3">
         <div className="max-w-md mx-auto space-y-2">
-          <div className="flex items-center justify-center gap-2 text-white font-extrabold text-sm">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+          <div className="flex items-center justify-center gap-2 text-slate-900 font-black text-sm">
+            <Sparkles className="w-4 h-4 text-orange-500" />
             <span>BHEEMA FIREWORKS • DIWALI 2026</span>
           </div>
           <p className="text-[11px] text-slate-500 leading-relaxed">
-            Fresh Sivakasi standard fireworks with fast local delivery. All products priced at 10% lower direct online rates. Cash on Delivery (COD) available at your doorstep.
+            Fresh Sivakasi standard fireworks with fast local delivery. All products priced at direct online wholesale rates. Cash on Delivery (COD) available at your doorstep.
           </p>
 
-          <div className="flex items-center justify-center gap-3 pt-2 text-[11px] font-semibold text-slate-400">
-            <button onClick={() => setIsTrackerOpen(true)} className="hover:text-amber-300 underline flex items-center gap-1.5">
+          <div className="flex items-center justify-center gap-3 pt-2 text-[11px] font-bold text-slate-600">
+            <button onClick={() => setIsTrackerOpen(true)} className="hover:text-orange-600 underline flex items-center gap-1.5">
               <span>Track Your Placed Order</span>
             </button>
             <span>•</span>
-            <span className="text-emerald-400 font-bold">100% Cash on Delivery (Doorstep)</span>
+            <span className="text-emerald-700 font-bold">100% Cash on Delivery (Doorstep)</span>
           </div>
         </div>
       </footer>

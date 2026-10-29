@@ -4,8 +4,8 @@ import {
   DeliveryOrderItem, 
   DeliveryCustomerInfo, 
   calculateOnlinePrice, 
-  calculateDisplayMrp,
-  calculateDiscountPercent,
+  calculateDisplayMrp, 
+  calculateDiscountPercent, 
   calculateOnlineSavings, 
   FREE_DELIVERY_THRESHOLD, 
   STANDARD_DELIVERY_FEE 
@@ -103,29 +103,27 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
     e.preventDefault();
     setErrorMessage('');
 
-    // Validation
     const cleanName = fullName.trim();
+    const cleanPhone = phone.trim().replace(/\D/g, '');
+    const cleanStreet = streetArea.trim();
+    const cleanHouse = houseNo.trim();
+
     if (!cleanName) {
       setErrorMessage('Please enter your full name');
       return;
     }
 
-    const cleanPhone = phone.replace(/\D/g, '');
     if (cleanPhone.length < 10) {
-      setErrorMessage('Please enter a valid 10-digit mobile / WhatsApp number');
+      setErrorMessage('Please enter a valid 10-digit mobile number for WhatsApp updates');
       return;
     }
 
-    const fullAddress = `${houseNo.trim() ? houseNo.trim() + ', ' : ''}${streetArea.trim()}`;
-    if (!streetArea.trim()) {
-      setErrorMessage('Please enter your delivery street / area address');
+    if (!cleanStreet) {
+      setErrorMessage('Please provide your street or area name');
       return;
     }
 
-    if (items.length === 0) {
-      setErrorMessage('Your bag is empty. Please add crackers first.');
-      return;
-    }
+    const fullAddress = [cleanHouse, cleanStreet].filter(Boolean).join(', ');
 
     setIsSubmitting(true);
 
@@ -175,20 +173,20 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
       <div 
-        className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto animate-scale-up"
+        className="w-full max-w-lg bg-white border border-amber-200 rounded-3xl shadow-2xl overflow-hidden my-auto animate-scale-up text-slate-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-4 sm:p-5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white flex items-center justify-between border-b border-orange-400">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+            <div className="w-9 h-9 rounded-2xl bg-white/20 text-white flex items-center justify-center border border-white/30">
               <Banknote className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-black text-base sm:text-lg text-white">Cash on Delivery Checkout</h3>
-              <p className="text-[11px] text-amber-300/80 font-semibold">
+              <p className="text-[11px] text-amber-100 font-semibold">
                 No Prepayment Needed • Pay at Doorstep
               </p>
             </div>
@@ -196,7 +194,7 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-colors"
             title="Cancel"
           >
             <X className="w-5 h-5" />
@@ -204,24 +202,24 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmitOrder} className="p-4 sm:p-5 space-y-4 max-h-[75vh] overflow-y-auto">
+        <form onSubmit={handleSubmitOrder} className="p-4 sm:p-5 space-y-4 max-h-[75vh] overflow-y-auto bg-[#FFFDF7]">
           {errorMessage && (
-            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+            <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           {/* Section 1: Customer Contact */}
           <div className="space-y-2.5">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+            <span className="text-[10px] uppercase font-bold text-amber-800 tracking-wider block">
               1. Contact Information
             </span>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                  Full Name <span className="text-rose-400">*</span>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Full Name <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -230,15 +228,15 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="e.g. Ramesh Kumar"
-                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white"
                   />
-                  <User className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                  <User className="w-3.5 h-3.5 text-amber-600 absolute left-2.5 top-2.5" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                  WhatsApp Phone <span className="text-rose-400">*</span>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  WhatsApp Phone <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -247,11 +245,11 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="10-digit mobile number"
-                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white"
                   />
-                  <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                  <Phone className="w-3.5 h-3.5 text-amber-600 absolute left-2.5 top-2.5" />
                 </div>
-                <span className="text-[10px] text-slate-400 block mt-0.5">
+                <span className="text-[10px] text-slate-500 block mt-0.5">
                   Order updates & delivery alerts will be sent here
                 </span>
               </div>
@@ -259,14 +257,14 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
           </div>
 
           {/* Section 2: Delivery Address */}
-          <div className="space-y-2.5 pt-2 border-t border-slate-800">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+          <div className="space-y-2.5 pt-2 border-t border-amber-200">
+            <span className="text-[10px] uppercase font-bold text-amber-800 tracking-wider block">
               2. Delivery Address
             </span>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
                   Flat / House / Building No
                 </label>
                 <input
@@ -274,13 +272,13 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                   value={houseNo}
                   onChange={(e) => setHouseNo(e.target.value)}
                   placeholder="e.g. Flat 302, Sai Residency"
-                  className="w-full py-2 px-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                  Street / Colony / Area <span className="text-rose-400">*</span>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Street / Colony / Area <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -289,16 +287,16 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                     value={streetArea}
                     onChange={(e) => setStreetArea(e.target.value)}
                     placeholder="e.g. Main Road, Ashok Nagar"
-                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white"
                   />
-                  <MapPin className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                  <MapPin className="w-3.5 h-3.5 text-amber-600 absolute left-2.5 top-2.5" />
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
                   Nearby Landmark (Help Rider Reach Fast)
                 </label>
                 <input
@@ -306,31 +304,31 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                   value={landmark}
                   onChange={(e) => setLandmark(e.target.value)}
                   placeholder="e.g. Near Hanuman Temple / Behind SBI"
-                  className="w-full py-2 px-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
                   Preferred Delivery Slot
                 </label>
                 <div className="relative">
                   <select
                     value={deliverySlot}
                     onChange={(e) => setDeliverySlot(e.target.value)}
-                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-400 font-semibold"
+                    className="w-full py-2 pl-8 pr-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 focus:outline-none focus:border-orange-500 font-semibold"
                   >
                     <option value="Express (1 to 2 Hours)">⚡ Express (Within 1 to 2 Hours)</option>
                     <option value="Today Evening (6 PM - 9 PM)">🌆 Today Evening (6 PM - 9 PM)</option>
                     <option value="Tomorrow Morning (9 AM - 12 PM)">🌅 Tomorrow Morning (9 AM - 12 PM)</option>
                   </select>
-                  <Clock className="w-3.5 h-3.5 text-amber-400 absolute left-2.5 top-2.5 pointer-events-none" />
+                  <Clock className="w-3.5 h-3.5 text-amber-600 absolute left-2.5 top-2.5 pointer-events-none" />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-slate-300 mb-1">
+              <label className="block text-[11px] font-bold text-slate-700 mb-1">
                 Special Delivery Instructions (Optional)
               </label>
               <input
@@ -338,51 +336,51 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                 value={specialNotes}
                 onChange={(e) => setSpecialNotes(e.target.value)}
                 placeholder="e.g. Ring bell twice, call before arriving..."
-                className="w-full py-1.5 px-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                className="w-full py-1.5 px-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white"
               />
             </div>
           </div>
 
           {/* Section 3: Payment Assurance */}
-          <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/25 space-y-1.5">
-            <div className="flex items-center gap-2 text-amber-400 font-black text-xs">
-              <Banknote className="w-4 h-4" />
+          <div className="p-3.5 rounded-2xl bg-orange-50 border border-orange-200 space-y-1.5">
+            <div className="flex items-center gap-2 text-orange-800 font-black text-xs">
+              <Banknote className="w-4 h-4 text-orange-600" />
               <span>PAYMENT METHOD: 100% CASH ON DELIVERY (COD)</span>
             </div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
+            <p className="text-[11px] text-slate-600 leading-relaxed">
               No advance payment required. Our delivery partner will bring your crackers box right to your doorstep. You can inspect the package and pay via <strong>Cash or UPI (Google Pay, PhonePe, Paytm)</strong>.
             </p>
           </div>
 
           {/* Section 4: Final Summary & CTA */}
-          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-300">
+          <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+            <div className="flex items-center justify-between text-xs text-slate-700">
               <span>Items Total ({totalItemsCount} items)</span>
               <span className="font-semibold">₹{totalOnlineAmount.toLocaleString('en-IN')}</span>
             </div>
 
             {couponDiscount > 0 && (
-              <div className="flex items-center justify-between text-xs text-emerald-400 font-bold">
+              <div className="flex items-center justify-between text-xs text-emerald-700 font-bold">
                 <span>Coupon Discount ({appliedCoupon})</span>
                 <span>-₹{couponDiscount.toLocaleString('en-IN')}</span>
               </div>
             )}
 
-            <div className="flex items-center justify-between text-xs text-slate-300">
+            <div className="flex items-center justify-between text-xs text-slate-700">
               <span>Delivery Fee</span>
-              <span className={isFreeDelivery ? 'text-emerald-400 font-bold' : ''}>
+              <span className={isFreeDelivery ? 'text-emerald-700 font-bold' : ''}>
                 {isFreeDelivery ? 'FREE' : `₹${STANDARD_DELIVERY_FEE}`}
               </span>
             </div>
 
-            <div className="pt-2 border-t border-slate-800 flex items-baseline justify-between">
+            <div className="pt-2 border-t border-amber-200 flex items-baseline justify-between">
               <div>
-                <span className="text-xs text-slate-400 font-bold block">Total Cash to Pay</span>
-                <span className="text-[10px] text-emerald-400 font-bold">
+                <span className="text-xs text-slate-500 font-bold block">Total Cash to Pay</span>
+                <span className="text-[10px] text-emerald-700 font-bold">
                   You saved ₹{totalSavings.toLocaleString('en-IN')} on this order!
                 </span>
               </div>
-              <span className="font-black text-xl text-amber-400">
+              <span className="font-black text-xl text-orange-600">
                 ₹{finalPayable.toLocaleString('en-IN')}
               </span>
             </div>
@@ -390,14 +388,14 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full mt-2 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-[0.98] transition-all disabled:opacity-50"
+              className="w-full mt-2 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>Confirming Order...</span>
               ) : (
                 <>
                   <span>Place Cash on Delivery Order 🪔</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-white" />
                 </>
               )}
             </button>

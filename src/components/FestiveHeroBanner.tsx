@@ -96,10 +96,19 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           </div>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-3 pt-1">
+          <div className="flex flex-wrap items-center gap-2.5 pt-1">
+            <button
+              onClick={() => onSelectCategory('All')}
+              className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-[#2B1204] hover:bg-[#3D1A06] text-amber-300 font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-lg shadow-black/15 active:scale-95 transition-all cursor-pointer border border-amber-500/30"
+            >
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span>Explore All Crackers</span>
+              <ChevronRight className="w-4 h-4 text-amber-400" />
+            </button>
+
             <button
               onClick={() => onSelectCategory('Comet / Shot')}
-              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-orange-500/25 active:scale-95 transition-all cursor-pointer"
+              className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 shadow-lg shadow-orange-500/25 active:scale-95 transition-all cursor-pointer"
             >
               <span className="text-base leading-none">🚀</span>
               <span>Explore Sky Shots</span>
@@ -108,7 +117,7 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
 
             <button
               onClick={() => onSelectCategory('FP')}
-              className="px-5 py-3 rounded-2xl bg-white hover:bg-amber-50/60 border-2 border-amber-300 text-[#2B1204] font-black text-xs sm:text-sm flex items-center gap-2 active:scale-95 transition-all shadow-xs cursor-pointer"
+              className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-amber-50/60 border-2 border-amber-300 text-[#2B1204] font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 active:scale-95 transition-all shadow-xs cursor-pointer"
             >
               <span className="text-orange-600 text-base leading-none">✳️</span>
               <span>Sparkling Flower Pots</span>

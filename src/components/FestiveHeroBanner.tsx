@@ -36,7 +36,7 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
 
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
             Order fresh, authentic Sivakasi crackers delivered straight to your doorstep.
-            Enjoy <strong>Flat 10% Lower Prices</strong> with zero risk through <strong>Cash on Delivery (COD)</strong>.
+            Enjoy <strong>Up to 90% Festive Discounts</strong> against Sivakasi MRP with zero risk through <strong>Cash on Delivery (COD)</strong>.
           </p>
 
           {/* Quick Perks Strip */}
@@ -66,8 +66,8 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
                 <Sparkles className="w-4 h-4" />
               </span>
               <div>
-                <span className="block text-[11px] font-black text-amber-300">Flat 10% OFF</span>
-                <span className="text-[10px] text-slate-400">Lower than shop MRP</span>
+                <span className="block text-[11px] font-black text-amber-300">Up to 90% OFF</span>
+                <span className="text-[10px] text-slate-400">Sivakasi Factory MRP</span>
               </div>
             </div>
           </div>
@@ -122,9 +122,9 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <span className="text-[10px] text-slate-400 line-through block">MRP ₹1,290</span>
+                <span className="text-[10px] text-slate-400 line-through block">MRP ₹8,120</span>
                 <span className="font-black text-base text-amber-400">₹1,160</span>
-                <span className="text-[9px] font-bold text-emerald-400 block">Save 10%</span>
+                <span className="text-[9px] font-bold text-rose-300 bg-rose-500/15 border border-rose-500/20 px-1 rounded block mt-0.5">86% OFF</span>
               </div>
             </div>
 
@@ -153,9 +153,9 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <span className="text-[10px] text-slate-400 line-through block">MRP ₹3,450</span>
+                <span className="text-[10px] text-slate-400 line-through block">MRP ₹24,800</span>
                 <span className="font-black text-base text-rose-400">₹3,100</span>
-                <span className="text-[9px] font-bold text-emerald-400 block">Save 10%</span>
+                <span className="text-[9px] font-bold text-rose-300 bg-rose-500/15 border border-rose-500/20 px-1 rounded block mt-0.5">87% OFF</span>
               </div>
             </div>
 

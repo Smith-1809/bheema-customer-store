@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { Product } from '../data/products';
-import { DeliveryOrderItem, DeliveryCustomerInfo, calculateOnlinePrice, calculateOnlineSavings, FREE_DELIVERY_THRESHOLD, STANDARD_DELIVERY_FEE } from '../types/delivery';
+import { 
+  DeliveryOrderItem, 
+  DeliveryCustomerInfo, 
+  calculateOnlinePrice, 
+  calculateDisplayMrp,
+  calculateDiscountPercent,
+  calculateOnlineSavings, 
+  FREE_DELIVERY_THRESHOLD, 
+  STANDARD_DELIVERY_FEE 
+} from '../types/delivery';
 import { placeCodOrder } from '../lib/deliveryOrders';
 import { X, Sparkles, MapPin, Phone, User, Clock, ShieldCheck, Banknote, ArrowRight, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -60,9 +69,10 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
       const product = productMap.get(productId);
       if (!product) return null;
 
-      const retailPrice = product.sellingPrice;
-      const onlinePrice = calculateOnlinePrice(retailPrice);
-      const savingsPerUnit = calculateOnlineSavings(retailPrice);
+      const onlinePrice = calculateOnlinePrice(product.sellingPrice);
+      const displayMrp = calculateDisplayMrp(onlinePrice, product.category);
+      const discountPercent = calculateDiscountPercent(onlinePrice, product.category);
+      const savingsPerUnit = displayMrp - onlinePrice;
 
       return {
         productId: product.id,
@@ -70,9 +80,10 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
         productName: product.name,
         category: product.category,
         quantity: qty,
-        retailPrice,
+        retailPrice: displayMrp,
         onlinePrice,
         savingsPerUnit,
+        discountPercent,
         itemTotal: onlinePrice * qty,
         imageUrl: product.imageUrl || null,
       };

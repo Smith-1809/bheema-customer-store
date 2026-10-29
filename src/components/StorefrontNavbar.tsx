@@ -32,7 +32,7 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
       <div className="bg-gradient-to-r from-amber-600 via-rose-600 to-amber-600 text-slate-950 font-black text-[11px] sm:text-xs py-1.5 px-3 text-center flex items-center justify-center gap-2 shadow-inner">
         <Sparkles className="w-3.5 h-3.5 shrink-0 animate-spin" style={{ animationDuration: '4s' }} />
         <span>
-          🪔 <strong>DIWALI 2026 DIRECT DELIVERY:</strong> Flat <strong>10% OFF</strong> All Crackers! Cash on Delivery Available at Doorstep 🚚
+          🪔 <strong>DIWALI 2026 DIRECT DELIVERY:</strong> Up to <strong>90% OFF</strong> Sivakasi MRP on All Crackers! Cash on Delivery Available at Doorstep 🚚
         </span>
         <Sparkles className="w-3.5 h-3.5 shrink-0 hidden sm:inline" />
       </div>

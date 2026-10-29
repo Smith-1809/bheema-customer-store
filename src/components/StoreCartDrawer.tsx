@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Product } from '../data/products';
-import { calculateOnlinePrice, calculateOnlineSavings, FREE_DELIVERY_THRESHOLD, STANDARD_DELIVERY_FEE } from '../types/delivery';
+import { 
+  calculateOnlinePrice, 
+  calculateDisplayMrp, 
+  calculateDiscountPercent, 
+  calculateOnlineSavings, 
+  FREE_DELIVERY_THRESHOLD, 
+  STANDARD_DELIVERY_FEE 
+} from '../types/delivery';
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Sparkles, Tag, ShieldCheck, Truck, Banknote } from 'lucide-react';
 
 interface StoreCartDrawerProps {
@@ -42,10 +49,11 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
     })
     .filter((entry): entry is { product: Product; quantity: number } => Boolean(entry.product));
 
-  const totalRetailAmount = cartEntries.reduce(
-    (sum, { product, quantity }) => sum + product.sellingPrice * quantity,
-    0
-  );
+  const totalRetailAmount = cartEntries.reduce((sum, { product, quantity }) => {
+    const online = calculateOnlinePrice(product.sellingPrice);
+    const mrp = calculateDisplayMrp(online, product.category);
+    return sum + mrp * quantity;
+  }, 0);
 
   const totalOnlineAmount = cartEntries.reduce(
     (sum, { product, quantity }) => sum + calculateOnlinePrice(product.sellingPrice) * quantity,
@@ -177,7 +185,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
               </div>
               <h4 className="font-extrabold text-base text-white mb-1">Your bag is empty</h4>
               <p className="text-xs text-slate-400 max-w-xs mb-4">
-                Explore our festive catalog of 107+ Sivakasi crackers with 10% direct online discount!
+                Explore our festive catalog of 107+ Sivakasi crackers with up to 90% direct festive discounts!
               </p>
               <button
                 onClick={onClose}
@@ -188,8 +196,9 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
             </div>
           ) : (
             cartEntries.map(({ product, quantity }) => {
-              const retailPrice = product.sellingPrice;
-              const onlinePrice = calculateOnlinePrice(retailPrice);
+              const onlinePrice = calculateOnlinePrice(product.sellingPrice);
+              const displayMrp = calculateDisplayMrp(onlinePrice, product.category);
+              const discountPercent = calculateDiscountPercent(onlinePrice, product.category);
               const imgUrl = productImages[product.id] || product.imageUrl;
 
               return (
@@ -220,10 +229,10 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
                         ₹{onlinePrice.toLocaleString('en-IN')}
                       </span>
                       <span className="text-[10px] text-slate-400 line-through">
-                        ₹{retailPrice.toLocaleString('en-IN')}
+                        ₹{displayMrp.toLocaleString('en-IN')}
                       </span>
-                      <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-1 rounded">
-                        10% OFF
+                      <span className="text-[9px] font-bold text-rose-300 bg-rose-500/15 border border-rose-500/20 px-1 rounded">
+                        {discountPercent}% OFF
                       </span>
                     </div>
                   </div>
@@ -342,7 +351,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
               </div>
 
               <div className="flex items-center justify-between text-emerald-400 font-bold">
-                <span>10% Direct Online Discount</span>
+                <span>Sivakasi Festive Discount</span>
                 <span>-₹{directOnlineSavings.toLocaleString('en-IN')}</span>
               </div>
 

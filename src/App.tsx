@@ -1,7 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Product, MASTER_PRODUCTS, CATEGORIES } from './data/products';
 import { POPULAR_BUNDLES, BundleDef } from './data/bundles';
-import { calculateOnlinePrice, calculateOnlineSavings, DeliveryOrder } from './types/delivery';
+import { 
+  calculateOnlinePrice, 
+  calculateDisplayMrp, 
+  calculateDiscountPercent, 
+  calculateOnlineSavings, 
+  DeliveryOrder 
+} from './types/delivery';
 import { StorefrontNavbar } from './components/StorefrontNavbar';
 import { FestiveHeroBanner } from './components/FestiveHeroBanner';
 import { ProductCardOnline } from './components/ProductCardOnline';
@@ -370,8 +376,8 @@ export function App() {
                 <X className="w-4 h-4" />
               </button>
 
-              <span className="absolute bottom-3 left-3 px-2 py-0.5 rounded-full bg-emerald-500 text-slate-950 font-black text-xs">
-                10% OFF Online Direct
+              <span className="absolute bottom-3 left-3 px-2 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-500 text-white font-black text-xs border border-white/20">
+                {calculateDiscountPercent(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)}% OFF Sivakasi MRP
               </span>
             </div>
 
@@ -390,10 +396,10 @@ export function App() {
                   ₹{calculateOnlinePrice(selectedProductDetail.sellingPrice).toLocaleString('en-IN')}
                 </span>
                 <span className="text-sm text-slate-400 line-through">
-                  ₹{selectedProductDetail.sellingPrice.toLocaleString('en-IN')}
+                  ₹{calculateDisplayMrp(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category).toLocaleString('en-IN')}
                 </span>
                 <span className="text-xs font-bold text-emerald-400">
-                  (Save ₹{calculateOnlineSavings(selectedProductDetail.sellingPrice)})
+                  (Save ₹{calculateOnlineSavings(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)} • {calculateDiscountPercent(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)}% OFF)
                 </span>
               </div>
 

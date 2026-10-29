@@ -1,6 +1,11 @@
 import React from 'react';
 import { Product } from '../data/products';
-import { calculateOnlinePrice, calculateOnlineSavings } from '../types/delivery';
+import { 
+  calculateOnlinePrice, 
+  calculateDisplayMrp, 
+  calculateDiscountPercent, 
+  calculateOnlineSavings 
+} from '../types/delivery';
 import { Plus, Minus, ShoppingBag, Sparkles, Check, Flame } from 'lucide-react';
 
 interface ProductCardOnlineProps {
@@ -20,9 +25,10 @@ export const ProductCardOnline: React.FC<ProductCardOnlineProps> = ({
   imageUrl,
   onOpenDetail,
 }) => {
-  const retailPrice = product.sellingPrice;
-  const onlinePrice = calculateOnlinePrice(retailPrice);
-  const savings = calculateOnlineSavings(retailPrice);
+  const onlinePrice = calculateOnlinePrice(product.sellingPrice);
+  const displayMrp = calculateDisplayMrp(onlinePrice, product.category);
+  const discountPercent = calculateDiscountPercent(onlinePrice, product.category);
+  const savings = calculateOnlineSavings(onlinePrice, product.category);
 
   return (
     <div className="bg-slate-900/90 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 overflow-hidden flex flex-col justify-between shadow-lg hover:shadow-amber-500/10 group">
@@ -49,10 +55,10 @@ export const ProductCardOnline: React.FC<ProductCardOnlineProps> = ({
           </div>
         )}
 
-        {/* 10% Discount Badge on Image */}
+        {/* Festive Sivakasi MRP Discount Badge */}
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-1 items-start">
-          <span className="px-2 py-0.5 rounded-full bg-emerald-500 text-slate-950 font-black text-[10px] tracking-tight shadow-md flex items-center gap-1">
-            <span>10% OFF</span>
+          <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-500 text-white font-black text-[10px] tracking-tight shadow-md flex items-center gap-1 border border-white/20">
+            <span>{discountPercent}% OFF</span>
           </span>
           <span className="px-1.5 py-0.5 rounded bg-slate-950/80 backdrop-blur-sm text-slate-400 font-mono text-[9px] font-bold border border-slate-800">
             #{product.serialNo}
@@ -93,12 +99,12 @@ export const ProductCardOnline: React.FC<ProductCardOnlineProps> = ({
                 <span className="font-black text-base sm:text-lg text-amber-400 leading-none">
                   ₹{onlinePrice.toLocaleString('en-IN')}
                 </span>
-                <span className="text-xs text-slate-400 line-through leading-none">
-                  ₹{retailPrice.toLocaleString('en-IN')}
+                <span className="text-xs text-slate-400 line-through leading-none" title="Original Sivakasi Printed MRP">
+                  ₹{displayMrp.toLocaleString('en-IN')}
                 </span>
               </div>
               <span className="text-[10px] font-bold text-emerald-400 block mt-0.5">
-                Save ₹{savings.toLocaleString('en-IN')} (Direct Price)
+                Save ₹{savings.toLocaleString('en-IN')} ({discountPercent}% Festive Discount)
               </span>
             </div>
           </div>

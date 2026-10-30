@@ -409,14 +409,19 @@ export const MASTER_PRODUCTS: Product[] = [
   {
     "id": "PRD-028",
     "serialNo": 28,
-    "name": "DG SPL Gun Fancy",
-    "category": "Fancy",
-            "sellingPrice": 208.0,
-        "aliases": [
-      "gun",
+    "name": "DG GC Special",
+    "category": "GC",
+    "sellingPrice": 208.0,
+    "aliases": [
       "dg",
+      "gc",
       "spl",
-      "fancy"
+      "special",
+      "ground",
+      "chakkar",
+      "chakra",
+      "dg gc",
+      "dg gc spl"
     ],
     "imageUrl": null
   },

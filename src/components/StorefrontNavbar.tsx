@@ -29,12 +29,12 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
   return (
     <>
       {/* Top Festive Announcement Bar (Sunrise Saffron & Marigold) */}
-      <div className="bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 text-white font-black text-[11px] sm:text-xs py-1.5 px-3 text-center flex items-center justify-center gap-2 shadow-sm">
-        <Sparkles className="w-3.5 h-3.5 shrink-0 animate-spin" style={{ animationDuration: '4s' }} />
-        <span>
-          🪔 <strong>DIWALI 2026 SIVAKASI DIRECT:</strong> Up to <strong>90% OFF</strong> Factory MRP! Cash on Delivery at Your Doorstep 🚚
+      <div className="bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 text-white font-black text-[10px] sm:text-xs py-1 sm:py-1.5 px-2.5 text-center flex items-center justify-center gap-1.5 shadow-xs overflow-hidden">
+        <Sparkles className="w-3 h-3 shrink-0 animate-spin" style={{ animationDuration: '4s' }} />
+        <span className="truncate">
+          🪔 <strong>DIWALI DIRECT:</strong> Up to <strong>90% OFF</strong> Factory MRP • Cash on Delivery 🚚
         </span>
-        <Sparkles className="w-3.5 h-3.5 shrink-0 hidden sm:inline" />
+        <Sparkles className="w-3 h-3 shrink-0 hidden sm:inline" />
       </div>
 
       {/* Main Sticky Header */}

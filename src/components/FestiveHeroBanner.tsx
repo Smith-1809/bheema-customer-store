@@ -22,35 +22,37 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
   };
 
   return (
-    <div className="space-y-4 mb-6">
-      {/* Native 4K Ultra-Crisp Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-amber-300/90 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9ED] to-[#FFF1DA] shadow-xl shadow-amber-500/10 min-h-[330px] flex items-center">
+    <div className="space-y-3 sm:space-y-4 mb-5 sm:mb-6">
+      {/* ======================================================== */}
+      {/* 1. DESKTOP VIEW (Kept exact as requested - Laptop/Desktop) */}
+      {/* ======================================================== */}
+      <div className="hidden sm:flex relative overflow-hidden rounded-3xl border border-amber-300/90 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9ED] to-[#FFF1DA] shadow-xl shadow-amber-500/10 min-h-[330px] items-center">
         {/* Warm Ambient Festive Backlight Glows */}
         <div className="absolute top-0 right-1/3 w-80 h-80 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 left-10 w-64 h-64 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
 
         {/* Right-Side 4K Cracker & Fireworks Artwork */}
-        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[50%] lg:w-[47%] h-full pointer-events-none select-none flex items-center justify-end overflow-hidden">
+        <div className="absolute right-0 top-0 bottom-0 w-[50%] lg:w-[47%] h-full pointer-events-none select-none flex items-center justify-end overflow-hidden">
           <img
             src={crackerArt}
             alt="Diwali Sivakasi Crackers"
-            className="w-full h-full object-cover sm:object-contain object-right opacity-30 sm:opacity-100 filter drop-shadow-sm transition-all"
+            className="w-full h-full object-contain object-right opacity-100 filter drop-shadow-sm transition-all"
           />
         </div>
 
         {/* Left-Side Pure Vector & HTML/CSS Content (100% 4K Razor-Sharp) */}
-        <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-5 sm:p-7 md:p-8 space-y-3.5">
+        <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-7 md:p-8 space-y-3.5">
           {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100/90 border border-amber-300/90 text-amber-950 text-[11px] sm:text-xs font-black tracking-wider uppercase shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100/90 border border-amber-300/90 text-amber-950 text-xs font-black tracking-wider uppercase shadow-xs">
             <span className="text-orange-600 font-black">✳</span>
             <span>Diwali 2026 Celebration Direct Delivery</span>
             <span className="text-amber-500 font-bold">⸺</span>
           </div>
 
           {/* Headline */}
-          <h2 className="text-2xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-[1.12] text-[#2B1204]">
+          <h2 className="text-3xl lg:text-[42px] font-black tracking-tight leading-[1.12] text-[#2B1204]">
             Light Up Your Diwali with{' '}
-            <span className="block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 drop-shadow-xs">
+            <span className="inline text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 drop-shadow-xs">
               Bheema Fireworks
             </span>
           </h2>
@@ -63,14 +65,14 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           </div>
 
           {/* Subtitle */}
-          <p className="text-xs sm:text-sm text-[#54361E] font-medium leading-relaxed max-w-lg">
+          <p className="text-sm text-[#54361E] font-medium leading-relaxed max-w-lg">
             Order fresh, authentic Sivakasi crackers delivered straight to your doorstep. Enjoy{' '}
             <strong className="font-bold text-[#2B1204]">up to 90% festive discounts</strong> against Sivakasi MRP with{' '}
             <strong className="font-bold text-[#2B1204]">Cash on Delivery (COD)</strong>.
           </p>
 
           {/* 3 Native Pure HTML Trust Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+          <div className="grid grid-cols-3 gap-2.5 pt-1">
             {/* Cash on Delivery */}
             <div className="p-2.5 rounded-2xl bg-white/95 backdrop-blur-sm border border-amber-200 shadow-xs hover:shadow-md transition-all flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
@@ -134,6 +136,104 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
               <ChevronRight className="w-4 h-4 text-orange-600" />
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* ======================================================== */}
+      {/* 2. MOBILE-FIRST VIEW (Compact, Clean, Professional)       */}
+      {/* ======================================================== */}
+      <div className="sm:hidden space-y-2">
+        {/* Compact Festive Hero Card (Clean split: Copy on left, crisp visual on right) */}
+        <div className="relative overflow-hidden rounded-2xl border border-amber-300/90 bg-gradient-to-br from-[#FFFDF7] via-[#FFF8E7] to-[#FFEED2] p-3 shadow-md shadow-amber-500/10">
+          <div className="flex items-center justify-between gap-2.5">
+            {/* Left Content */}
+            <div className="flex-1 min-w-0 space-y-1">
+              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100/90 border border-amber-300 text-[10px] font-black text-amber-950 uppercase tracking-wide">
+                <span className="text-orange-600 font-bold">✳</span>
+                <span>Diwali 2026 Direct</span>
+              </div>
+
+              <h2 className="text-base font-black tracking-tight leading-snug text-[#2B1204]">
+                Light Up Your Diwali with{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-600 block">
+                  Bheema Fireworks
+                </span>
+              </h2>
+
+              <p className="text-[10.5px] text-[#54361E] font-medium leading-tight">
+                Authentic Sivakasi crackers delivered with <strong className="text-orange-800">Cash on Delivery</strong>.
+              </p>
+            </div>
+
+            {/* Right Crisp 4K Artwork (Vibrant in its own frame - never stretched or muddy) */}
+            <div className="w-[36%] shrink-0 aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100 border border-amber-200/90 shadow-sm flex items-center justify-center">
+              <img
+                src={crackerArt}
+                alt="Diwali Fireworks"
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          </div>
+
+          {/* Single Row 3-Column Trust Perks Strip */}
+          <div className="grid grid-cols-3 gap-1.5 mt-2.5 pt-2 border-t border-amber-200/80">
+            <div className="p-1.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1.5">
+              <div className="w-5 h-5 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
+                <Truck className="w-3 h-3 text-amber-600" />
+              </div>
+              <div className="min-w-0">
+                <span className="block text-[9.5px] font-black text-[#2B1204] leading-tight truncate">COD Ready</span>
+                <span className="text-[8px] text-stone-500 font-semibold block leading-tight truncate">Doorstep</span>
+              </div>
+            </div>
+
+            <div className="p-1.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1.5">
+              <div className="w-5 h-5 rounded-lg bg-orange-50 flex items-center justify-center shrink-0">
+                <Clock className="w-3 h-3 text-orange-600" />
+              </div>
+              <div className="min-w-0">
+                <span className="block text-[9.5px] font-black text-[#2B1204] leading-tight truncate">1-2 Hours</span>
+                <span className="text-[8px] text-stone-500 font-semibold block leading-tight truncate">Dispatch</span>
+              </div>
+            </div>
+
+            <div className="p-1.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1.5">
+              <div className="w-5 h-5 rounded-lg bg-rose-50 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3 h-3 text-rose-600" />
+              </div>
+              <div className="min-w-0">
+                <span className="block text-[9.5px] font-black text-[#2B1204] leading-tight truncate">90% OFF</span>
+                <span className="text-[8px] text-stone-500 font-semibold block leading-tight truncate">Factory MRP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Action Navigation Buttons (Clean 3-Button Horizontal Grid) */}
+        <div className="grid grid-cols-3 gap-1.5">
+          <button
+            onClick={() => handleCategoryClick('All')}
+            className="py-2 px-1 rounded-xl bg-[#2B1204] active:scale-95 text-amber-300 font-black text-[10.5px] flex items-center justify-center gap-1 shadow-xs border border-amber-500/30 truncate"
+          >
+            <Sparkles className="w-3 h-3 text-amber-400 shrink-0" />
+            <span className="truncate">All Crackers</span>
+          </button>
+
+          <button
+            onClick={() => handleCategoryClick('Comet / Shot')}
+            className="py-2 px-1 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 active:scale-95 text-white font-black text-[10.5px] flex items-center justify-center gap-1 shadow-xs shadow-orange-500/20 truncate"
+          >
+            <span className="text-xs shrink-0">🚀</span>
+            <span className="truncate">Sky Shots</span>
+          </button>
+
+          <button
+            onClick={() => handleCategoryClick('FP')}
+            className="py-2 px-1 rounded-xl bg-white active:scale-95 border border-amber-300 text-[#2B1204] font-black text-[10.5px] flex items-center justify-center gap-1 shadow-2xs truncate"
+          >
+            <span className="text-orange-600 text-xs shrink-0">✳️</span>
+            <span className="truncate">Flower Pots</span>
+          </button>
         </div>
       </div>
 

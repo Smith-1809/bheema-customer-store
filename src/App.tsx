@@ -80,6 +80,30 @@ export function App() {
   const [selectedProductDetail, setSelectedProductDetail] = useState<Product | null>(null);
   const [selectedBundleId, setSelectedBundleId] = useState<string | null>(null);
 
+  // Prevent background body scroll chaining on iOS Safari & mobile devices
+  useEffect(() => {
+    if (selectedProductDetail || selectedBundleId) {
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalWidth = document.body.style.width;
+      const scrollY = window.scrollY;
+
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.top = originalTop;
+        document.body.style.width = originalWidth;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [selectedProductDetail, selectedBundleId]);
+
   // Sync cart to local storage
   const updateCart = (newCart: Record<string, number>) => {
     setCart(newCart);
@@ -360,9 +384,9 @@ export function App() {
 
       {/* Product Detail Quick View Modal */}
       {selectedProductDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in overscroll-none touch-none">
           <div 
-            className="w-full max-w-md bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up text-slate-900"
+            className="w-full max-w-md bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up text-slate-900 touch-pan-y"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative aspect-video bg-gradient-to-br from-amber-50 to-orange-50/50 flex items-center justify-center overflow-hidden border-b border-amber-100">
@@ -444,7 +468,7 @@ export function App() {
 
       {/* Combo Bundle Modal */}
       {activeBundle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in overscroll-none touch-none">
           <div 
             className="w-full max-w-lg bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up max-h-[85vh] flex flex-col text-slate-900"
             onClick={(e) => e.stopPropagation()}

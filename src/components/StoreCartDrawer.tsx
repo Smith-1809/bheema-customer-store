@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product } from '../data/products';
 import { 
   calculateOnlinePrice, 
@@ -35,6 +35,31 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [couponDiscount, setCouponDiscount] = useState<number>(0);
   const [couponError, setCouponError] = useState<string>('');
+
+  // Prevent background body scroll chaining on iOS Safari & mobile devices
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalWidth = document.body.style.width;
+      const scrollY = window.scrollY;
+
+      // Lock body scroll firmly on mobile browsers
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.top = originalTop;
+        document.body.style.width = originalWidth;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -110,7 +135,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fade-in overscroll-none touch-none">
       <div 
         className="w-full max-w-md bg-white text-slate-900 h-full flex flex-col shadow-2xl animate-slide-left border-l border-orange-200"
         onClick={(e) => e.stopPropagation()}
@@ -177,7 +202,10 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
         )}
 
         {/* Cart Items List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#FFFDF7]">
+        <div 
+          className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3 bg-[#FFFDF7] touch-pan-y" 
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           {cartEntries.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500">
               <div className="w-16 h-16 rounded-3xl bg-amber-50 border border-amber-200 flex items-center justify-center text-orange-500 mb-3 shadow-xs">

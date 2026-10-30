@@ -1,5 +1,6 @@
 import React from 'react';
 import { Product } from '../data/products';
+import { CATEGORY_CARD_TAGS } from '../utils/crackerSearch';
 import { 
   calculateOnlinePrice, 
   calculateDisplayMrp, 
@@ -50,7 +51,7 @@ export const ProductCardOnline: React.FC<ProductCardOnlineProps> = ({
               <Sparkles className="w-6 h-6 animate-pulse" />
             </span>
             <span className="text-[10px] uppercase tracking-wider font-extrabold text-amber-800">
-              {product.category}
+              {CATEGORY_CARD_TAGS[product.category] || product.category}
             </span>
           </div>
         )}
@@ -82,7 +83,7 @@ export const ProductCardOnline: React.FC<ProductCardOnlineProps> = ({
         >
           {/* Category Tag */}
           <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block mb-0.5 truncate">
-            {product.category}
+            {CATEGORY_CARD_TAGS[product.category] || product.category}
           </span>
 
           {/* Product Title */}

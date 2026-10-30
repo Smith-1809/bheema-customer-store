@@ -9,6 +9,7 @@ import {
   STANDARD_DELIVERY_FEE 
 } from '../types/delivery';
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Sparkles, Tag, ShieldCheck, Truck, Banknote } from 'lucide-react';
+import { CATEGORY_CARD_TAGS } from '../utils/crackerSearch';
 
 interface StoreCartDrawerProps {
   isOpen: boolean;
@@ -246,7 +247,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
                   {/* Details */}
                   <div className="flex-1 min-w-0">
                     <span className="text-[9px] uppercase tracking-wider font-bold text-amber-700 block truncate">
-                      {product.category}
+                      {CATEGORY_CARD_TAGS[product.category] || product.category}
                     </span>
                     <h5 className="font-bold text-xs sm:text-sm text-slate-900 truncate leading-tight">
                       {product.name}

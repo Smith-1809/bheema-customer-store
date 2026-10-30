@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, ShoppingBag, Search, X, Truck, PhoneCall, ShieldCheck, Clock, Flame } from 'lucide-react';
+import { CATEGORY_DISPLAY_NAMES } from '../utils/crackerSearch';
 
 interface StorefrontNavbarProps {
   cartCount: number;
@@ -156,7 +157,7 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
                       : 'bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-900 border border-amber-200/90'
                   }`}
                 >
-                  {cat === 'All' ? '🌟 All Crackers' : cat}
+                  {CATEGORY_DISPLAY_NAMES[cat] || (cat === 'All' ? '🌟 All Crackers' : cat)}
                 </button>
               );
             })}

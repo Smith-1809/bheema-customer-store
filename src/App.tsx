@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Product, MASTER_PRODUCTS, CATEGORIES } from './data/products';
 import { POPULAR_BUNDLES, BundleDef } from './data/bundles';
+import { matchProductSearch, CATEGORY_DISPLAY_NAMES, CATEGORY_CARD_TAGS } from './utils/crackerSearch';
 import { 
   calculateOnlinePrice, 
   calculateDisplayMrp, 
@@ -173,16 +174,15 @@ export function App() {
       result = result.filter((p) => p.category === selectedCategory);
     }
 
-    // Search
+    // Smart Search with Synonyms & Brand Mapping
     if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.serialNo.toString() === q ||
-          p.aliases.some((a) => a.toLowerCase().includes(q))
-      );
+      const searchedInCat = result.filter((p) => matchProductSearch(p, searchQuery));
+      // If no items found in currently selected category, search across all products
+      if (searchedInCat.length === 0 && selectedCategory !== 'All') {
+        result = MASTER_PRODUCTS.filter((p) => matchProductSearch(p, searchQuery));
+      } else {
+        result = searchedInCat;
+      }
     }
 
     // Sort
@@ -241,7 +241,11 @@ export function App() {
         <div id="cracker-catalog-section" className="scroll-mt-28 flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
           <div className="flex items-center gap-2">
             <span className="text-xs sm:text-sm font-black text-slate-900">
-              {selectedCategory === 'All' ? 'Complete Cracker Catalog' : selectedCategory}
+              {searchQuery.trim()
+                ? `Results for "${searchQuery}"`
+                : selectedCategory === 'All'
+                ? 'Complete Cracker Catalog'
+                : (CATEGORY_DISPLAY_NAMES[selectedCategory] || selectedCategory)}
             </span>
             <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
               {filteredProducts.length} items
@@ -400,7 +404,7 @@ export function App() {
                 <div className="text-center p-4">
                   <Sparkles className="w-10 h-10 mx-auto text-orange-500 mb-2" />
                   <span className="text-xs uppercase font-extrabold text-amber-800">
-                    {selectedProductDetail.category}
+                    {CATEGORY_CARD_TAGS[selectedProductDetail.category] || selectedProductDetail.category}
                   </span>
                 </div>
               )}
@@ -420,7 +424,7 @@ export function App() {
             <div className="p-4 sm:p-5 space-y-3 bg-[#FFFDF7]">
               <div>
                 <span className="text-[10px] uppercase font-bold text-amber-700 block">
-                  {selectedProductDetail.category} • Item #{selectedProductDetail.serialNo}
+                  {CATEGORY_CARD_TAGS[selectedProductDetail.category] || selectedProductDetail.category} • Item #{selectedProductDetail.serialNo}
                 </span>
                 <h3 className="font-black text-lg text-slate-900 mt-0.5">
                   {selectedProductDetail.name}

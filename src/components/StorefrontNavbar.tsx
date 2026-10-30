@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Sparkles, ShoppingBag, Search, X, Truck, PhoneCall, ShieldCheck, Clock, Flame } from 'lucide-react';
-import { CATEGORY_DISPLAY_NAMES } from '../utils/crackerSearch';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { Sparkles, ShoppingBag, Search, X, Truck, Flame } from 'lucide-react';
+import { Product } from '../data/products';
+import { CATEGORY_DISPLAY_NAMES, matchProductSearch } from '../utils/crackerSearch';
+import { SearchAutoSuggestDropdown } from './SearchAutoSuggestDropdown';
 
 interface StorefrontNavbarProps {
   cartCount: number;
@@ -12,6 +14,13 @@ interface StorefrontNavbarProps {
   selectedCategory: string;
   onSelectCategory: (category: string) => void;
   categories: string[];
+  allProducts: Product[];
+  cart: Record<string, number>;
+  productImages: Record<string, string>;
+  onAddToCart: (product: Product) => void;
+  onUpdateQuantity: (product: Product, newQty: number) => void;
+  onOpenProductDetail?: (product: Product) => void;
+  onScrollToCatalog?: () => void;
 }
 
 export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
@@ -24,8 +33,104 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
   selectedCategory,
   onSelectCategory,
   categories,
+  allProducts = [],
+  cart = {},
+  productImages = {},
+  onAddToCart,
+  onUpdateQuantity,
+  onOpenProductDetail,
+  onScrollToCatalog,
 }) => {
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  // Dropdown visibility states
+  const [showDesktopDropdown, setShowDesktopDropdown] = useState(false);
+  const [showMobileDropdown, setShowMobileDropdown] = useState(false);
+
+  // Element Refs for click-outside detection and focus handling
+  const desktopContainerRef = useRef<HTMLDivElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
+  const desktopInputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
+
+  // Compute Instant Matches from all master products
+  const matchingProducts = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    return allProducts.filter((p) => matchProductSearch(p, searchQuery));
+  }, [allProducts, searchQuery]);
+
+  // Top 5 products displayed in floating dropdown
+  const dropdownProducts = useMemo(() => {
+    return matchingProducts.slice(0, 5);
+  }, [matchingProducts]);
+
+  // Handle outside clicks to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      if (desktopContainerRef.current && !desktopContainerRef.current.contains(target)) {
+        setShowDesktopDropdown(false);
+      }
+      if (mobileContainerRef.current && !mobileContainerRef.current.contains(target)) {
+        setShowMobileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
+  // Handle Escape key to dismiss search dropdown
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowDesktopDropdown(false);
+        setShowMobileDropdown(false);
+        desktopInputRef.current?.blur();
+        mobileInputRef.current?.blur();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Triggered when user selects "View all results in Catalog" or hits Enter
+  const handleViewAllResults = () => {
+    setShowDesktopDropdown(false);
+    setShowMobileDropdown(false);
+    desktopInputRef.current?.blur();
+    mobileInputRef.current?.blur();
+
+    if (onScrollToCatalog) {
+      onScrollToCatalog();
+    } else {
+      const el = document.getElementById('cracker-catalog-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
+  // Triggered when clicking a product item inside the dropdown
+  const handleSelectProduct = (product: Product) => {
+    setShowDesktopDropdown(false);
+    setShowMobileDropdown(false);
+    desktopInputRef.current?.blur();
+    mobileInputRef.current?.blur();
+
+    if (onOpenProductDetail) {
+      onOpenProductDetail(product);
+    }
+  };
+
+  // Triggered when clicking a suggested term inside the empty dropdown
+  const handleSuggestionClick = (term: string) => {
+    onSearchChange(term);
+    setShowDesktopDropdown(true);
+    setShowMobileDropdown(true);
+  };
 
   return (
     <>
@@ -68,24 +173,61 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
             </div>
 
             {/* Desktop Search Bar */}
-            <div className="hidden md:flex flex-1 max-w-md relative">
+            <div ref={desktopContainerRef} className="hidden md:flex flex-1 max-w-md relative">
               <input
+                ref={desktopInputRef}
                 type="text"
                 value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
+                onChange={(e) => {
+                  onSearchChange(e.target.value);
+                  if (e.target.value.trim().length > 0) {
+                    setShowDesktopDropdown(true);
+                  } else {
+                    setShowDesktopDropdown(false);
+                  }
+                }}
+                onFocus={() => {
+                  if (searchQuery.trim().length > 0) {
+                    setShowDesktopDropdown(true);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleViewAllResults();
+                  }
+                }}
                 placeholder="Search sparklers, flower pots, sky shots, 1000 wala..."
                 className="w-full py-2 pl-9 pr-8 rounded-xl bg-amber-50/70 border border-amber-200/90 focus:border-orange-500 focus:bg-white text-xs text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-inner"
               />
               <Search className="w-4 h-4 text-amber-600 absolute left-2.5 top-2.5 pointer-events-none" />
               {searchQuery && (
                 <button
-                  onClick={() => onSearchChange('')}
+                  type="button"
+                  onClick={() => {
+                    onSearchChange('');
+                    setShowDesktopDropdown(false);
+                  }}
                   className="p-1 rounded-full text-slate-400 hover:text-slate-700 absolute right-2 top-2"
+                  title="Clear search"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
+              )}
+
+              {/* Instant Floating Dropdown on Desktop */}
+              {showDesktopDropdown && searchQuery.trim().length > 0 && (
+                <SearchAutoSuggestDropdown
+                  products={dropdownProducts}
+                  totalMatches={matchingProducts.length}
+                  searchQuery={searchQuery}
+                  cart={cart}
+                  productImages={productImages}
+                  onAddToCart={onAddToCart}
+                  onUpdateQuantity={onUpdateQuantity}
+                  onSelectProduct={handleSelectProduct}
+                  onViewAllResults={handleViewAllResults}
+                  onSuggestionClick={handleSuggestionClick}
+                />
               )}
             </div>
 
@@ -124,22 +266,61 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
           </div>
 
           {/* Mobile Search Bar */}
-          <div className="mt-2.5 md:hidden relative">
+          <div ref={mobileContainerRef} className="mt-2.5 md:hidden relative">
             <input
+              ref={mobileInputRef}
               type="text"
               value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
+              onChange={(e) => {
+                onSearchChange(e.target.value);
+                if (e.target.value.trim().length > 0) {
+                  setShowMobileDropdown(true);
+                } else {
+                  setShowMobileDropdown(false);
+                }
+              }}
+              onFocus={() => {
+                if (searchQuery.trim().length > 0) {
+                  setShowMobileDropdown(true);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleViewAllResults();
+                }
+              }}
               placeholder="Search 107+ crackers, sky shots, flower pots..."
               className="w-full py-2 pl-9 pr-8 rounded-xl bg-amber-50/70 border border-amber-200/90 focus:border-orange-500 focus:bg-white text-xs text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-inner"
             />
             <Search className="w-4 h-4 text-amber-600 absolute left-2.5 top-2.5 pointer-events-none" />
             {searchQuery && (
               <button
-                onClick={() => onSearchChange('')}
+                type="button"
+                onClick={() => {
+                  onSearchChange('');
+                  setShowMobileDropdown(false);
+                }}
                 className="p-1 rounded-full text-slate-400 hover:text-slate-700 absolute right-2 top-2"
+                title="Clear search"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
+            )}
+
+            {/* Instant Floating Dropdown on Mobile */}
+            {showMobileDropdown && searchQuery.trim().length > 0 && (
+              <SearchAutoSuggestDropdown
+                products={dropdownProducts}
+                totalMatches={matchingProducts.length}
+                searchQuery={searchQuery}
+                cart={cart}
+                productImages={productImages}
+                onAddToCart={onAddToCart}
+                onUpdateQuantity={onUpdateQuantity}
+                onSelectProduct={handleSelectProduct}
+                onViewAllResults={handleViewAllResults}
+                onSuggestionClick={handleSuggestionClick}
+              />
             )}
           </div>
 

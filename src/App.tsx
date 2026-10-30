@@ -219,6 +219,18 @@ export function App() {
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
         categories={CATEGORIES}
+        allProducts={MASTER_PRODUCTS}
+        cart={cart}
+        productImages={productImages}
+        onAddToCart={handleAddToCart}
+        onUpdateQuantity={handleUpdateQuantity}
+        onOpenProductDetail={(prod) => setSelectedProductDetail(prod)}
+        onScrollToCatalog={() => {
+          const el = document.getElementById('cracker-catalog-section');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }}
       />
 
       {/* Main Content Area */}

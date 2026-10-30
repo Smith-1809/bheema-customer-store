@@ -496,14 +496,19 @@ export const MASTER_PRODUCTS: Product[] = [
   {
     "id": "PRD-034",
     "serialNo": 34,
-    "name": "PKF King of King Fancy",
-    "category": "Fancy",
-            "sellingPrice": 288.0,
-        "aliases": [
-      "fancy",
-      "of",
+    "name": "PKF King Of King Atom bomb (small)",
+    "category": "Atom / Bullet / Naraout",
+    "sellingPrice": 288.0,
+    "aliases": [
+      "pkf",
       "king",
-      "pkf"
+      "atom",
+      "bomb",
+      "small",
+      "bullet",
+      "naraout",
+      "sound",
+      "fancy"
     ],
     "imageUrl": null
   },

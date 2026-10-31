@@ -280,29 +280,27 @@ export function App() {
             })}
           </div>
 
-          {/* Catalog Title & Sort Bar */}
-          <div className="flex items-center justify-between gap-3 mb-4 pt-1.5">
-            <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-black text-slate-900">
-                {searchQuery.trim()
-                  ? `Results for "${searchQuery}"`
-                  : selectedCategory === 'All'
-                  ? 'Complete Cracker Catalog'
-                  : (CATEGORY_DISPLAY_NAMES[selectedCategory] || selectedCategory)}
-              </span>
-              <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
+          {/* Compact Bar: Item Count on Left, Small Sort on Right */}
+          <div className="flex items-center justify-between gap-2 mb-3 pt-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black text-slate-800 bg-amber-100/90 border border-amber-200/90 px-2.5 py-0.5 rounded-full shadow-2xs">
                 {filteredProducts.length} items
               </span>
+              {searchQuery.trim() && (
+                <span className="text-[10px] text-amber-900 font-bold bg-orange-100 px-2 py-0.5 rounded-full truncate max-w-[130px]">
+                  "{searchQuery}"
+                </span>
+              )}
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <ArrowUpDown className="w-3.5 h-3.5 text-orange-700" />
+            <div className="flex items-center gap-1 bg-white border border-amber-300/90 rounded-lg px-2 py-1 shadow-2xs">
+              <ArrowUpDown className="w-3 h-3 text-orange-600 shrink-0" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="py-1 px-2.5 rounded-xl bg-white border border-amber-300 text-xs text-slate-900 focus:outline-none focus:border-orange-500 font-bold shadow-xs cursor-pointer"
+                className="bg-transparent text-[11px] font-bold text-slate-800 focus:outline-none cursor-pointer"
               >
-                <option value="default">Default Catalog</option>
+                <option value="default">Sort</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>
                 <option value="name">Name (A-Z)</option>

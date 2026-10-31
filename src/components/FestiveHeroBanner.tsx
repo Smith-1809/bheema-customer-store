@@ -320,7 +320,7 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
 
               {/* Clean compact sentence as requested (Space-saving & clean) */}
               <p className="text-[10.5px] sm:text-[11px] text-[#4A2609] font-medium leading-relaxed my-1.5">
-                Bijli, color pipes, flower pot, ground chakkar, sparklers & sky shot.
+                Bijli, sparkles, flower pot, ground chakkar, sparklers & sky shot.
               </p>
             </div>
 

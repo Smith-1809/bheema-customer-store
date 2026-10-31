@@ -12,12 +12,12 @@ export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
   'Atom / Bullet / Naraout': '💥 Sound Bombs',
   'Lakshmi / Bird / Jalli Kattu': '🪔 Traditional Crackers',
   'Pencil': '✨ Pencil Sparklers',
-  'Pipe': '🎇 Color Pipes',
+  'Pipe': '🎇 Sparkles',
   'Wala': '🧨 Garlands (Wala)',
   'Rocket': '🚀 Rockets',
   'T-Star / Thread': '🧵 Thread Stars',
   'Fancy': '✨ Fancy Novelties',
-  'Other / Unclassified': '📦 Gift Items',
+  'Other / Unclassified': '📦 Other',
 };
 
 /**
@@ -31,12 +31,12 @@ export const CATEGORY_CARD_TAGS: Record<string, string> = {
   'Atom / Bullet / Naraout': 'Sound Cracker',
   'Lakshmi / Bird / Jalli Kattu': 'Traditional',
   'Pencil': 'Pencil Sparkler',
-  'Pipe': 'Color Pipe',
+  'Pipe': 'Sparkles',
   'Wala': 'Garland (Wala)',
   'Rocket': 'Rocket',
   'T-Star / Thread': 'Thread Star',
   'Fancy': 'Fancy Novelty',
-  'Other / Unclassified': 'Special Cracker',
+  'Other / Unclassified': 'Other',
 };
 
 /**
@@ -136,9 +136,9 @@ export const CATEGORY_SEARCH_SYNONYMS: Record<string, string[]> = {
   ],
   'Pipe': [
     // English
-    'pipe', 'pipes', 'color pipe', 'sada pipe', 'hand pipe', 'shower pipe', 'fountain pipe',
+    'sparkles', 'sparkle', 'pipe', 'pipes', 'color pipe', 'sada pipe', 'hand pipe', 'shower pipe', 'fountain pipe',
     // Telugu (Colloquial spellings)
-    'rangu pipe', 'rangula pipe', 'pipeulu', 'pothulu', 'rangu varsham', 'shower pipe',
+    'rangu pipe', 'rangula pipe', 'pipeulu', 'pothulu', 'rangu varsham', 'shower pipe', 'sparkles',
     // Telugu Native Script
     'రంగు పైపు', 'పైపులు',
     // Hindi (Romanized & Devanagari)
@@ -190,6 +190,10 @@ export const CATEGORY_SEARCH_SYNONYMS: Record<string, string[]> = {
     // Hindi (Romanized & Devanagari)
     'saanp ki goli', 'snake tablet', 'pop pop', 'chutput', 'magic pop',
     'सांप की गोली'
+  ],
+  'Other / Unclassified': [
+    'other', 'others', 'special', 'unclassified', 'gift', 'gifts', 'bijili', 'pop pop', 'sarajini',
+    'migilina', 'migilinavi', 'itaram'
   ],
 };
 

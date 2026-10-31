@@ -19,7 +19,7 @@ export const POPULAR_BUNDLES: BundleDef[] = [
     id: "BUNDLE-DIWALI-FAMILY-18",
     name: "Diwali Family Pack (18 Varieties)",
     tagline: "Our most requested all-in-one family celebration combo",
-    description: "Carefully curated mix of sparkling pots, sound crackers, ground chakkars, pipes, and sky shots.",
+    description: "Carefully curated mix of sparkling pots, sound crackers, ground chakkars, sparkles, and sky shots.",
     items: [
       { productId: "PRD-106", defaultQty: 2, productName: "CAT 100 BIJILI Green" },
       { productId: "PRD-098", defaultQty: 2, productName: "DPM 30CM SADA pipe" },
@@ -75,7 +75,7 @@ export const POPULAR_BUNDLES: BundleDef[] = [
     id: "BUNDLE-SMALL-COMBO-10",
     name: "SMALL COMBO",
     tagline: "Essential festive pack (10 Varieties)",
-    description: "Compact budget combo featuring Bijili, pipes, flower pots, ground chakkars, crackers, pencil sparklers, and sky shot.",
+    description: "Compact budget combo featuring Bijili, sparkles, flower pots, ground chakkars, crackers, pencil sparklers, and sky shot.",
     items: [
       { productId: "PRD-106", defaultQty: 2, productName: "CAT 100 BIJILI Green" },
       { productId: "PRD-098", defaultQty: 1, productName: "DPM 30CM SADA pipe" },

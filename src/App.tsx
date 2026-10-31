@@ -525,7 +525,12 @@ export function App() {
                   <Gift className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-black text-base text-white">{activeBundle.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-black text-base text-white">{activeBundle.name}</h3>
+                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-red-600 text-white shadow-xs border border-white/30">
+                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '86% OFF' : '87% OFF'}
+                    </span>
+                  </div>
                   <span className="text-[11px] text-amber-100 font-semibold">{activeBundle.tagline}</span>
                 </div>
               </div>
@@ -550,16 +555,40 @@ export function App() {
                     <span className="font-semibold text-slate-800">
                       {item.defaultQty}x {item.productName}
                     </span>
-                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">10% Online Discount</span>
+                    <span className="text-[10px] text-red-700 font-extrabold bg-red-50 border border-red-200/90 px-2 py-0.5 rounded-full shadow-2xs">
+                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '86% OFF' : '87% OFF'}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="p-4 bg-white border-t border-amber-200 shrink-0">
+            <div className="p-4 bg-white border-t border-amber-200 shrink-0 space-y-2.5">
+              <div className="flex items-center justify-between px-1">
+                <div>
+                  <span className="text-[10px] text-stone-500 line-through font-bold block">
+                    {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 'MRP ₹8,120' : 'MRP ₹24,800'}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-base sm:text-lg font-black text-orange-600">
+                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '₹1,160' : '₹3,100'}
+                    </span>
+                    <span className="text-[10px] font-black text-white bg-red-600 px-2 py-0.5 rounded-full">
+                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '86% OFF' : '87% OFF'}
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs text-emerald-700 font-black block">
+                    {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 'Save ₹6,960' : 'Save ₹21,700'}
+                  </span>
+                  <span className="text-[9.5px] text-stone-500 font-semibold">Doorstep COD Ready</span>
+                </div>
+              </div>
+
               <button
                 onClick={() => handleAddBundleToCart(activeBundle)}
-                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-95 transition-all"
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-95 transition-all cursor-pointer"
               >
                 <Gift className="w-4 h-4 text-white" />
                 <span>Add Full Combo to Bag (1-Click)</span>

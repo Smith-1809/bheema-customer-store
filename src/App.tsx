@@ -550,16 +550,24 @@ export function App() {
               </span>
 
               <div className="space-y-1.5 divide-y divide-amber-100">
-                {activeBundle.items.map((item, idx) => (
-                  <div key={idx} className="pt-1.5 flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-800">
-                      {item.defaultQty}x {item.productName}
-                    </span>
-                    <span className="text-[10px] text-red-700 font-extrabold bg-red-50 border border-red-200/90 px-2 py-0.5 rounded-full shadow-2xs">
-                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '86% OFF' : '87% OFF'}
-                    </span>
-                  </div>
-                ))}
+                {activeBundle.items.map((item, idx) => {
+                  const prod = productMap.get(item.productId);
+                  const onlinePrice = prod ? calculateOnlinePrice(prod.sellingPrice) : 0;
+                  const itemDiscount = prod 
+                    ? calculateDiscountPercent(onlinePrice, prod.category)
+                    : (activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 86 : 87);
+
+                  return (
+                    <div key={idx} className="pt-1.5 flex items-center justify-between text-xs">
+                      <span className="font-semibold text-slate-800">
+                        {item.defaultQty}x {item.productName}
+                      </span>
+                      <span className="text-[10px] text-red-700 font-extrabold bg-red-50 border border-red-200/90 px-2 py-0.5 rounded-full shadow-2xs shrink-0 ml-2">
+                        {itemDiscount}% OFF
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

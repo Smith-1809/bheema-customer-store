@@ -120,6 +120,20 @@ export function App() {
     updateCart(newCart);
   };
 
+  // Category Selection with Auto-Scroll to Catalog
+  const handleSelectCategory = (cat: string) => {
+    setSelectedCategory(cat);
+    if (searchQuery.trim().length > 0) {
+      setSearchQuery('');
+    }
+    setTimeout(() => {
+      const el = document.getElementById('cracker-catalog-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 40);
+  };
+
   const handleUpdateQuantity = (product: Product, newQty: number) => {
     if (newQty <= 0) {
       const newCart = { ...cart };
@@ -217,7 +231,7 @@ export function App() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
+        onSelectCategory={handleSelectCategory}
         categories={CATEGORIES}
         allProducts={MASTER_PRODUCTS}
         cart={cart}
@@ -237,20 +251,12 @@ export function App() {
       <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-28">
         {/* Grand Hero Banner */}
         <FestiveHeroBanner
-          onSelectCategory={(cat) => {
-            setSelectedCategory(cat);
-            setTimeout(() => {
-              const el = document.getElementById('cracker-catalog-section');
-              if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }, 40);
-          }}
+          onSelectCategory={handleSelectCategory}
           onOpenComboModal={(bundleId) => setSelectedBundleId(bundleId)}
         />
 
         {/* Catalog Control Bar */}
-        <div id="cracker-catalog-section" className="scroll-mt-28 flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
+        <div id="cracker-catalog-section" className="scroll-mt-36 sm:scroll-mt-32 flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
           <div className="flex items-center gap-2">
             <span className="text-xs sm:text-sm font-black text-slate-900">
               {searchQuery.trim()

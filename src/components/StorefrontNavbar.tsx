@@ -331,7 +331,10 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
               return (
                 <button
                   key={cat}
-                  onClick={() => onSelectCategory(cat)}
+                  onClick={(e) => {
+                    onSelectCategory(cat);
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                  }}
                   className={`px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all shrink-0 ${
                     isActive
                       ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-orange-500/20'

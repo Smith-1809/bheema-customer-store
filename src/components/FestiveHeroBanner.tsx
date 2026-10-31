@@ -227,16 +227,11 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
 
       {/* Featured Festive Combo Boxes Strip */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between px-1">
-          <div className="flex items-center gap-2">
-            <Gift className="w-4 h-4 text-orange-600" />
-            <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
-              Bestselling Festive Combos (Ready to Dispatch)
-            </h3>
-          </div>
-          <span className="text-[11px] font-bold text-orange-700 bg-orange-100/80 px-2 py-0.5 rounded-full border border-orange-200">
-            1-Click All-in-One Packs
-          </span>
+        <div className="flex items-center gap-2 px-1">
+          <Gift className="w-4 h-4 text-orange-600" />
+          <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
+            Combo Offers
+          </h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

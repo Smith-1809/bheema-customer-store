@@ -26,11 +26,11 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4 mb-5 sm:mb-6">
+    <div className="space-y-2 sm:space-y-4 mb-3.5 sm:mb-5">
       {/* ======================================================== */}
       {/* 1. DESKTOP VIEW (Kept exact as requested - Laptop/Desktop) */}
       {/* ======================================================== */}
-      <div className="hidden sm:flex relative overflow-hidden rounded-3xl border border-amber-300/90 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9ED] to-[#FFF1DA] shadow-xl shadow-amber-500/10 min-h-[330px] items-center">
+      <div className="hidden sm:flex relative overflow-hidden rounded-3xl border border-amber-300/90 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9ED] to-[#FFF1DA] shadow-xl shadow-amber-500/10 min-h-[310px] items-center">
         {/* Warm Ambient Festive Backlight Glows */}
         <div className="absolute top-0 right-1/3 w-80 h-80 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 left-10 w-64 h-64 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
@@ -45,16 +45,16 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
         </div>
 
         {/* Left-Side Pure Vector & HTML/CSS Content (100% 4K Razor-Sharp) */}
-        <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-7 md:p-8 space-y-4">
+        <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-6 md:p-7 space-y-3.5">
           {/* Headline with Centered Brand & Ganpati */}
           <div className="space-y-1">
-            <h2 className="text-2xl lg:text-[34px] font-black tracking-tight leading-[1.18] text-[#2B1204]">
+            <h2 className="text-2xl lg:text-[32px] font-black tracking-tight leading-[1.18] text-[#2B1204]">
               <div>Light Up Your 2026 Diwali with</div>
               <div className="flex items-center gap-2.5 pt-1">
                 <img
                   src={ganpatiImg}
                   alt="Lord Ganesha"
-                  className="w-8 h-8 object-contain shrink-0 filter drop-shadow-[0_2px_6px_rgba(245,158,11,0.4)] select-none"
+                  className="w-7 h-7 md:w-8 md:h-8 object-contain shrink-0 filter drop-shadow-[0_2px_6px_rgba(245,158,11,0.4)] select-none"
                 />
                 <span className="font-black tracking-wider uppercase animate-brand-shine">
                   BHEEMA FIREWORKS
@@ -62,7 +62,7 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
                 <img
                   src={ganpatiImg}
                   alt="Lord Ganesha"
-                  className="w-8 h-8 object-contain shrink-0 filter drop-shadow-[0_2px_6px_rgba(245,158,11,0.4)] select-none"
+                  className="w-7 h-7 md:w-8 md:h-8 object-contain shrink-0 filter drop-shadow-[0_2px_6px_rgba(245,158,11,0.4)] select-none"
                 />
               </div>
             </h2>
@@ -153,40 +153,40 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
       {/* ======================================================== */}
       {/* 2. MOBILE-FIRST VIEW (Compact, Clean, Professional)       */}
       {/* ======================================================== */}
-      <div className="sm:hidden space-y-2">
+      <div className="sm:hidden space-y-1.5">
         {/* Compact Festive Hero Card (Clean split: Copy on left, crisp visual on right) */}
-        <div className="relative overflow-hidden rounded-2xl border border-amber-300/90 bg-gradient-to-br from-[#FFFDF7] via-[#FFF8E7] to-[#FFEED2] p-3 shadow-md shadow-amber-500/10">
-          <div className="flex items-center justify-between gap-2.5">
-            {/* Left Content */}
-            <div className="flex-1 min-w-0 space-y-1.5 py-0.5">
+        <div className="relative overflow-hidden rounded-2xl border border-amber-300/90 bg-gradient-to-br from-[#FFFDF7] via-[#FFF8E7] to-[#FFEED2] px-2.5 py-1.5 xs:px-3 xs:py-2 shadow-md shadow-amber-500/10">
+          <div className="flex items-center justify-between gap-1.5">
+            {/* Left Content (Tightly spaced, balanced padding) */}
+            <div className="flex-1 min-w-0 flex flex-col justify-center space-y-0.5">
               <div className="flex flex-col items-center justify-center text-center">
-                <span className="text-[12.5px] xs:text-[13.5px] font-black tracking-tight text-[#2B1204] leading-tight">
+                <span className="text-[12px] xs:text-[13px] font-black tracking-tight text-[#2B1204] leading-tight">
                   Light Up Your 2026 Diwali with
                 </span>
-                <div className="flex items-center justify-center gap-1.5 mt-0.5">
+                <div className="flex items-center justify-center gap-1.5 my-0.5">
                   <img
                     src={ganpatiImg}
                     alt="Lord Ganesha"
-                    className="w-4 h-4 xs:w-5 xs:h-5 object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(245,158,11,0.35)] select-none"
+                    className="w-4.5 h-4.5 xs:w-5 xs:h-5 object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(245,158,11,0.35)] select-none"
                   />
-                  <span className="font-black text-[13px] xs:text-[14.5px] tracking-wider uppercase animate-brand-shine whitespace-nowrap">
+                  <span className="font-black text-[14px] xs:text-[15.5px] tracking-wider uppercase animate-brand-shine whitespace-nowrap">
                     BHEEMA FIREWORKS
                   </span>
                   <img
                     src={ganpatiImg}
                     alt="Lord Ganesha"
-                    className="w-4 h-4 xs:w-5 xs:h-5 object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(245,158,11,0.35)] select-none"
+                    className="w-4.5 h-4.5 xs:w-5 xs:h-5 object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(245,158,11,0.35)] select-none"
                   />
                 </div>
               </div>
 
-              <p className="text-[10px] xs:text-[10.5px] text-[#54361E] font-medium leading-tight text-center">
-                Authentic Sivakasi crackers delivered with <strong className="text-orange-800 font-bold">Cash on Delivery</strong>.
+              <p className="text-[10.5px] xs:text-[11px] text-[#54361E] font-medium leading-tight text-center">
+                Authentic Sivakasi crackers with <strong className="text-orange-800 font-bold">Cash on Delivery</strong>.
               </p>
             </div>
 
-            {/* Right Crisp 4K Artwork (Vibrant in its own frame - never stretched or muddy) */}
-            <div className="w-[36%] shrink-0 aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100 border border-amber-200/90 shadow-sm flex items-center justify-center">
+            {/* Right Crisp 4K Artwork (Cleanly fitted to match text height) */}
+            <div className="w-[28%] xs:w-[30%] shrink-0 h-[64px] xs:h-[70px] rounded-xl overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100 border border-amber-200/90 shadow-sm flex items-center justify-center">
               <img
                 src={crackerArt}
                 alt="Diwali Fireworks"
@@ -196,34 +196,34 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           </div>
 
           {/* Single Row 3-Column Trust Perks Strip */}
-          <div className="grid grid-cols-3 gap-1.5 mt-2.5 pt-2 border-t border-amber-200/80">
-            <div className="p-1.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1.5">
-              <div className="w-5 h-5 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-                <Truck className="w-3 h-3 text-amber-600" />
+          <div className="grid grid-cols-3 gap-1 mt-1 pt-1 border-t border-amber-200/80">
+            <div className="py-0.5 px-1 rounded-md bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1">
+              <div className="w-4 h-4 rounded bg-amber-50 flex items-center justify-center shrink-0">
+                <Truck className="w-2.5 h-2.5 text-amber-600" />
               </div>
               <div className="min-w-0">
-                <span className="block text-[9.5px] font-black text-[#2B1204] leading-tight truncate">COD Ready</span>
-                <span className="text-[8px] text-stone-500 font-semibold block leading-tight truncate">Doorstep</span>
+                <span className="block text-[8.5px] font-black text-[#2B1204] leading-tight truncate">COD Ready</span>
+                <span className="text-[7px] text-stone-500 font-semibold block leading-tight truncate">Doorstep</span>
               </div>
             </div>
 
-            <div className="p-1.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1.5">
-              <div className="w-5 h-5 rounded-lg bg-orange-50 flex items-center justify-center shrink-0">
-                <Clock className="w-3 h-3 text-orange-600" />
+            <div className="py-0.5 px-1 rounded-md bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1">
+              <div className="w-4 h-4 rounded bg-orange-50 flex items-center justify-center shrink-0">
+                <Clock className="w-2.5 h-2.5 text-orange-600" />
               </div>
               <div className="min-w-0">
-                <span className="block text-[9.5px] font-black text-[#2B1204] leading-tight truncate">1-2 Hours</span>
-                <span className="text-[8px] text-stone-500 font-semibold block leading-tight truncate">Dispatch</span>
+                <span className="block text-[8.5px] font-black text-[#2B1204] leading-tight truncate">1-2 Hours</span>
+                <span className="text-[7px] text-stone-500 font-semibold block leading-tight truncate">Dispatch</span>
               </div>
             </div>
 
-            <div className="p-1.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1.5">
-              <div className="w-5 h-5 rounded-lg bg-rose-50 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3 h-3 text-rose-600" />
+            <div className="py-0.5 px-1 rounded-md bg-white/95 border border-amber-200/90 shadow-2xs flex items-center gap-1">
+              <div className="w-4 h-4 rounded bg-rose-50 flex items-center justify-center shrink-0">
+                <Sparkles className="w-2.5 h-2.5 text-rose-600" />
               </div>
               <div className="min-w-0">
-                <span className="block text-[9.5px] font-black text-[#2B1204] leading-tight truncate">90% OFF</span>
-                <span className="text-[8px] text-stone-500 font-semibold block leading-tight truncate">Factory MRP</span>
+                <span className="block text-[8.5px] font-black text-[#2B1204] leading-tight truncate">90% OFF</span>
+                <span className="text-[7px] text-stone-500 font-semibold block leading-tight truncate">Factory MRP</span>
               </div>
             </div>
           </div>

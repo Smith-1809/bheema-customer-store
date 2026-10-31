@@ -3,7 +3,6 @@ import { Gift, ChevronRight, Truck, Clock, Sparkles } from 'lucide-react';
 import crackerArt from '../assets/bheema-crackers-hero-4k.png';
 import comboSmallImg from '../assets/combo-small-crackers.png';
 import comboFamilyImg from '../assets/combo-family-crackers.png';
-import varietyStripImg from '../assets/combo-variety-strip.png';
 
 interface FestiveHeroBannerProps {
   onSelectCategory: (category: string) => void;
@@ -260,8 +259,8 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
               </span>
             </div>
 
-            {/* Right-Side Cracker Artwork (Small Combo) */}
-            <div className="absolute right-0 top-0 bottom-0 w-[46%] sm:w-[48%] pointer-events-none select-none flex items-center justify-end overflow-hidden z-0">
+            {/* Right-Side 3D Cracker Artwork (Generated Clean Visual) */}
+            <div className="absolute right-0 top-0 bottom-0 w-[42%] sm:w-[45%] pointer-events-none select-none flex items-center justify-end overflow-hidden z-0">
               <img
                 src={comboSmallImg}
                 alt="Small Combo 10 Varieties"
@@ -271,21 +270,43 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
             </div>
 
             {/* Left Content Area */}
-            <div className="relative z-10 w-[60%] sm:w-[58%]">
-              <h4 className="font-black text-sm sm:text-base text-[#1E1108] group-hover:text-orange-600 transition-colors leading-tight flex items-center gap-1">
-                <span>SMALL COMBO</span>
-                <span className="text-amber-800 text-xs sm:text-sm font-black">(10 Varieties)</span>
+            <div className="relative z-10 w-[58%] sm:w-[56%]">
+              <div className="flex flex-wrap items-baseline gap-1 leading-tight">
+                <h4 className="font-black text-sm sm:text-base text-[#1E1108] group-hover:text-orange-600 transition-colors">
+                  SMALL COMBO
+                </h4>
+                <span className="text-amber-800 text-xs sm:text-sm font-black">
+                  (10 Varieties)
+                </span>
                 <span className="text-orange-500 text-xs font-black select-none">⚡</span>
-              </h4>
+              </div>
 
-              {/* 6 Variety Icons Strip */}
-              <div className="my-1.5 overflow-hidden">
-                <img
-                  src={varietyStripImg}
-                  alt="Bijli, Color Pipes, Flower Pot, Ground Chakkar, Sparklers, Sky Shot"
-                  className="w-full max-w-[270px] h-auto object-contain drop-shadow-2xs"
-                  loading="lazy"
-                />
+              {/* 6 Variety Micro Cards (Grid 3x2, perfectly organized & razor sharp) */}
+              <div className="grid grid-cols-3 gap-1 my-2 max-w-[210px] sm:max-w-[230px]">
+                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
+                  <span className="text-xs leading-none select-none">💣</span>
+                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Bijli</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
+                  <span className="text-xs leading-none select-none">🧨</span>
+                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Pipes</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
+                  <span className="text-xs leading-none select-none">🔺</span>
+                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Pot</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
+                  <span className="text-xs leading-none select-none">🍥</span>
+                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Chakkar</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
+                  <span className="text-xs leading-none select-none">✨</span>
+                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Sparklers</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
+                  <span className="text-xs leading-none select-none">🚀</span>
+                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Sky Shot</span>
+                </div>
               </div>
             </div>
 
@@ -320,8 +341,8 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
               </span>
             </div>
 
-            {/* Right-Side Cracker Artwork (Family Pack) */}
-            <div className="absolute right-0 top-0 bottom-0 w-[46%] sm:w-[48%] pointer-events-none select-none flex items-center justify-end overflow-hidden z-0">
+            {/* Right-Side 3D Cracker Artwork (Generated Clean Visual) */}
+            <div className="absolute right-0 top-0 bottom-0 w-[42%] sm:w-[45%] pointer-events-none select-none flex items-center justify-end overflow-hidden z-0">
               <img
                 src={comboFamilyImg}
                 alt="Diwali Family Pack 18 Varieties"
@@ -331,14 +352,18 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
             </div>
 
             {/* Left Content Area */}
-            <div className="relative z-10 w-[60%] sm:w-[58%]">
-              <h4 className="font-black text-sm sm:text-base text-[#1E1108] group-hover:text-rose-600 transition-colors leading-tight flex items-center gap-1">
-                <span>Diwali Family Pack</span>
-                <span className="text-rose-800 text-xs sm:text-sm font-black">(18 Varieties)</span>
+            <div className="relative z-10 w-[58%] sm:w-[56%]">
+              <div className="flex flex-wrap items-baseline gap-1 leading-tight">
+                <h4 className="font-black text-sm sm:text-base text-[#1E1108] group-hover:text-rose-600 transition-colors">
+                  Diwali Family Pack
+                </h4>
+                <span className="text-rose-800 text-xs sm:text-sm font-black">
+                  (18 Varieties)
+                </span>
                 <span className="text-orange-500 text-xs font-black select-none">⚡</span>
-              </h4>
+              </div>
 
-              <p className="text-[10.5px] sm:text-[11px] text-[#54361E] font-medium leading-snug my-1.5 line-clamp-2">
+              <p className="text-[10px] sm:text-[11px] text-[#54361E] font-medium leading-snug my-2 line-clamp-2">
                 Complete family celebration with mega sound bombs, flower pots, GC & sky shots.
               </p>
             </div>

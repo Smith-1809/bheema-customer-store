@@ -165,9 +165,9 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
                   </span>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-amber-800 font-bold truncate flex items-center gap-1 mt-0.5">
-                  <span className="text-orange-700">⚡ 1-2 Hr Express Dispatch</span>
-                  <span className="text-amber-400">•</span>
-                  <span className="text-emerald-700">Cash on Delivery</span>
+                  <span className="text-orange-700 truncate">⚡ 1-2 Hr Dispatch</span>
+                  <span className="text-amber-400 shrink-0">•</span>
+                  <span className="text-emerald-700 truncate">COD Available</span>
                 </p>
               </div>
             </div>

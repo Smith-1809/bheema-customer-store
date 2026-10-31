@@ -48,8 +48,8 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           {/* Headline */}
           <h2 className="text-3xl lg:text-[42px] font-black tracking-tight leading-[1.14] text-[#2B1204]">
             Light Up Your 2026 Diwali with{' '}
-            <span className="inline text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 drop-shadow-[0_2px_10px_rgba(249,115,22,0.35)]">
-              Bheema Fireworks
+            <span className="inline-block font-black tracking-wider uppercase bg-gradient-to-r from-[#7C2D12] via-[#B43403] to-[#9A3412] bg-clip-text text-transparent animate-brand-glow">
+              BHEEMA FIREWORKS
             </span>
           </h2>
 
@@ -144,10 +144,10 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           <div className="flex items-center justify-between gap-2.5">
             {/* Left Content */}
             <div className="flex-1 min-w-0 space-y-1.5 py-0.5">
-              <h2 className="text-base font-black tracking-tight leading-snug text-[#2B1204]">
+              <h2 className="text-sm xs:text-base font-black tracking-tight leading-snug text-[#2B1204]">
                 Light Up Your 2026 Diwali with{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 drop-shadow-[0_2px_8px_rgba(249,115,22,0.35)] block font-black">
-                  Bheema Fireworks
+                <span className="block font-black text-[15px] xs:text-base tracking-wider uppercase bg-gradient-to-r from-[#7C2D12] via-[#B43403] to-[#9A3412] bg-clip-text text-transparent animate-brand-glow mt-0.5">
+                  BHEEMA FIREWORKS
                 </span>
               </h2>
 

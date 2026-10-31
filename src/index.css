@@ -79,6 +79,20 @@
   animation: floatEmber 5s ease-in-out infinite;
 }
 
+/* Brand Glow & Shading for BHEEMA FIREWORKS */
+@keyframes brandGlow {
+  0%, 100% {
+    filter: drop-shadow(0 1px 2px rgba(124, 45, 18, 0.45)) drop-shadow(0 0 6px rgba(245, 158, 11, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 2px 4px rgba(124, 45, 18, 0.65)) drop-shadow(0 0 14px rgba(234, 88, 12, 0.75));
+  }
+}
+
+.animate-brand-glow {
+  animation: brandGlow 3s ease-in-out infinite;
+}
+
 /* ======================================================== */
 /* Venus Sky Shot Live Effects (Ascend, Crack & Color Burst) */
 /* ======================================================== */

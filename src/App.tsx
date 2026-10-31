@@ -248,7 +248,7 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-2 xs:px-3 sm:px-4 py-2 sm:py-5 pb-24">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-28">
         {/* Grand Hero Banner */}
         <FestiveHeroBanner
           onSelectCategory={handleSelectCategory}

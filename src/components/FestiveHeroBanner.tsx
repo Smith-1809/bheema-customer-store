@@ -41,18 +41,11 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
         </div>
 
         {/* Left-Side Pure Vector & HTML/CSS Content (100% 4K Razor-Sharp) */}
-        <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-7 md:p-8 space-y-3.5">
-          {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100/90 border border-amber-300/90 text-amber-950 text-xs font-black tracking-wider uppercase shadow-xs">
-            <span className="text-orange-600 font-black">✳</span>
-            <span>Diwali 2026 Celebration Direct Delivery</span>
-            <span className="text-amber-500 font-bold">⸺</span>
-          </div>
-
+        <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-7 md:p-8 space-y-4">
           {/* Headline */}
-          <h2 className="text-3xl lg:text-[42px] font-black tracking-tight leading-[1.12] text-[#2B1204]">
-            Light Up Your Diwali with{' '}
-            <span className="inline text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 drop-shadow-xs">
+          <h2 className="text-3xl lg:text-[42px] font-black tracking-tight leading-[1.14] text-[#2B1204]">
+            Light Up Your 2026 Diwali with{' '}
+            <span className="inline text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 drop-shadow-[0_2px_10px_rgba(249,115,22,0.35)]">
               Bheema Fireworks
             </span>
           </h2>
@@ -147,21 +140,16 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
         <div className="relative overflow-hidden rounded-2xl border border-amber-300/90 bg-gradient-to-br from-[#FFFDF7] via-[#FFF8E7] to-[#FFEED2] p-3 shadow-md shadow-amber-500/10">
           <div className="flex items-center justify-between gap-2.5">
             {/* Left Content */}
-            <div className="flex-1 min-w-0 space-y-1">
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100/90 border border-amber-300 text-[10px] font-black text-amber-950 uppercase tracking-wide">
-                <span className="text-orange-600 font-bold">✳</span>
-                <span>Diwali 2026 Direct</span>
-              </div>
-
+            <div className="flex-1 min-w-0 space-y-1.5 py-0.5">
               <h2 className="text-base font-black tracking-tight leading-snug text-[#2B1204]">
-                Light Up Your Diwali with{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-600 block">
+                Light Up Your 2026 Diwali with{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 drop-shadow-[0_2px_8px_rgba(249,115,22,0.35)] block font-black">
                   Bheema Fireworks
                 </span>
               </h2>
 
               <p className="text-[10.5px] text-[#54361E] font-medium leading-tight">
-                Authentic Sivakasi crackers delivered with <strong className="text-orange-800">Cash on Delivery</strong>.
+                Authentic Sivakasi crackers delivered with <strong className="text-orange-800 font-bold">Cash on Delivery</strong>.
               </p>
             </div>
 

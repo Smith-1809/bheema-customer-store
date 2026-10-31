@@ -528,18 +528,32 @@ export function App() {
 
       {/* Product Detail Quick View Modal */}
       {selectedProductDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in overscroll-none touch-none">
+        <div 
+          onClick={() => setSelectedProductDetail(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in overscroll-none touch-none"
+        >
           <div 
-            className="w-full max-w-md bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up text-slate-900 touch-pan-y"
+            className="w-full max-w-md max-h-[92vh] bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-2xl animate-scale-up text-slate-900 flex flex-col touch-pan-y"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-video bg-gradient-to-br from-amber-50 to-orange-50/50 flex items-center justify-center overflow-hidden border-b border-amber-100">
+            {/* Full Uncropped Product Image Container */}
+            <div className="relative h-64 sm:h-76 w-full bg-gradient-to-br from-stone-900 via-stone-850 to-stone-900 flex items-center justify-center overflow-hidden border-b border-amber-200/80 p-3 shrink-0">
               {productImages[selectedProductDetail.id] || selectedProductDetail.imageUrl ? (
-                <img
-                  src={productImages[selectedProductDetail.id] || selectedProductDetail.imageUrl!}
-                  alt={selectedProductDetail.name}
-                  className="w-full h-full object-cover"
-                />
+                <>
+                  {/* Ambient Blurred Background of same cracker for aesthetic depth */}
+                  <img
+                    src={productImages[selectedProductDetail.id] || selectedProductDetail.imageUrl!}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-35 scale-110 pointer-events-none"
+                  />
+                  {/* True Uncropped Full Cracker Photo (100% visible) */}
+                  <img
+                    src={productImages[selectedProductDetail.id] || selectedProductDetail.imageUrl!}
+                    alt={selectedProductDetail.name}
+                    className="relative z-1 max-w-full max-h-full w-auto h-auto object-contain rounded-lg drop-shadow-xl select-none"
+                  />
+                </>
               ) : (
                 <div className="text-center p-4">
                   <Sparkles className="w-10 h-10 mx-auto text-orange-500 mb-2" />
@@ -551,17 +565,18 @@ export function App() {
 
               <button
                 onClick={() => setSelectedProductDetail(null)}
-                className="absolute top-3 right-3 p-1.5 rounded-full bg-white/90 text-slate-700 hover:bg-white shadow-sm transition-colors"
+                className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md shadow-md transition-colors cursor-pointer"
+                aria-label="Close modal"
               >
                 <X className="w-4 h-4" />
               </button>
 
-              <span className="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs border border-white/30 shadow-md">
+              <span className="absolute bottom-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs border border-white/30 shadow-md">
                 {calculateDiscountPercent(calculateOnlinePrice(selectedProductDetail.sellingPrice), selectedProductDetail.category)}% OFF Sivakasi MRP
               </span>
             </div>
 
-            <div className="p-4 sm:p-5 space-y-3 bg-[#FFFDF7]">
+            <div className="p-4 sm:p-5 space-y-3 bg-[#FFFDF7] overflow-y-auto flex-1">
               <div>
                 <span className="text-[10px] uppercase font-bold text-amber-700 block">
                   {CATEGORY_CARD_TAGS[selectedProductDetail.category] || selectedProductDetail.category} • Item #{selectedProductDetail.serialNo}

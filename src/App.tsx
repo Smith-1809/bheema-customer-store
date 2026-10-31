@@ -17,6 +17,7 @@ import { CodCheckoutModal } from './components/CodCheckoutModal';
 import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { CustomerOrderTrackerModal } from './components/CustomerOrderTrackerModal';
 import { FestiveCrackerEffects } from './components/FestiveCrackerEffects';
+import { BrandLogoIntroSplash } from './components/BrandLogoIntroSplash';
 import { getSupabase } from './lib/supabase';
 import {
   Sparkles,
@@ -314,6 +315,9 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-[#FFFDF7] text-slate-900 flex flex-col antialiased selection:bg-orange-500 selection:text-white relative">
+      {/* 2-Second Brand Logo Intro Splash Screen */}
+      <BrandLogoIntroSplash />
+
       {/* Festive Cracker Splashes & Side Margins Sparkler Crackles */}
       <FestiveCrackerEffects />
 

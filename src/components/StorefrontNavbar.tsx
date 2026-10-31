@@ -3,6 +3,7 @@ import { Sparkles, ShoppingBag, Search, X, Truck, Flame } from 'lucide-react';
 import { Product } from '../data/products';
 import { CATEGORY_DISPLAY_NAMES, matchProductSearch } from '../utils/crackerSearch';
 import { SearchAutoSuggestDropdown } from './SearchAutoSuggestDropdown';
+import bheemaLogoCircle from '../assets/bheema-logo-circle.png';
 
 interface StorefrontNavbarProps {
   cartCount: number;
@@ -149,10 +150,17 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Brand Logo & Tagline */}
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 p-0.5 shadow-md shadow-orange-500/25 shrink-0 flex items-center justify-center">
-                <div className="w-full h-full bg-gradient-to-br from-orange-500 to-amber-600 rounded-[14px] flex items-center justify-center">
-                  <Flame className="w-5 h-5 text-white animate-pulse" />
-                </div>
+              <div
+                id="navbar-brand-logo"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 shadow-md shadow-amber-500/30 shrink-0 bg-gradient-to-tr from-amber-400 via-yellow-300 to-orange-500 border border-amber-300/80 overflow-hidden flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                title="Bheema Fireworks"
+              >
+                <img
+                  src={bheemaLogoCircle}
+                  alt="Bheema Fireworks"
+                  className="w-full h-full object-contain rounded-full select-none"
+                />
               </div>
 
               <div className="min-w-0">
@@ -161,7 +169,7 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
                     BHEEMA
                   </h1>
                   <span className="text-[9px] sm:text-[10px] font-black uppercase px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300/80">
-                    DIWALI STORE
+                    FIREWORKS
                   </span>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-amber-800 font-bold truncate flex items-center gap-1 mt-0.5">

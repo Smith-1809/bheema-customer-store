@@ -3,6 +3,7 @@ import { Gift, ChevronRight, Truck, Clock, Sparkles } from 'lucide-react';
 import crackerArt from '../assets/bheema-crackers-hero-4k.png';
 import comboSmallImg from '../assets/combo-small-crackers.png';
 import comboFamilyImg from '../assets/combo-family-crackers.png';
+import ganpatiImg from '../assets/ganpati-gold.png';
 import { VenusSkyShotEffect } from './VenusSkyShotEffect';
 
 interface FestiveHeroBannerProps {
@@ -45,13 +46,27 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
 
         {/* Left-Side Pure Vector & HTML/CSS Content (100% 4K Razor-Sharp) */}
         <div className="relative z-10 w-full sm:max-w-[70%] lg:max-w-[58%] p-7 md:p-8 space-y-4">
-          {/* Headline */}
-          <h2 className="text-3xl lg:text-[42px] font-black tracking-tight leading-[1.14] text-[#2B1204]">
-            Light Up Your 2026 Diwali with{' '}
-            <span className="inline-block font-black tracking-wider uppercase bg-gradient-to-r from-[#7C2D12] via-[#B43403] to-[#9A3412] bg-clip-text text-transparent animate-brand-glow">
-              BHEEMA FIREWORKS
-            </span>
-          </h2>
+          {/* Headline with Centered Brand & Ganpati */}
+          <div className="space-y-1">
+            <h2 className="text-2xl lg:text-[34px] font-black tracking-tight leading-[1.18] text-[#2B1204]">
+              <div>Light Up Your 2026 Diwali with</div>
+              <div className="flex items-center gap-2.5 pt-1">
+                <img
+                  src={ganpatiImg}
+                  alt="Lord Ganesha"
+                  className="w-8 h-8 object-contain shrink-0 filter drop-shadow-[0_2px_6px_rgba(245,158,11,0.4)] select-none"
+                />
+                <span className="font-black tracking-wider uppercase animate-brand-shine">
+                  BHEEMA FIREWORKS
+                </span>
+                <img
+                  src={ganpatiImg}
+                  alt="Lord Ganesha"
+                  className="w-8 h-8 object-contain shrink-0 filter drop-shadow-[0_2px_6px_rgba(245,158,11,0.4)] select-none"
+                />
+              </div>
+            </h2>
+          </div>
 
           {/* Diya Flourish Divider */}
           <div className="flex items-center gap-2 max-w-xs opacity-75">
@@ -144,14 +159,28 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           <div className="flex items-center justify-between gap-2.5">
             {/* Left Content */}
             <div className="flex-1 min-w-0 space-y-1.5 py-0.5">
-              <h2 className="text-sm xs:text-base font-black tracking-tight leading-snug text-[#2B1204]">
-                Light Up Your 2026 Diwali with{' '}
-                <span className="block font-black text-[15px] xs:text-base tracking-wider uppercase bg-gradient-to-r from-[#7C2D12] via-[#B43403] to-[#9A3412] bg-clip-text text-transparent animate-brand-glow mt-0.5">
-                  BHEEMA FIREWORKS
+              <div className="flex flex-col items-center justify-center text-center">
+                <span className="text-[12.5px] xs:text-[13.5px] font-black tracking-tight text-[#2B1204] leading-tight">
+                  Light Up Your 2026 Diwali with
                 </span>
-              </h2>
+                <div className="flex items-center justify-center gap-1.5 mt-0.5">
+                  <img
+                    src={ganpatiImg}
+                    alt="Lord Ganesha"
+                    className="w-4 h-4 xs:w-5 xs:h-5 object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(245,158,11,0.35)] select-none"
+                  />
+                  <span className="font-black text-[13px] xs:text-[14.5px] tracking-wider uppercase animate-brand-shine whitespace-nowrap">
+                    BHEEMA FIREWORKS
+                  </span>
+                  <img
+                    src={ganpatiImg}
+                    alt="Lord Ganesha"
+                    className="w-4 h-4 xs:w-5 xs:h-5 object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(245,158,11,0.35)] select-none"
+                  />
+                </div>
+              </div>
 
-              <p className="text-[10.5px] text-[#54361E] font-medium leading-tight">
+              <p className="text-[10px] xs:text-[10.5px] text-[#54361E] font-medium leading-tight text-center">
                 Authentic Sivakasi crackers delivered with <strong className="text-orange-800 font-bold">Cash on Delivery</strong>.
               </p>
             </div>

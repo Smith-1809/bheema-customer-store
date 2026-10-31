@@ -192,6 +192,27 @@ export const placeCodOrder = async (
 
       if (error) {
         console.warn('Supabase delivery order insert note:', error.message);
+      } else {
+        // Auto-decrement current_stock for ordered items in Supabase
+        for (const item of newOrder.items) {
+          try {
+            const { data: pData } = await supabase
+              .from('products')
+              .select('current_stock')
+              .eq('id', item.productId)
+              .maybeSingle();
+
+            if (pData && typeof pData.current_stock === 'number') {
+              const updatedStock = Math.max(0, pData.current_stock - item.quantity);
+              await supabase
+                .from('products')
+                .update({ current_stock: updatedStock })
+                .eq('id', item.productId);
+            }
+          } catch (stockErr) {
+            console.warn('Could not auto-decrement stock for item', item.productId, stockErr);
+          }
+        }
       }
     } catch (err) {
       console.warn('Failed to insert delivery order into Supabase (queued locally):', err);
@@ -269,6 +290,27 @@ export const updateOrderStatus = async (
           status_history: updatedOrder.statusHistory,
         })
         .eq('id', orderId);
+
+      // If cancelled and previously active, restore stock back to products table
+      if (newStatus === 'cancelled' && order.status !== 'cancelled') {
+        for (const item of order.items) {
+          try {
+            const { data: pData } = await supabase
+              .from('products')
+              .select('current_stock')
+              .eq('id', item.productId)
+              .maybeSingle();
+            if (pData && typeof pData.current_stock === 'number') {
+              await supabase
+                .from('products')
+                .update({ current_stock: pData.current_stock + item.quantity })
+                .eq('id', item.productId);
+            }
+          } catch (rErr) {
+            console.warn('Could not restore stock on cancellation:', rErr);
+          }
+        }
+      }
     } catch (err) {
       console.warn('Failed to update delivery order in Supabase:', err);
     }

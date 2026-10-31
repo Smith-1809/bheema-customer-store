@@ -30,6 +30,8 @@ import {
   Truck,
   Banknote,
   Flame,
+  AlertCircle,
+  Ban,
 } from 'lucide-react';
 
 export function App() {
@@ -41,24 +43,76 @@ export function App() {
   // Cloud Product Images map { [productId]: imageUrl }
   const [productImages, setProductImages] = useState<Record<string, string>>({});
 
-  // Fetch product images from Supabase on mount
+  // Real-time Cloud Stock map { [productId]: current_stock }
+  const [productStock, setProductStock] = useState<Record<string, number>>({});
+
+  // Floating Stock Alert Toast Notification
+  const [stockToast, setStockToast] = useState<{ message: string; type?: 'warning' | 'error' | 'info' } | null>(null);
+
+  const showStockToast = (message: string, type: 'warning' | 'error' | 'info' = 'warning') => {
+    setStockToast({ message, type });
+    setTimeout(() => {
+      setStockToast((prev) => (prev?.message === message ? null : prev));
+    }, 3500);
+  };
+
+  // Fetch product images and live stock counts from Supabase on mount & subscribe to Realtime
   useEffect(() => {
-    const loadImages = async () => {
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    const loadProductsData = async () => {
       try {
-        const supabase = getSupabase();
-        const { data } = await supabase.from('products').select('id, image_url');
+        const { data } = await supabase.from('products').select('id, image_url, current_stock');
         if (data && Array.isArray(data)) {
-          const map: Record<string, string> = {};
+          const imgMap: Record<string, string> = {};
+          const stockMap: Record<string, number> = {};
           data.forEach((p: any) => {
-            if (p.image_url) map[p.id] = p.image_url;
+            if (p.image_url) imgMap[p.id] = p.image_url;
+            if (p.current_stock !== undefined && p.current_stock !== null) {
+              stockMap[p.id] = Number(p.current_stock);
+            }
           });
-          setProductImages(map);
+          setProductImages(imgMap);
+          setProductStock(stockMap);
         }
       } catch (err) {
-        console.warn('Could not load remote product images:', err);
+        console.warn('Could not load remote product stock & images:', err);
       }
     };
-    loadImages();
+
+    loadProductsData();
+
+    // Subscribe to realtime updates on table 'products'
+    const channelId = `realtime_products_${Date.now()}`;
+    const channel = supabase
+      .channel(channelId)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'products' },
+        (payload) => {
+          if (payload.new && payload.new.id) {
+            const row = payload.new;
+            if (row.current_stock !== undefined && row.current_stock !== null) {
+              setProductStock((prev) => ({
+                ...prev,
+                [row.id]: Number(row.current_stock),
+              }));
+            }
+            if (row.image_url !== undefined) {
+              setProductImages((prev) => ({
+                ...prev,
+                [row.id]: row.image_url,
+              }));
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Cart State { [productId]: quantity }
@@ -113,9 +167,18 @@ export function App() {
     } catch {}
   };
 
-  // Add to Bag / Update Quantity
+  // Add to Bag / Update Quantity (Guarded by Live Realtime Stock)
   const handleAddToCart = (product: Product) => {
+    const stock = productStock[product.id];
+    if (stock !== undefined && stock <= 0) {
+      showStockToast(`Sorry, ${product.name} is currently out of stock!`, 'error');
+      return;
+    }
     const currentQty = cart[product.id] || 0;
+    if (stock !== undefined && currentQty >= stock) {
+      showStockToast(`Only ${stock} units available in stock for ${product.name}!`, 'warning');
+      return;
+    }
     const newCart = { ...cart, [product.id]: currentQty + 1 };
     updateCart(newCart);
   };
@@ -140,6 +203,12 @@ export function App() {
       delete newCart[product.id];
       updateCart(newCart);
     } else {
+      const stock = productStock[product.id];
+      if (stock !== undefined && newQty > stock) {
+        updateCart({ ...cart, [product.id]: stock });
+        showStockToast(`Maximum available stock (${stock}) reached for ${product.name}!`, 'warning');
+        return;
+      }
       updateCart({ ...cart, [product.id]: newQty });
     }
   };
@@ -148,17 +217,43 @@ export function App() {
     updateCart({});
   };
 
-  // Quick Add Combo Bundle into Cart with 10% Online Pricing
+  // Quick Add Combo Bundle into Cart with 10% Online Pricing (Guarded by Stock Limits)
   const handleAddBundleToCart = (bundle: BundleDef) => {
+    const outOfStockItems = bundle.items.filter((item) => {
+      const stock = productStock[item.productId];
+      return stock !== undefined && stock <= 0;
+    });
+
+    if (outOfStockItems.length > 0) {
+      showStockToast(
+        `Notice: Some items in this combo are sold out (${outOfStockItems.map((i) => i.productName).join(', ')}). Available items were added!`,
+        'warning'
+      );
+    }
+
     const updated = { ...cart };
+    let addedCount = 0;
     bundle.items.forEach((item) => {
       const pid = item.productId;
+      const stock = productStock[pid];
+      if (stock !== undefined && stock <= 0) return;
+
       const current = updated[pid] || 0;
-      updated[pid] = current + item.defaultQty;
+      const targetQty = current + item.defaultQty;
+      const finalQty = stock !== undefined ? Math.min(targetQty, stock) : targetQty;
+      if (finalQty > current) {
+        updated[pid] = finalQty;
+        addedCount++;
+      }
     });
-    updateCart(updated);
-    setSelectedBundleId(null);
-    setIsCartOpen(true);
+
+    if (addedCount > 0) {
+      updateCart(updated);
+      setSelectedBundleId(null);
+      setIsCartOpen(true);
+    } else {
+      showStockToast('Sorry, this combo cannot be added because items are currently sold out.', 'error');
+    }
   };
 
   // Totals
@@ -338,6 +433,7 @@ export function App() {
                 onUpdateQuantity={handleUpdateQuantity}
                 imageUrl={productImages[product.id] || product.imageUrl}
                 onOpenDetail={(prod) => setSelectedProductDetail(prod)}
+                stock={productStock[product.id]}
               />
             ))}
           </div>
@@ -377,6 +473,7 @@ export function App() {
         cart={cart}
         allProducts={MASTER_PRODUCTS}
         productImages={productImages}
+        productStock={productStock}
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={handleClearCart}
         onProceedToCheckout={(coupon, discount) => {
@@ -393,6 +490,7 @@ export function App() {
         cart={cart}
         allProducts={MASTER_PRODUCTS}
         productImages={productImages}
+        productStock={productStock}
         appliedCoupon={activeCoupon.code}
         couponDiscount={activeCoupon.discount}
         onOrderSuccess={(order) => {
@@ -485,6 +583,31 @@ export function App() {
                 </span>
               </div>
 
+              {/* Stock Warning Notice */}
+              {(() => {
+                const detailStock = productStock[selectedProductDetail.id];
+                const isDetailOutOfStock = detailStock !== undefined && detailStock <= 0;
+                const isDetailLowStock = detailStock !== undefined && detailStock > 0 && detailStock <= 5;
+
+                if (isDetailOutOfStock) {
+                  return (
+                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2 font-bold">
+                      <Ban className="w-4 h-4 text-red-500 shrink-0" />
+                      <span>This item is currently sold out. Please check back later or choose another variety!</span>
+                    </div>
+                  );
+                }
+                if (isDetailLowStock) {
+                  return (
+                    <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 flex items-center gap-2 font-bold">
+                      <Flame className="w-4 h-4 text-amber-600 fill-amber-500 shrink-0 animate-pulse" />
+                      <span>🔥 Hurry! Only {detailStock} units left in stock for fast dispatch!</span>
+                    </div>
+                  );
+                }
+                return null;
+              })()}
+
               <div className="p-3 rounded-xl bg-orange-50/70 border border-orange-200 text-xs text-slate-700 space-y-1">
                 <div className="flex items-center gap-1.5 text-orange-800 font-bold">
                   <ShieldCheck className="w-3.5 h-3.5 text-orange-600" />
@@ -496,16 +619,35 @@ export function App() {
               </div>
 
               <div className="pt-2">
-                <button
-                  onClick={() => {
-                    handleAddToCart(selectedProductDetail);
-                    setSelectedProductDetail(null);
-                  }}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-95 transition-all"
-                >
-                  <ShoppingBag className="w-4 h-4 text-white" />
-                  <span>Add to Bag</span>
-                </button>
+                {(() => {
+                  const detailStock = productStock[selectedProductDetail.id];
+                  const isDetailOutOfStock = detailStock !== undefined && detailStock <= 0;
+
+                  if (isDetailOutOfStock) {
+                    return (
+                      <button
+                        disabled
+                        className="w-full py-3 px-4 rounded-xl bg-slate-100 border border-slate-300 text-slate-400 font-bold text-xs flex items-center justify-center gap-2 cursor-not-allowed select-none"
+                      >
+                        <Ban className="w-4 h-4 text-slate-400" />
+                        <span>Currently Out of Stock</span>
+                      </button>
+                    );
+                  }
+
+                  return (
+                    <button
+                      onClick={() => {
+                        handleAddToCart(selectedProductDetail);
+                        setSelectedProductDetail(null);
+                      }}
+                      className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <ShoppingBag className="w-4 h-4 text-white" />
+                      <span>Add to Bag</span>
+                    </button>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -626,6 +768,25 @@ export function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Real-time Stock Notification Toast */}
+      {stockToast && (
+        <div className="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-[100] max-w-sm w-[92%] px-4 py-2.5 rounded-2xl bg-slate-900/95 text-white text-xs font-bold shadow-2xl flex items-center gap-2.5 border border-amber-400/40 backdrop-blur-md animate-fade-in pointer-events-auto">
+          {stockToast.type === 'error' ? (
+            <Ban className="w-4 h-4 text-rose-400 shrink-0" />
+          ) : (
+            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+          )}
+          <span className="flex-1 leading-snug">{stockToast.message}</span>
+          <button 
+            onClick={() => setStockToast(null)} 
+            className="p-1 hover:text-amber-300 text-slate-400 cursor-pointer"
+            aria-label="Dismiss notification"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -20,6 +20,7 @@ interface CodCheckoutModalProps {
   cart: Record<string, number>;
   allProducts: Product[];
   productImages: Record<string, string>;
+  productStock?: Record<string, number>;
   appliedCoupon?: string;
   couponDiscount?: number;
   onOrderSuccess: (order: any) => void;
@@ -30,6 +31,8 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   onClose,
   cart,
   allProducts,
+  productImages,
+  productStock = {},
   appliedCoupon,
   couponDiscount = 0,
   onOrderSuccess,
@@ -148,6 +151,30 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
     }
 
     const fullAddress = [cleanHouse, cleanStreet].filter(Boolean).join(', ');
+
+    // Verify current live stock before confirming order
+    const outOfStockItems = items.filter((item) => {
+      const s = productStock[item.productId];
+      return s !== undefined && s <= 0;
+    });
+    if (outOfStockItems.length > 0) {
+      setErrorMessage(
+        `Sorry! ${outOfStockItems.map((i) => i.productName).join(', ')} is currently out of stock. Please adjust your bag.`
+      );
+      return;
+    }
+
+    const overLimitItem = items.find((item) => {
+      const s = productStock[item.productId];
+      return s !== undefined && item.quantity > s;
+    });
+    if (overLimitItem) {
+      const s = productStock[overLimitItem.productId];
+      setErrorMessage(
+        `Only ${s} units available for ${overLimitItem.productName}. Please decrease quantity in bag to proceed.`
+      );
+      return;
+    }
 
     setIsSubmitting(true);
 

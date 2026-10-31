@@ -8,7 +8,7 @@ import {
   FREE_DELIVERY_THRESHOLD, 
   STANDARD_DELIVERY_FEE 
 } from '../types/delivery';
-import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Sparkles, Tag, ShieldCheck, Truck, Banknote } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Sparkles, Tag, ShieldCheck, Truck, Banknote, AlertCircle, Flame } from 'lucide-react';
 import { CATEGORY_CARD_TAGS } from '../utils/crackerSearch';
 
 interface StoreCartDrawerProps {
@@ -17,6 +17,7 @@ interface StoreCartDrawerProps {
   cart: Record<string, number>;
   allProducts: Product[];
   productImages: Record<string, string>;
+  productStock?: Record<string, number>;
   onUpdateQuantity: (product: Product, newQty: number) => void;
   onClearCart: () => void;
   onProceedToCheckout: (appliedCoupon?: string, couponDiscount?: number) => void;
@@ -28,6 +29,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
   cart,
   allProducts,
   productImages,
+  productStock = {},
   onUpdateQuantity,
   onClearCart,
   onProceedToCheckout,
@@ -92,6 +94,12 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
   const totalSavings = directOnlineSavings + couponDiscount;
   const finalPayable = Math.max(0, totalOnlineAmount - couponDiscount + deliveryFee);
   const totalItemCount = cartEntries.reduce((sum, { quantity }) => sum + quantity, 0);
+
+  // Check if any items in the cart are currently out of stock
+  const hasOutOfStockItems = cartEntries.some(({ product }) => {
+    const s = productStock[product.id];
+    return s !== undefined && s <= 0;
+  });
 
   // Free delivery progress
   const freeDeliveryProgress = Math.min(100, (totalOnlineAmount / FREE_DELIVERY_THRESHOLD) * 100);
@@ -230,13 +238,24 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
               const discountPercent = calculateDiscountPercent(onlinePrice, product.category);
               const imgUrl = productImages[product.id] || product.imageUrl;
 
+              const stock = productStock[product.id];
+              const isOutOfStock = stock !== undefined && stock <= 0;
+              const isLowStock = stock !== undefined && stock > 0 && stock <= 5;
+              const isMaxReached = stock !== undefined && quantity >= stock;
+
               return (
                 <div
                   key={product.id}
-                  className="p-3 rounded-2xl bg-white border border-amber-200/90 shadow-xs flex items-center gap-3 hover:border-orange-300 transition-colors"
+                  className={`p-3 rounded-2xl border shadow-xs flex items-center gap-3 transition-colors ${
+                    isOutOfStock
+                      ? 'bg-red-50/60 border-red-300'
+                      : 'bg-white border-amber-200/90 hover:border-orange-300'
+                  }`}
                 >
                   {/* Thumbnail */}
-                  <div className="w-14 h-14 rounded-xl bg-amber-50 border border-amber-200 overflow-hidden shrink-0 flex items-center justify-center">
+                  <div className={`w-14 h-14 rounded-xl overflow-hidden shrink-0 flex items-center justify-center ${
+                    isOutOfStock ? 'bg-red-100 border border-red-200 opacity-70' : 'bg-amber-50 border border-amber-200'
+                  }`}>
                     {imgUrl ? (
                       <img src={imgUrl} alt={product.name} className="w-full h-full object-cover" />
                     ) : (
@@ -253,7 +272,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
                       {product.name}
                     </h5>
 
-                    <div className="flex items-center gap-1.5 mt-1">
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1">
                       <span className="font-black text-xs text-orange-600">
                         ₹{onlinePrice.toLocaleString('en-IN')}
                       </span>
@@ -263,14 +282,33 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
                       <span className="text-[9px] font-bold text-red-700 bg-red-50 border border-red-200 px-1 rounded">
                         {discountPercent}% OFF
                       </span>
+
+                      {/* Stock Warning Tags */}
+                      {isOutOfStock ? (
+                        <span className="text-[9px] font-extrabold text-white bg-red-600 px-1.5 py-0.2 rounded-full inline-flex items-center gap-0.5">
+                          <AlertCircle className="w-2.5 h-2.5" />
+                          <span>Sold Out</span>
+                        </span>
+                      ) : isLowStock ? (
+                        <span className="text-[9px] font-extrabold text-amber-900 bg-amber-100 border border-amber-300 px-1.5 py-0.2 rounded-full inline-flex items-center gap-0.5 animate-pulse">
+                          <Flame className="w-2.5 h-2.5 text-amber-600 fill-amber-600" />
+                          <span>Only {stock} left</span>
+                        </span>
+                      ) : null}
                     </div>
+
+                    {isOutOfStock && (
+                      <p className="text-[10px] font-bold text-red-600 mt-1">
+                        Please remove or reduce to proceed
+                      </p>
+                    )}
                   </div>
 
                   {/* Stepper */}
                   <div className="flex items-center gap-1 bg-amber-50 rounded-xl border border-amber-200 p-1 shrink-0">
                     <button
                       onClick={() => onUpdateQuantity(product, quantity - 1)}
-                      className="w-6 h-6 rounded-lg bg-white hover:bg-orange-100 text-slate-700 flex items-center justify-center active:scale-90 transition-all shadow-2xs"
+                      className="w-6 h-6 rounded-lg bg-white hover:bg-orange-100 text-slate-700 flex items-center justify-center active:scale-90 transition-all shadow-2xs cursor-pointer"
                       title="Decrease quantity"
                     >
                       <Minus className="w-3 h-3" />
@@ -282,8 +320,13 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
 
                     <button
                       onClick={() => onUpdateQuantity(product, quantity + 1)}
-                      className="w-6 h-6 rounded-lg bg-orange-500 hover:bg-orange-600 text-white flex items-center justify-center active:scale-90 transition-all font-bold shadow-2xs"
-                      title="Increase quantity"
+                      disabled={isMaxReached || isOutOfStock}
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all font-bold shadow-2xs ${
+                        isMaxReached || isOutOfStock
+                          ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                          : 'bg-orange-500 hover:bg-orange-600 text-white active:scale-90 cursor-pointer'
+                      }`}
+                      title={isMaxReached ? `Only ${stock} units available` : 'Increase quantity'}
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -412,14 +455,24 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
               </div>
             </div>
 
-            {/* Big Proceed Button */}
-            <button
-              onClick={() => onProceedToCheckout(appliedCoupon || undefined, couponDiscount)}
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all"
-            >
-              <span>Proceed to Cash on Delivery Checkout</span>
-              <ArrowRight className="w-4 h-4 text-white" />
-            </button>
+            {/* Big Proceed Button / Gated by Out of Stock items */}
+            {hasOutOfStockItems ? (
+              <button
+                disabled
+                className="w-full py-3.5 px-4 rounded-2xl bg-red-100 border border-red-300 text-red-700 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed shadow-none"
+              >
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                <span>Remove Out-of-Stock Items to Checkout</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => onProceedToCheckout(appliedCoupon || undefined, couponDiscount)}
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all cursor-pointer"
+              >
+                <span>Proceed to Cash on Delivery Checkout</span>
+                <ArrowRight className="w-4 h-4 text-white" />
+              </button>
+            )}
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@ import { Gift, ChevronRight, Truck, Clock, Sparkles } from 'lucide-react';
 import crackerArt from '../assets/bheema-crackers-hero-4k.png';
 import comboSmallImg from '../assets/combo-small-crackers.png';
 import comboFamilyImg from '../assets/combo-family-crackers.png';
+import { VenusSkyShotEffect } from './VenusSkyShotEffect';
 
 interface FestiveHeroBannerProps {
   onSelectCategory: (category: string) => void;
@@ -247,79 +248,63 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           {/* Small Combo */}
           <div
             onClick={() => onOpenComboModal('BUNDLE-SMALL-COMBO-10')}
-            className="relative overflow-hidden rounded-2xl border border-amber-300/90 bg-gradient-to-br from-[#FFFDF7] via-[#FFF9ED] to-[#FFEECB] p-3.5 sm:p-4 shadow-sm hover:shadow-lg hover:shadow-orange-500/15 cursor-pointer transition-all duration-200 flex flex-col justify-between group active:scale-[0.99] min-h-[175px] sm:min-h-[185px]"
+            className="relative overflow-hidden rounded-2xl border-2 border-amber-400/95 hover:border-orange-500 bg-gradient-to-br from-[#FFFDF0] via-[#FFF5D0] to-[#FFE8A3] p-3 sm:p-3.5 shadow-md hover:shadow-xl hover:shadow-orange-500/20 cursor-pointer transition-all duration-200 flex flex-col justify-between group active:scale-[0.99]"
           >
+            {/* Ambient Festive Backlight Glow */}
+            <div className="absolute -top-10 -right-10 w-44 h-44 bg-gradient-to-br from-amber-300/40 via-orange-400/25 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+            {/* LIVE VENUS SKY SHOT BURSTS (Shoots up, cracks, spreads colors) */}
+            <VenusSkyShotEffect className="top-4 right-10" delay={0} scale={0.9} />
+            <VenusSkyShotEffect className="top-10 right-28" delay={1.5} scale={0.75} />
+
             {/* Top Badges */}
-            <div className="flex items-center justify-between gap-1 mb-1.5 relative z-10">
-              <span className="px-2.5 py-0.5 rounded-full bg-amber-100/95 border border-amber-300 text-amber-950 font-black text-[9.5px] uppercase tracking-wide shadow-2xs">
+            <div className="flex items-center justify-between gap-1 mb-1 relative z-10">
+              <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-[9.5px] uppercase tracking-wide shadow-xs border border-amber-600/30">
                 Budget Favorite
               </span>
-              <span className="text-[10px] sm:text-[11px] font-black text-rose-600 bg-white/95 px-2.5 py-0.5 rounded-full border border-rose-300 shadow-2xs">
+              <span className="text-[10px] sm:text-[11px] font-black text-white bg-gradient-to-r from-red-600 to-rose-600 px-2.5 py-0.5 rounded-full border border-red-300/40 shadow-xs ring-1 ring-white/60">
                 86% OFF
               </span>
             </div>
 
-            {/* Right-Side 3D Cracker Artwork (Generated Clean Visual) */}
+            {/* Right-Side 3D Cracker Artwork (Bright & Saturated) */}
             <div className="absolute right-0 top-0 bottom-0 w-[42%] sm:w-[45%] pointer-events-none select-none flex items-center justify-end overflow-hidden z-0">
               <img
                 src={comboSmallImg}
                 alt="Small Combo 10 Varieties"
-                className="w-full h-full object-contain object-right drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain object-right drop-shadow-[0_4px_12px_rgba(245,158,11,0.25)] brightness-110 contrast-105 saturate-110 group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
 
             {/* Left Content Area */}
-            <div className="relative z-10 w-[58%] sm:w-[56%]">
+            <div className="relative z-10 w-[58%] sm:w-[56%] py-0.5">
               <div className="flex flex-wrap items-baseline gap-1 leading-tight">
                 <h4 className="font-black text-sm sm:text-base text-[#1E1108] group-hover:text-orange-600 transition-colors">
                   SMALL COMBO
                 </h4>
-                <span className="text-amber-800 text-xs sm:text-sm font-black">
+                <span className="text-amber-900 text-xs sm:text-sm font-black">
                   (10 Varieties)
                 </span>
                 <span className="text-orange-500 text-xs font-black select-none">⚡</span>
               </div>
 
-              {/* 6 Variety Micro Cards (Grid 3x2, perfectly organized & razor sharp) */}
-              <div className="grid grid-cols-3 gap-1 my-2 max-w-[210px] sm:max-w-[230px]">
-                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
-                  <span className="text-xs leading-none select-none">💣</span>
-                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Bijli</span>
-                </div>
-                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
-                  <span className="text-xs leading-none select-none">🧨</span>
-                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Pipes</span>
-                </div>
-                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
-                  <span className="text-xs leading-none select-none">🔺</span>
-                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Pot</span>
-                </div>
-                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
-                  <span className="text-xs leading-none select-none">🍥</span>
-                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Chakkar</span>
-                </div>
-                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
-                  <span className="text-xs leading-none select-none">✨</span>
-                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Sparklers</span>
-                </div>
-                <div className="flex flex-col items-center justify-center py-1 px-1 rounded-lg bg-white/90 border border-amber-200/80 shadow-2xs text-center">
-                  <span className="text-xs leading-none select-none">🚀</span>
-                  <span className="text-[8px] font-black text-[#2B1204] leading-tight mt-0.5 truncate w-full">Sky Shot</span>
-                </div>
-              </div>
+              {/* Clean compact sentence as requested (Space-saving & clean) */}
+              <p className="text-[10.5px] sm:text-[11px] text-[#4A2609] font-medium leading-relaxed my-1.5">
+                Bijli, color pipes, flower pot, ground chakkar, sparklers & sky shot.
+              </p>
             </div>
 
             {/* Bottom Pricing & Action */}
-            <div className="pt-2 border-t border-amber-200/80 flex items-center justify-between gap-2 relative z-10">
+            <div className="pt-2 border-t border-amber-300/80 flex items-center justify-between gap-2 relative z-10">
               <div>
-                <span className="text-[10px] text-stone-400 line-through font-semibold block leading-tight">MRP ₹8,120</span>
+                <span className="text-[10px] text-stone-500 line-through font-bold block leading-tight">MRP ₹8,120</span>
                 <span className="font-black text-base sm:text-lg text-orange-600 leading-tight">
                   ₹1,160
                 </span>
               </div>
 
-              <span className="px-3 py-1.5 rounded-full bg-white/95 group-hover:bg-orange-500 text-orange-700 group-hover:text-white font-black text-xs flex items-center gap-1 transition-all border border-orange-300 group-hover:border-orange-500 shadow-xs">
+              <span className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 group-hover:from-orange-600 group-hover:to-amber-600 text-white font-black text-xs flex items-center gap-1 transition-all shadow-md shadow-orange-500/25">
                 <span>View & Add Combo</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </span>
@@ -329,55 +314,63 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
           {/* Family Pack */}
           <div
             onClick={() => onOpenComboModal('BUNDLE-DIWALI-FAMILY-18')}
-            className="relative overflow-hidden rounded-2xl border border-rose-300/90 bg-gradient-to-br from-[#FFFDFD] via-[#FFF5F7] to-[#FFE7ED] p-3.5 sm:p-4 shadow-sm hover:shadow-lg hover:shadow-rose-500/15 cursor-pointer transition-all duration-200 flex flex-col justify-between group active:scale-[0.99] min-h-[175px] sm:min-h-[185px]"
+            className="relative overflow-hidden rounded-2xl border-2 border-rose-400/95 hover:border-rose-500 bg-gradient-to-br from-[#FFF5F7] via-[#FFE2E9] to-[#FFCCD7] p-3 sm:p-3.5 shadow-md hover:shadow-xl hover:shadow-rose-500/20 cursor-pointer transition-all duration-200 flex flex-col justify-between group active:scale-[0.99]"
           >
+            {/* Ambient Festive Backlight Glow */}
+            <div className="absolute -top-10 -right-10 w-44 h-44 bg-gradient-to-br from-rose-300/40 via-pink-400/25 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+            {/* LIVE VENUS SKY SHOT BURSTS (Shoots up, cracks, spreads colors) */}
+            <VenusSkyShotEffect className="top-4 right-10" delay={0.8} scale={0.9} />
+            <VenusSkyShotEffect className="top-10 right-28" delay={2.3} scale={0.75} />
+
             {/* Top Badges */}
-            <div className="flex items-center justify-between gap-1 mb-1.5 relative z-10">
-              <span className="px-2.5 py-0.5 rounded-full bg-rose-100/95 border border-rose-300 text-rose-950 font-black text-[9.5px] uppercase tracking-wide shadow-2xs">
+            <div className="flex items-center justify-between gap-1 mb-1 relative z-10">
+              <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black text-[9.5px] uppercase tracking-wide shadow-xs border border-rose-700/30">
                 Most Popular Pack
               </span>
-              <span className="text-[10px] sm:text-[11px] font-black text-rose-600 bg-white/95 px-2.5 py-0.5 rounded-full border border-rose-300 shadow-2xs">
+              <span className="text-[10px] sm:text-[11px] font-black text-white bg-gradient-to-r from-red-600 to-rose-600 px-2.5 py-0.5 rounded-full border border-rose-300/40 shadow-xs ring-1 ring-white/60">
                 87% OFF
               </span>
             </div>
 
-            {/* Right-Side 3D Cracker Artwork (Generated Clean Visual) */}
+            {/* Right-Side 3D Cracker Artwork (Bright & Saturated) */}
             <div className="absolute right-0 top-0 bottom-0 w-[42%] sm:w-[45%] pointer-events-none select-none flex items-center justify-end overflow-hidden z-0">
               <img
                 src={comboFamilyImg}
                 alt="Diwali Family Pack 18 Varieties"
-                className="w-full h-full object-contain object-right drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain object-right drop-shadow-[0_4px_12px_rgba(244,63,94,0.25)] brightness-110 contrast-105 saturate-110 group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
 
             {/* Left Content Area */}
-            <div className="relative z-10 w-[58%] sm:w-[56%]">
+            <div className="relative z-10 w-[58%] sm:w-[56%] py-0.5">
               <div className="flex flex-wrap items-baseline gap-1 leading-tight">
                 <h4 className="font-black text-sm sm:text-base text-[#1E1108] group-hover:text-rose-600 transition-colors">
                   Diwali Family Pack
                 </h4>
-                <span className="text-rose-800 text-xs sm:text-sm font-black">
+                <span className="text-rose-900 text-xs sm:text-sm font-black">
                   (18 Varieties)
                 </span>
                 <span className="text-orange-500 text-xs font-black select-none">⚡</span>
               </div>
 
-              <p className="text-[10px] sm:text-[11px] text-[#54361E] font-medium leading-snug my-2 line-clamp-2">
+              {/* Clean compact sentence as requested */}
+              <p className="text-[10.5px] sm:text-[11px] text-[#4A2609] font-medium leading-relaxed my-1.5">
                 Complete family celebration with mega sound bombs, flower pots, GC & sky shots.
               </p>
             </div>
 
             {/* Bottom Pricing & Action */}
-            <div className="pt-2 border-t border-rose-200/80 flex items-center justify-between gap-2 relative z-10">
+            <div className="pt-2 border-t border-rose-300/80 flex items-center justify-between gap-2 relative z-10">
               <div>
-                <span className="text-[10px] text-stone-400 line-through font-semibold block leading-tight">MRP ₹24,800</span>
+                <span className="text-[10px] text-stone-500 line-through font-bold block leading-tight">MRP ₹24,800</span>
                 <span className="font-black text-base sm:text-lg text-rose-600 leading-tight">
                   ₹3,100
                 </span>
               </div>
 
-              <span className="px-3 py-1.5 rounded-full bg-white/95 group-hover:bg-rose-500 text-rose-700 group-hover:text-white font-black text-xs flex items-center gap-1 transition-all border border-rose-300 group-hover:border-rose-500 shadow-xs">
+              <span className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-rose-600 to-pink-600 group-hover:from-rose-700 group-hover:to-pink-700 text-white font-black text-xs flex items-center gap-1 transition-all shadow-md shadow-rose-500/25">
                 <span>View & Add Pack</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </span>

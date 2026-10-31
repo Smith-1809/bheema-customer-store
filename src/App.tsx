@@ -18,6 +18,7 @@ import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { CustomerOrderTrackerModal } from './components/CustomerOrderTrackerModal';
 import { FestiveCrackerEffects } from './components/FestiveCrackerEffects';
 import { BrandLogoIntroSplash } from './components/BrandLogoIntroSplash';
+import { trackAddToCart, trackBeginCheckout, trackPurchase, trackSearch } from './utils/analytics';
 import { getSupabase } from './lib/supabase';
 import {
   Sparkles,
@@ -182,6 +183,7 @@ export function App() {
     }
     const newCart = { ...cart, [product.id]: currentQty + 1 };
     updateCart(newCart);
+    trackAddToCart(product.name, product.id, calculateOnlinePrice(product.sellingPrice), 1);
   };
 
   // Category Selection with Auto-Scroll to Catalog & Toggle-to-Reset
@@ -257,6 +259,7 @@ export function App() {
       updateCart(updated);
       setSelectedBundleId(null);
       setIsCartOpen(true);
+      trackAddToCart(bundle.name, bundle.id, bundle.id === 'BUNDLE-SMALL-COMBO-10' ? 1160 : 3100, 1);
     } else {
       showStockToast('Sorry, this combo cannot be added because items are currently sold out.', 'error');
     }
@@ -508,6 +511,7 @@ export function App() {
           setActiveCoupon({ code: coupon, discount: discount || 0 });
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
+          trackBeginCheckout(totalOnlineAmount, totalCartCount);
         }}
       />
 
@@ -528,6 +532,7 @@ export function App() {
             localStorage.removeItem('bheema_online_cart');
           } catch {}
           setPlacedOrder(order);
+          trackPurchase(order.order_id, order.total_amount, order.items.length);
         }}
       />
 

@@ -4,6 +4,7 @@ import { Product } from '../data/products';
 import { CATEGORY_DISPLAY_NAMES, matchProductSearch } from '../utils/crackerSearch';
 import { SearchAutoSuggestDropdown } from './SearchAutoSuggestDropdown';
 import bheemaLogoCircle from '../assets/bheema-logo-circle.png';
+import { trackSearch } from '../utils/analytics';
 
 interface StorefrontNavbarProps {
   cartCount: number;
@@ -103,6 +104,9 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
     setShowMobileDropdown(false);
     desktopInputRef.current?.blur();
     mobileInputRef.current?.blur();
+    if (searchQuery.trim()) {
+      trackSearch(searchQuery);
+    }
 
     if (onScrollToCatalog) {
       onScrollToCatalog();

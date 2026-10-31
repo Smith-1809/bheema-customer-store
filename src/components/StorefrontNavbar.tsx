@@ -11,9 +11,9 @@ interface StorefrontNavbarProps {
   onOpenTracker: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  selectedCategory: string;
-  onSelectCategory: (category: string) => void;
-  categories: string[];
+  selectedCategory?: string;
+  onSelectCategory?: (category: string) => void;
+  categories?: string[];
   allProducts: Product[];
   cart: Record<string, number>;
   productImages: Record<string, string>;
@@ -322,29 +322,6 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
                 onSuggestionClick={handleSuggestionClick}
               />
             )}
-          </div>
-
-          {/* Category Navigation Pills (Horizontal Touch Carousel) */}
-          <div className="mt-2.5 -mx-3 px-3 overflow-x-auto no-scrollbar flex items-center gap-1.5 pb-0.5">
-            {categories.map((cat) => {
-              const isActive = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={(e) => {
-                    onSelectCategory(cat);
-                    e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                  }}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all shrink-0 ${
-                    isActive
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-orange-500/20'
-                      : 'bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-900 border border-amber-200/90'
-                  }`}
-                >
-                  {CATEGORY_DISPLAY_NAMES[cat] || (cat === 'All' ? '🌟 All Crackers' : cat)}
-                </button>
-              );
-            })}
           </div>
         </div>
       </header>

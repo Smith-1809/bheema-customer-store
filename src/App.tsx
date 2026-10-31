@@ -255,33 +255,59 @@ export function App() {
           onOpenComboModal={(bundleId) => setSelectedBundleId(bundleId)}
         />
 
-        {/* Catalog Control Bar */}
-        <div id="cracker-catalog-section" className="scroll-mt-36 sm:scroll-mt-32 flex items-center justify-between gap-3 mb-4 pt-3 border-t border-amber-200">
-          <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-black text-slate-900">
-              {searchQuery.trim()
-                ? `Results for "${searchQuery}"`
-                : selectedCategory === 'All'
-                ? 'Complete Cracker Catalog'
-                : (CATEGORY_DISPLAY_NAMES[selectedCategory] || selectedCategory)}
-            </span>
-            <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
-              {filteredProducts.length} items
-            </span>
+        {/* Category Navigation Pills & Catalog Control Bar */}
+        <div id="cracker-catalog-section" className="scroll-mt-28 sm:scroll-mt-24 pt-3 border-t border-amber-200">
+          {/* Horizontal Category Navigation Carousel (Moved directly above Complete Cracker Catalog) */}
+          <div className="overflow-x-auto no-scrollbar flex items-center gap-1.5 pb-2 -mx-1 px-1">
+            {CATEGORIES.map((cat) => {
+              const isActive = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={(e) => {
+                    handleSelectCategory(cat);
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                  }}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer ${
+                    isActive
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-orange-500/20'
+                      : 'bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-900 border border-amber-200/90 shadow-2xs'
+                  }`}
+                >
+                  {CATEGORY_DISPLAY_NAMES[cat] || (cat === 'All' ? '🌟 All Crackers' : cat)}
+                </button>
+              );
+            })}
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <ArrowUpDown className="w-3.5 h-3.5 text-orange-700" />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="py-1 px-2.5 rounded-xl bg-white border border-amber-300 text-xs text-slate-900 focus:outline-none focus:border-orange-500 font-bold shadow-xs"
-            >
-              <option value="default">Default Catalog</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-              <option value="name">Name (A-Z)</option>
-            </select>
+          {/* Catalog Title & Sort Bar */}
+          <div className="flex items-center justify-between gap-3 mb-4 pt-1.5">
+            <div className="flex items-center gap-2">
+              <span className="text-xs sm:text-sm font-black text-slate-900">
+                {searchQuery.trim()
+                  ? `Results for "${searchQuery}"`
+                  : selectedCategory === 'All'
+                  ? 'Complete Cracker Catalog'
+                  : (CATEGORY_DISPLAY_NAMES[selectedCategory] || selectedCategory)}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
+                {filteredProducts.length} items
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <ArrowUpDown className="w-3.5 h-3.5 text-orange-700" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="py-1 px-2.5 rounded-xl bg-white border border-amber-300 text-xs text-slate-900 focus:outline-none focus:border-orange-500 font-bold shadow-xs cursor-pointer"
+              >
+                <option value="default">Default Catalog</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="name">Name (A-Z)</option>
+              </select>
+            </div>
           </div>
         </div>
 

@@ -193,16 +193,24 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             </div>
           </div>
 
-          {/* WhatsApp Direct Notification CTA */}
-          <a
-            href={whatsAppUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all text-center"
-          >
-            <MessageSquare className="w-4 h-4" />
-            <span>Send Order Details to Bheema WhatsApp</span>
-          </a>
+          {/* WhatsApp Direct Notification CTA (Optional) */}
+          <div className="space-y-1">
+            <a
+              href={whatsAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3 px-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center justify-center gap-1.5 sm:gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all text-center"
+            >
+              <MessageSquare className="w-4 h-4 shrink-0" />
+              <span className="truncate">Send Order Details to Bheema WhatsApp</span>
+              <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-800/80 text-emerald-100 border border-emerald-400/40 shrink-0 shadow-xs">
+                Optional
+              </span>
+            </a>
+            <p className="text-[10px] text-center text-slate-400 font-medium">
+              Optional — Your order is already confirmed & auto-tracked in our system
+            </p>
+          </div>
 
           {/* Track Order Live Button */}
           <button

@@ -3,7 +3,7 @@ import { Sparkles, ShoppingBag, Search, X, Truck, Flame } from 'lucide-react';
 import { Product } from '../data/products';
 import { CATEGORY_DISPLAY_NAMES, matchProductSearch } from '../utils/crackerSearch';
 import { SearchAutoSuggestDropdown } from './SearchAutoSuggestDropdown';
-import bheemaLogoCircle from '../assets/bheema-logo-circle.png';
+import bheemaLogoCircle from '../assets/bheema-logo-circle.webp';
 import { trackSearch } from '../utils/analytics';
 
 interface StorefrontNavbarProps {

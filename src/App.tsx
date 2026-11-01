@@ -471,8 +471,8 @@ export function App() {
         )}
       </main>
 
-      {/* Floating Bottom Sticky Bar on Mobile (when cart has items) */}
-      {totalCartCount > 0 && (
+      {/* Floating Bottom Sticky Bar on Mobile (when cart has items and modals are not open) */}
+      {totalCartCount > 0 && !isCheckoutOpen && !isCartOpen && (
         <div className="fixed bottom-0 inset-x-0 z-30 p-3 bg-gradient-to-t from-[#FFFDF7] via-[#FFFDF7]/95 to-transparent pointer-events-none md:hidden">
           <div className="max-w-md mx-auto pointer-events-auto">
             <button
@@ -532,7 +532,7 @@ export function App() {
             localStorage.removeItem('bheema_online_cart');
           } catch {}
           setPlacedOrder(order);
-          trackPurchase(order.order_id, order.total_amount, order.items.length);
+          trackPurchase(order.orderNumber || order.id, order.finalPayable || order.totalOnlineAmount, order.items?.length || 0);
         }}
       />
 

@@ -479,10 +479,12 @@ May the divine lights of Diwali bring abundance, health, and endless joy! 🎆�
   return `https://wa.me/?text=${encoded}`;
 };
 
+export const BHEEMA_OFFICIAL_WHATSAPP = '919390068197';
+
 /**
  * Format WhatsApp order placed message for customer to send to store
  */
-export const getCustomerOrderWhatsAppUrl = (order: DeliveryOrder, storePhone = '919876543210'): string => {
+export const getCustomerOrderWhatsAppUrl = (order: DeliveryOrder, storePhone = BHEEMA_OFFICIAL_WHATSAPP): string => {
   const itemsText = order.items
     .map((i) => `• ${i.quantity}x ${i.productName} (₹${i.itemTotal})`)
     .join('\n');

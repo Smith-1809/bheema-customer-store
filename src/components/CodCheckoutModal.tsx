@@ -117,8 +117,6 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const productMap = new Map(allProducts.map((p) => [p.id, p]));
 
   // Build items array
@@ -438,6 +436,8 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
       setIsSubmitting(false);
     }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div 

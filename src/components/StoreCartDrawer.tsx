@@ -5,6 +5,7 @@ import {
   calculateDisplayMrp, 
   calculateDiscountPercent, 
   calculateOnlineSavings, 
+  MINIMUM_ORDER_VALUE,
   FREE_DELIVERY_THRESHOLD, 
   STANDARD_DELIVERY_FEE 
 } from '../types/delivery';
@@ -88,6 +89,11 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
     return s !== undefined && s <= 0;
   });
 
+  // Minimum order value (₹499) check
+  const isMinimumOrderMet = totalOnlineAmount >= MINIMUM_ORDER_VALUE;
+  const amountNeededForMinimum = Math.max(0, MINIMUM_ORDER_VALUE - totalOnlineAmount);
+  const minOrderProgress = Math.min(100, (totalOnlineAmount / MINIMUM_ORDER_VALUE) * 100);
+
   // Free delivery progress
   const freeDeliveryProgress = Math.min(100, (totalOnlineAmount / FREE_DELIVERY_THRESHOLD) * 100);
   const amountNeededForFreeDelivery = Math.max(0, FREE_DELIVERY_THRESHOLD - totalOnlineAmount);
@@ -170,30 +176,55 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
           </div>
         </div>
 
-        {/* Free Delivery Progress Bar */}
+        {/* Minimum Order Value Alert or Free Delivery Progress Bar */}
         {cartEntries.length > 0 && (
-          <div className="bg-amber-50/80 px-4 py-2.5 border-b border-orange-100 shrink-0">
-            <div className="flex items-center justify-between text-[11px] mb-1 font-bold">
-              <span className="flex items-center gap-1.5 text-slate-800">
-                <Truck className="w-3.5 h-3.5 text-orange-600" />
-                {isFreeDelivery ? (
-                  <span className="text-emerald-700 font-extrabold">🎉 You unlocked FREE Express Delivery!</span>
-                ) : (
-                  <span>Add ₹{amountNeededForFreeDelivery.toLocaleString('en-IN')} more for FREE Delivery</span>
-                )}
-              </span>
-              <span className="text-slate-500 font-mono text-[10px]">
-                ₹{totalOnlineAmount.toLocaleString('en-IN')} / ₹{FREE_DELIVERY_THRESHOLD}
-              </span>
-            </div>
-            <div className="w-full h-1.5 bg-orange-100 rounded-full overflow-hidden">
-              <div
-                className={`h-full transition-all duration-300 rounded-full ${
-                  isFreeDelivery ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'
-                }`}
-                style={{ width: `${freeDeliveryProgress}%` }}
-              />
-            </div>
+          <div className="bg-amber-50/90 px-4 py-2.5 border-b border-orange-100 shrink-0 space-y-1.5">
+            {!isMinimumOrderMet ? (
+              <>
+                <div className="flex items-center justify-between text-[11px] font-bold">
+                  <span className="flex items-center gap-1.5 text-amber-900">
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    <span>Min. Order for Gate Delivery is ₹{MINIMUM_ORDER_VALUE}</span>
+                  </span>
+                  <span className="text-orange-700 font-extrabold text-[11px]">
+                    Add ₹{amountNeededForMinimum.toLocaleString('en-IN')} more
+                  </span>
+                </div>
+                <div className="w-full h-1.5 bg-amber-200/80 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-300 rounded-full"
+                    style={{ width: `${minOrderProgress}%` }}
+                  />
+                </div>
+                <p className="text-[10px] text-slate-500">
+                  Current cart: ₹{totalOnlineAmount.toLocaleString('en-IN')} / ₹{MINIMUM_ORDER_VALUE} minimum required
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center justify-between text-[11px] font-bold">
+                  <span className="flex items-center gap-1.5 text-slate-800">
+                    <Truck className="w-3.5 h-3.5 text-orange-600" />
+                    {isFreeDelivery ? (
+                      <span className="text-emerald-700 font-extrabold">🎉 FREE Express Delivery Unlocked!</span>
+                    ) : (
+                      <span>Add ₹{amountNeededForFreeDelivery.toLocaleString('en-IN')} more for FREE Delivery</span>
+                    )}
+                  </span>
+                  <span className="text-slate-500 font-mono text-[10px]">
+                    ₹{totalOnlineAmount.toLocaleString('en-IN')} / ₹{FREE_DELIVERY_THRESHOLD}
+                  </span>
+                </div>
+                <div className="w-full h-1.5 bg-orange-100 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 rounded-full ${
+                      isFreeDelivery ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'
+                    }`}
+                    style={{ width: `${freeDeliveryProgress}%` }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -442,7 +473,7 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
               </div>
             </div>
 
-            {/* Big Proceed Button / Gated by Out of Stock items */}
+            {/* Big Proceed Button / Gated by Out of Stock items & Min Order */}
             {hasOutOfStockItems ? (
               <button
                 disabled
@@ -451,12 +482,25 @@ export const StoreCartDrawer: React.FC<StoreCartDrawerProps> = ({
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
                 <span>Remove Out-of-Stock Items to Checkout</span>
               </button>
+            ) : !isMinimumOrderMet ? (
+              <div className="space-y-1.5">
+                <button
+                  disabled
+                  className="w-full py-3.5 px-4 rounded-2xl bg-amber-100 border border-amber-300 text-amber-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed shadow-none"
+                >
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Add ₹{amountNeededForMinimum.toLocaleString('en-IN')} more (Min. Order ₹{MINIMUM_ORDER_VALUE})</span>
+                </button>
+                <p className="text-[10px] text-center text-slate-500 font-medium">
+                  Minimum ₹{MINIMUM_ORDER_VALUE} total required for gate delivery
+                </p>
+              </div>
             ) : (
               <button
                 onClick={() => onProceedToCheckout(appliedCoupon || undefined, couponDiscount)}
                 className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all cursor-pointer"
               >
-                <span>Proceed to Cash on Delivery Checkout</span>
+                <span>Proceed to Order (20% Advance Token)</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </button>
             )}

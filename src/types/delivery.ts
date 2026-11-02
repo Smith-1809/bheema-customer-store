@@ -148,5 +148,6 @@ export const calculateOnlineSavings = (payablePrice: number, category?: string):
   return Math.max(0, mrp - payablePrice);
 };
 
+export const MINIMUM_ORDER_VALUE = 499;
 export const FREE_DELIVERY_THRESHOLD = 999;
 export const STANDARD_DELIVERY_FEE = 49;

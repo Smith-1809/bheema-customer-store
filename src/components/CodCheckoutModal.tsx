@@ -6,6 +6,7 @@ import {
   calculateOnlinePrice, 
   calculateDisplayMrp, 
   calculateDiscountPercent, 
+  MINIMUM_ORDER_VALUE,
   FREE_DELIVERY_THRESHOLD, 
   STANDARD_DELIVERY_FEE 
 } from '../types/delivery';
@@ -146,6 +147,11 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
       setErrorMessage('Please provide your street or area name in the delivery address');
       streetInputRef.current?.focus();
       streetInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (finalPayable < MINIMUM_ORDER_VALUE) {
+      setErrorMessage(`Minimum order value for delivery is ₹${MINIMUM_ORDER_VALUE}. Please add more crackers to proceed.`);
       return;
     }
 

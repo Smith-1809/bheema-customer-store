@@ -91,7 +91,6 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   const [copiedField, setCopiedField] = useState<'upi' | 'phone' | 'amount' | null>(null);
   const [showQr, setShowQr] = useState(true);
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
-  const [paymentTab, setPaymentTab] = useState<'mobile' | 'qr' | 'intent'>('mobile');
 
   // Official Receiver Credentials (Configured for Chanda Smithesh)
   const OFFICIAL_UPI_ID = '9390068197@ptyes';
@@ -192,28 +191,6 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
     setErrorMessage('QR Code saved to downloads! Open PhonePe/GPay -> tap Scanner 📷 -> tap Gallery icon to pay.');
   };
 
-  const handleQuickAppLaunchWithCopy = (app: 'phonepe' | 'gpay' | 'paytm') => {
-    // Copy mobile number to clipboard first
-    navigator.clipboard.writeText(OFFICIAL_PHONE);
-    setCopiedField('phone');
-
-    const ua = navigator.userAgent || '';
-    const isIOS = /iPhone|iPad|iPod/i.test(ua);
-    const isAndroid = /Android/i.test(ua);
-
-    let appUrl = '';
-    if (app === 'phonepe') {
-      appUrl = isIOS ? 'phonepe://' : 'intent:#Intent;package=com.phonepe.app;end';
-    } else if (app === 'gpay') {
-      appUrl = isIOS ? 'tez://' : 'intent:#Intent;package=com.google.android.apps.nbu.paisa.user;end';
-    } else if (app === 'paytm') {
-      appUrl = isIOS ? 'paytmmp://' : 'intent:#Intent;package=net.one97.paytm;end';
-    }
-
-    setErrorMessage(`Mobile number ${OFFICIAL_PHONE} copied! In ${app.toUpperCase()}, tap 'To Mobile Number', paste, and send ₹${advanceAmount}.`);
-    window.location.href = appUrl;
-  };
-
   
 
   const handleCopy = (text: string, field: 'upi' | 'phone' | 'amount') => {
@@ -222,74 +199,6 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
       setCopiedField(field);
       setTimeout(() => setCopiedField(null), 2000);
     } catch {}
-  };
-
-  // Launch targeted UPI application directly on mobile without random app chooser
-  const handleOpenSpecificUpiApp = (app: 'paytm' | 'gpay' | 'phonepe' | 'cred' | 'generic') => {
-    setErrorMessage('');
-    const ua = navigator.userAgent || '';
-    const isIOS = /iPhone|iPad|iPod/i.test(ua);
-    const isAndroid = /Android/i.test(ua);
-
-    const clientNote = `Bheema_${fullName.trim().replace(/\s+/g, '_') || 'Order'}`;
-    const upiQuery = `pa=${encodeURIComponent(OFFICIAL_UPI_ID)}&pn=${encodeURIComponent(OFFICIAL_PAYEE_NAME)}&am=${advanceAmount}&cu=INR&tn=${encodeURIComponent(clientNote)}`;
-
-    let targetUrl = '';
-
-    if (app === 'generic') {
-      targetUrl = `upi://pay?${upiQuery}`;
-    } else if (isIOS) {
-      // iOS URL Schemes (Official registered schemes in iOS Safari)
-      switch (app) {
-        case 'phonepe':
-          targetUrl = `phonepe://pay?${upiQuery}`;
-          break;
-        case 'gpay':
-          targetUrl = `tez://upi/pay?${upiQuery}`;
-          break;
-        case 'paytm':
-          targetUrl = `paytmmp://pay?${upiQuery}`;
-          break;
-        case 'cred':
-          targetUrl = `cred://upi/pay?${upiQuery}`;
-          break;
-      }
-    } else if (isAndroid) {
-      // Android package-targeted Intent URLs (Opens exact app directly, bypassing chooser)
-      switch (app) {
-        case 'phonepe':
-          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=com.phonepe.app;end`;
-          break;
-        case 'gpay':
-          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
-          break;
-        case 'paytm':
-          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=net.one97.paytm;end`;
-          break;
-        case 'cred':
-          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=com.dreamplug.androidapp;end`;
-          break;
-      }
-    } else {
-      // Desktop / Fallback
-      switch (app) {
-        case 'phonepe':
-          targetUrl = `phonepe://pay?${upiQuery}`;
-          break;
-        case 'gpay':
-          targetUrl = `tez://upi/pay?${upiQuery}`;
-          break;
-        case 'paytm':
-          targetUrl = `paytmmp://pay?${upiQuery}`;
-          break;
-        case 'cred':
-          targetUrl = `cred://upi/pay?${upiQuery}`;
-          break;
-      }
-    }
-
-    // Attempt direct navigation to the targeted app
-    window.location.href = targetUrl;
   };
 
   // Compress & preview uploaded payment screenshot (client-side canvas)
@@ -699,310 +608,142 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                 </div>
               </div>
 
-              {/* Payment Mode Selector Tabs */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] uppercase font-black text-slate-900 tracking-wider block">
-                    Choose How to Pay ₹{advanceAmount.toLocaleString('en-IN')}
+              {/* Proper UPI ID & Payment Card */}
+              <div className="p-4 rounded-2xl bg-white border-2 border-orange-300 shadow-md space-y-3.5">
+                <div className="flex items-center justify-between pb-2 border-b border-amber-100">
+                  <span className="text-[11px] font-black uppercase text-orange-950 tracking-wider flex items-center gap-1.5">
+                    <Banknote className="w-4 h-4 text-orange-600" />
+                    <span>Pay 20% Advance via Any UPI App</span>
                   </span>
-                  <span className="text-[10px] text-emerald-800 font-black px-2 py-0.5 rounded-full bg-emerald-100 border border-emerald-300">
-                    100% Safe & Direct
+                  <span className="text-[10px] font-black text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                    Verified UPI
                   </span>
                 </div>
 
-                {/* 3 Interactive Tabs */}
-                <div className="grid grid-cols-3 gap-1.5 p-1 bg-amber-100/70 rounded-2xl border border-amber-200">
-                  <button
-                    type="button"
-                    onClick={() => setPaymentTab('mobile')}
-                    className={`py-2 px-1.5 rounded-xl text-center font-bold text-xs transition-all ${
-                      paymentTab === 'mobile'
-                        ? 'bg-white text-orange-900 shadow-sm border border-amber-300 scale-100'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    <span className="block text-[11px] sm:text-xs">📱 Phone No.</span>
-                    <span className="text-[9px] text-emerald-700 font-extrabold block">Recommended</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setPaymentTab('qr')}
-                    className={`py-2 px-1.5 rounded-xl text-center font-bold text-xs transition-all ${
-                      paymentTab === 'qr'
-                        ? 'bg-white text-orange-900 shadow-sm border border-amber-300 scale-100'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    <span className="block text-[11px] sm:text-xs">📸 Scan QR</span>
-                    <span className="text-[9px] text-orange-700 font-bold block">Gallery Scan</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setPaymentTab('intent')}
-                    className={`py-2 px-1.5 rounded-xl text-center font-bold text-xs transition-all ${
-                      paymentTab === 'intent'
-                        ? 'bg-white text-orange-900 shadow-sm border border-amber-300 scale-100'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    <span className="block text-[11px] sm:text-xs">⚡ 1-Tap App</span>
-                    <span className="text-[9px] text-slate-400 font-medium block">Deep Links</span>
-                  </button>
-                </div>
-
-                {/* TAB 1: PAY VIA MOBILE NUMBER (MOST RELIABLE FOR STUDENTS) */}
-                {paymentTab === 'mobile' && (
-                  <div className="p-4 rounded-2xl bg-white border border-amber-300 shadow-2xs space-y-3.5 animate-fade-in">
-                    <div className="flex items-center justify-between border-b border-amber-100 pb-2.5">
-                      <div>
-                        <span className="text-[10px] text-slate-500 font-bold uppercase block">
-                          Pay to Mobile Number (PhonePe / GPay)
-                        </span>
-                        <span className="font-mono font-black text-xl text-slate-900 tracking-wider">
-                          {OFFICIAL_PHONE}
-                        </span>
-                        <span className="text-xs text-orange-700 font-bold block mt-0.5">
-                          Name: {OFFICIAL_PAYEE_NAME}
-                        </span>
-                      </div>
-
-                      <div className="text-right">
-                        <span className="text-[10px] text-slate-500 font-bold uppercase block">Amount</span>
-                        <span className="font-black text-lg text-emerald-700">₹{advanceAmount}</span>
-                      </div>
-                    </div>
-
-                    {/* Copy Buttons */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleCopy(OFFICIAL_PHONE, 'phone')}
-                        className="py-2.5 px-3 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-900 border border-orange-200 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-                      >
-                        {copiedField === 'phone' ? (
-                          <>
-                            <Check className="w-4 h-4 text-emerald-600" />
-                            <span className="text-emerald-700">Number Copied!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-4 h-4 text-orange-600" />
-                            <span>Copy 9390068197</span>
-                          </>
-                        )}
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleCopy(advanceAmount.toString(), 'amount')}
-                        className="py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-                      >
-                        {copiedField === 'amount' ? (
-                          <>
-                            <Check className="w-4 h-4 text-emerald-600" />
-                            <span className="text-emerald-700">Amount Copied!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-4 h-4 text-emerald-600" />
-                            <span>Copy ₹{advanceAmount}</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Quick App Opener Shortcuts */}
-                    <div className="space-y-1.5 pt-1">
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                        Open App Directly & Paste:
-                      </span>
-                      <div className="grid grid-cols-3 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleQuickAppLaunchWithCopy('phonepe')}
-                          className="py-2 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-900 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-                        >
-                          <img src="/icons/phonepe-app.svg" alt="PhonePe" className="w-4 h-4 object-contain" />
-                          <span>PhonePe</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleQuickAppLaunchWithCopy('gpay')}
-                          className="py-2 px-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-                        >
-                          <img src="/icons/gpay-app.svg" alt="GPay" className="w-4 h-4 object-contain" />
-                          <span>G Pay</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleQuickAppLaunchWithCopy('paytm')}
-                          className="py-2 px-2 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-                        >
-                          <img src="/icons/paytm-app.svg" alt="Paytm" className="w-5 h-auto object-contain" />
-                          <span>Paytm</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* 3 Step Instructions */}
-                    <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200 text-[11px] text-slate-700 space-y-1">
-                      <span className="font-bold text-orange-950 block">How to pay in 5 seconds:</span>
-                      <p>1. Tap <strong>Copy 9390068197</strong> above</p>
-                      <p>2. Open PhonePe/GPay ➡️ Tap <strong>"To Mobile Number"</strong></p>
-                      <p>3. Paste <strong>9390068197</strong> ➡️ Verify name <strong>Smithesh C</strong> ➡️ Pay ₹{advanceAmount}!</p>
-                      <span className="text-[10px] text-emerald-800 font-semibold block pt-0.5">
-                        ✓ 100% Success — No bank limits or mode restrictions!
-                      </span>
-                    </div>
+                {/* Hero Proper UPI ID Box */}
+                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 border border-orange-200">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                      Official Store UPI ID:
+                    </span>
+                    <span className="text-[10px] text-orange-700 font-bold">PhonePe / GPay / Paytm</span>
                   </div>
-                )}
+                  <div className="flex items-center justify-between mt-1.5 gap-2">
+                    <span className="font-mono font-black text-base sm:text-lg text-slate-900 select-all tracking-wider truncate">
+                      {OFFICIAL_UPI_ID}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(OFFICIAL_UPI_ID, 'upi')}
+                      className="py-1.5 px-3 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-black text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all shrink-0 cursor-pointer"
+                    >
+                      {copiedField === 'upi' ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-white" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy UPI ID</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
 
-                {/* TAB 2: SCAN QR CODE / GALLERY SCAN */}
-                {paymentTab === 'qr' && (
-                  <div className="p-4 rounded-2xl bg-white border border-amber-300 shadow-2xs space-y-3 animate-fade-in text-center">
+                {/* Payee Details & Exact Amount Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  {/* Payee Name & Phone */}
+                  <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200 flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-slate-500 font-bold uppercase block">
-                        Scan or Upload QR to Pay ₹{advanceAmount}
-                      </span>
-                      <strong className="text-xs text-orange-800">Payee: {OFFICIAL_PAYEE_NAME}</strong>
+                      <span className="text-[10px] text-slate-500 font-semibold block">Payee Name:</span>
+                      <strong className="text-slate-900 text-xs block">{OFFICIAL_PAYEE_NAME}</strong>
+                      <span className="text-[11px] text-slate-600 font-mono mt-0.5 block">{OFFICIAL_PHONE} (PhonePe/Paytm)</span>
                     </div>
-
-                    {/* QR Code Display */}
-                    <div className="py-1">
-                      <img
-                        src={qrDataUrl || qrCodeUrl}
-                        alt={`UPI QR Code for ₹${advanceAmount}`}
-                        className="w-48 h-48 mx-auto rounded-2xl border-2 border-amber-300 shadow-md p-2 bg-white"
-                      />
-                    </div>
-
-                    {/* Save QR to Photos Button */}
                     <button
                       type="button"
-                      onClick={handleDownloadQr}
-                      className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 active:scale-95 transition-all"
+                      onClick={() => handleCopy(OFFICIAL_PHONE, 'phone')}
+                      className="p-2 rounded-lg bg-white border border-amber-200 hover:bg-orange-50 text-orange-700 font-bold text-[10px] flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                      title="Copy Phone Number"
                     >
-                      <Download className="w-4 h-4" />
-                      <span>Save QR Code to Photos / Gallery</span>
+                      {copiedField === 'phone' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === 'phone' ? 'Copied' : 'Copy'}</span>
                     </button>
-
-                    {/* 3 Step Instructions for Gallery Scan */}
-                    <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200 text-[11px] text-slate-700 space-y-1 text-left">
-                      <span className="font-bold text-orange-950 block">How to pay using Gallery QR:</span>
-                      <p>1. Tap <strong>Save QR Code</strong> above (or take a screenshot)</p>
-                      <p>2. Open PhonePe or Google Pay ➡️ Tap the <strong>Scanner 📷 icon</strong></p>
-                      <p>3. Tap the <strong>Gallery 🖼️ icon</strong> in the scanner ➡️ Select this QR code image to pay ₹{advanceAmount}!</p>
-                      <span className="text-[10px] text-emerald-800 font-semibold block pt-0.5">
-                        ✓ As seen in PhonePe: QR from gallery allows up to ₹2,000 without any bank error!
-                      </span>
-                    </div>
                   </div>
-                )}
 
-                {/* TAB 3: 1-TAP APP DEEP LINKS */}
-                {paymentTab === 'intent' && (
-                  <div className="space-y-3 animate-fade-in">
-                    {/* Bank Notice */}
-                    <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-[11px] leading-relaxed flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                      <div>
-                        <strong>Bank Advisory:</strong> Some banks (like SBI or Paytm) block automated browser links for personal accounts. If your payment fails with "mode not allowed" or "limit exceeded", please switch to <strong>Phone No.</strong> or <strong>Scan QR</strong> above!
-                      </div>
+                  {/* 20% Token Amount */}
+                  <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-emerald-800 font-semibold block">20% Advance to Pay:</span>
+                      <strong className="text-emerald-700 text-base font-black block leading-tight">₹{advanceAmount}</strong>
+                      <span className="text-[9.5px] text-slate-500 block">Balance at Gate: ₹{codBalance}</span>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-2.5">
-                      {/* Paytm */}
-                      <button
-                        type="button"
-                        onClick={() => handleOpenSpecificUpiApp('paytm')}
-                        className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-sky-400 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-[#F4F8FD] p-1 flex items-center justify-center shrink-0 border border-sky-100">
-                          <img src="/icons/paytm-app.svg" alt="Paytm" className="w-8 h-auto object-contain" />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-sky-600 transition-colors">
-                            Paytm
-                          </span>
-                          <span className="text-[9.5px] text-emerald-600 font-bold block truncate">
-                            Fast & Direct UPI
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* Google Pay */}
-                      <button
-                        type="button"
-                        onClick={() => handleOpenSpecificUpiApp('gpay')}
-                        className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 border border-slate-100 shadow-2xs">
-                          <img src="/icons/gpay-app.svg" alt="G Pay" className="w-7 h-7 object-contain" />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-blue-600 transition-colors">
-                            G Pay
-                          </span>
-                          <span className="text-[9.5px] text-slate-500 font-medium block truncate">
-                            Google Pay Instant
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* PhonePe */}
-                      <button
-                        type="button"
-                        onClick={() => handleOpenSpecificUpiApp('phonepe')}
-                        className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-purple-50 p-1 flex items-center justify-center shrink-0 border border-purple-100">
-                          <img src="/icons/phonepe-app.svg" alt="PhonePe" className="w-7 h-7 object-contain" />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-purple-700 transition-colors">
-                            PhonePe
-                          </span>
-                          <span className="text-[9.5px] text-purple-700 font-bold block truncate">
-                            Popular in NIT
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* CRED UPI */}
-                      <button
-                        type="button"
-                        onClick={() => handleOpenSpecificUpiApp('cred')}
-                        className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-slate-800 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-slate-900 p-1 flex items-center justify-center shrink-0">
-                          <img src="/icons/cred-app.svg" alt="CRED" className="w-7 h-7 object-contain" />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-black transition-colors">
-                            CRED UPI
-                          </span>
-                          <span className="text-[9.5px] text-emerald-600 font-bold block truncate">
-                            CRED Member Pay
-                          </span>
-                        </div>
-                      </button>
-                    </div>
-
-                    {/* Other UPI Apps button */}
                     <button
                       type="button"
-                      onClick={() => handleOpenSpecificUpiApp('generic')}
-                      className="w-full py-2 px-3 rounded-xl bg-amber-50/80 hover:bg-amber-100 border border-amber-200 text-amber-950 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                      onClick={() => handleCopy(advanceAmount.toString(), 'amount')}
+                      className="p-2 rounded-lg bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-700 font-bold text-[10px] flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                      title="Copy Amount"
                     >
-                      <ExternalLink className="w-3.5 h-3.5 text-amber-700 shrink-0" />
-                      <span>Other UPI Apps (BHIM, Navi, Amazon Pay, etc.)</span>
+                      {copiedField === 'amount' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === 'amount' ? 'Copied' : 'Copy ₹'}</span>
                     </button>
                   </div>
+                </div>
+              </div>
+
+              {/* QR Code Card (Scan with PhonePe / GPay / Paytm) */}
+              <div className="p-3.5 rounded-2xl bg-white border border-amber-200 shadow-2xs space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <QrCode className="w-4 h-4 text-orange-600" />
+                    <span>Or Scan QR to Pay ₹{advanceAmount}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowQr(!showQr)}
+                    className="text-[11px] font-bold text-orange-600 hover:underline cursor-pointer"
+                  >
+                    {showQr ? 'Hide QR' : 'Show QR'}
+                  </button>
+                </div>
+
+                {showQr && (
+                  <div className="text-center py-1 space-y-2.5">
+                    <img
+                      src={qrDataUrl || qrCodeUrl}
+                      alt={`UPI QR Code for ₹${advanceAmount}`}
+                      className="w-44 h-44 mx-auto rounded-2xl border-2 border-amber-300 shadow-sm p-2 bg-white"
+                    />
+
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleDownloadQr}
+                        className="py-1.5 px-3.5 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 font-bold text-[11px] flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5 text-orange-600" />
+                        <span>Save QR to Photos / Gallery</span>
+                      </button>
+                    </div>
+
+                    <span className="text-[10px] text-slate-500 block font-medium">
+                      Scan using Google Pay, PhonePe, or Paytm scanner
+                    </span>
+                  </div>
                 )}
+              </div>
+
+              {/* Simple 3-Step Guide */}
+              <div className="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-slate-700 space-y-1.5">
+                <span className="font-extrabold text-orange-950 block text-[11px]">
+                  3 Easy Steps to Complete Your Order:
+                </span>
+                <div className="text-[11px] space-y-1 text-slate-600 leading-relaxed">
+                  <p>1. Copy the UPI ID <strong className="text-slate-900 font-mono">9390068197@ptyes</strong> (or scan QR code above).</p>
+                  <p>2. Open your <strong>PhonePe, Google Pay, or Paytm</strong> and transfer <strong className="text-slate-900">₹{advanceAmount}</strong> to <strong className="text-slate-900">Chanda Smithesh</strong>.</p>
+                  <p>3. Enter the <strong>12-digit UTR / Transaction Reference Number</strong> below and tap Confirm Order!</p>
+                </div>
               </div>
 
               {/* Payment Verification Proof Form */}

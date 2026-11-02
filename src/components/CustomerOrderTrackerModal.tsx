@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DeliveryOrder, DeliveryOrderStatus } from '../types/delivery';
-import { getLocalDeliveryOrders, fetchDeliveryOrders } from '../lib/deliveryOrders';
-import { X, Search, Truck, Clock, CheckCircle2, Package, MapPin, Banknote, Phone, MessageSquare, RefreshCw, AlertCircle } from 'lucide-react';
+import { getLocalDeliveryOrders, fetchDeliveryOrders, subscribeToDeliveryOrders } from '../lib/deliveryOrders';
+import { X, Search, Truck, Clock, CheckCircle2, Package, MapPin, Banknote, Phone, MessageSquare, RefreshCw, AlertCircle, ShieldCheck, Loader2 } from 'lucide-react';
 
 interface CustomerOrderTrackerModalProps {
   isOpen: boolean;
@@ -20,6 +20,7 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorNotice, setErrorNotice] = useState('');
 
+  // Initial load
   useEffect(() => {
     if (!isOpen) return;
 
@@ -50,6 +51,40 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
 
     loadInitial();
   }, [isOpen, initialOrderId]);
+
+  // Real-time subscription & periodic polling while modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const unsubscribe = subscribeToDeliveryOrders(
+      () => {},
+      (updatedOrder) => {
+        setSelectedOrder((prev) => {
+          if (!prev) return null;
+          if (prev.id === updatedOrder.id || prev.orderNumber === updatedOrder.orderNumber) {
+            return updatedOrder;
+          }
+          return prev;
+        });
+      }
+    );
+
+    const pollInterval = setInterval(async () => {
+      if (!selectedOrder) return;
+      try {
+        const all = await fetchDeliveryOrders();
+        const found = all.find((o) => o.id === selectedOrder.id || o.orderNumber === selectedOrder.orderNumber);
+        if (found && (found.status !== selectedOrder.status || found.updatedAt !== selectedOrder.updatedAt)) {
+          setSelectedOrder(found);
+        }
+      } catch {}
+    }, 4000);
+
+    return () => {
+      unsubscribe();
+      clearInterval(pollInterval);
+    };
+  }, [isOpen, selectedOrder?.id]);
 
   // Prevent background body scroll chaining on iOS Safari & mobile devices
   useEffect(() => {
@@ -197,7 +232,9 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-bold text-xs text-slate-900">₹{ord.finalPayable}</span>
+                    <span className="font-bold text-xs text-slate-900">
+                      ₹{(ord.codBalance ?? ord.finalPayable).toLocaleString('en-IN')}
+                    </span>
                     <span className="text-[10px] font-bold block text-emerald-700 uppercase">
                       {ord.status.replace('_', ' ')}
                     </span>
@@ -221,7 +258,7 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
                     ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
                     : selectedOrder.status === 'cancelled'
                     ? 'bg-red-50 border-red-200 text-red-900'
-                    : 'bg-orange-50 border-orange-200 text-orange-900'
+                    : 'bg-amber-50 border-amber-300 text-amber-950'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -240,39 +277,71 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
 
                 <h4 className="font-black text-lg text-slate-900 capitalize mb-1">
                   {selectedOrder.status === 'pending'
-                    ? '🟡 Order Received — Awaiting Confirmation'
+                    ? selectedOrder.advanceAmount
+                      ? '🟡 20% Advance Received — Verifying with Bank'
+                      : '🟡 Order Received — Awaiting Confirmation'
                     : selectedOrder.status === 'confirmed'
-                    ? '🔵 Confirmed & Packing Fresh Crackers'
+                    ? '🔵 Advance Verified & Packing Crackers'
                     : selectedOrder.status === 'out_for_delivery'
-                    ? '🟣 Out for Delivery (Rider Dispatched)'
+                    ? '🟣 Out for Delivery (Rider on the Way)'
                     : selectedOrder.status === 'delivered'
                     ? '🟢 Delivered & COD Received!'
                     : '🔴 Order Cancelled'}
                 </h4>
 
                 <p className="text-xs opacity-90 leading-relaxed text-slate-700">
-                  {selectedOrder.status === 'pending' &&
-                    'Your order is in the dispatch queue. Store team will confirm shortly!'}
+                  {selectedOrder.status === 'pending' && (
+                    selectedOrder.advanceAmount
+                      ? `Matching ₹${selectedOrder.advanceAmount} advance credit for UTR ${selectedOrder.utrNumber}. Store will accept in ~1-2 mins!`
+                      : 'Your order is in the dispatch queue. Store team will confirm shortly!'
+                  )}
                   {selectedOrder.status === 'confirmed' &&
-                    'Our packing team is packing your fresh Sivakasi crackers right now. Estimated delivery within 1 to 2 hours!'}
+                    '20% Advance confirmed. Our packing team is preparing your fresh Sivakasi crackers right now for express delivery to NIT Gate!'}
                   {selectedOrder.status === 'out_for_delivery' &&
-                    `Rider ${selectedOrder.riderName ? `(${selectedOrder.riderName}) ` : ''}is on the way to your address! Please keep ₹${selectedOrder.finalPayable} cash or UPI ready.`}
+                    `Rider ${selectedOrder.riderName ? `(${selectedOrder.riderName}) ` : ''}is dispatched! Please keep ₹${(selectedOrder.codBalance ?? selectedOrder.finalPayable).toLocaleString('en-IN')} cash or UPI ready at entry gate.`}
                   {selectedOrder.status === 'delivered' &&
-                    'Order delivered successfully at your doorstep. Happy Diwali from Bheema Fireworks!'}
+                    'Order delivered successfully at your gate. Happy Diwali from Bheema Fireworks!'}
                   {selectedOrder.status === 'cancelled' &&
                     `Reason: ${selectedOrder.cancellationReason || 'Cancelled by store'}`}
                 </p>
               </div>
 
+              {/* 20% Advance Token Summary Badge */}
+              {selectedOrder.advanceAmount && (
+                <div className="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="text-[10px] text-emerald-800 font-bold uppercase block">
+                      20% Advance Booking Token
+                    </span>
+                    <span className="font-black text-emerald-700 text-sm">
+                      ₹{selectedOrder.advanceAmount.toLocaleString('en-IN')} Paid Online
+                    </span>
+                    {selectedOrder.utrNumber && (
+                      <span className="text-[10px] text-slate-500 block font-mono">
+                        UTR: {selectedOrder.utrNumber}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-slate-500 font-bold block">Gate COD Due:</span>
+                    <span className="font-black text-orange-600 text-sm">
+                      ₹{(selectedOrder.codBalance ?? selectedOrder.finalPayable).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Progress Steps */}
               <div className="p-4 rounded-2xl bg-white border border-amber-200 shadow-2xs space-y-3">
                 <div className="grid grid-cols-4 gap-1 text-center text-[10px] font-bold">
-                  {/* Step 1: Placed */}
+                  {/* Step 1: Placed / Advance */}
                   <div className="space-y-1">
                     <div className="w-7 h-7 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center mx-auto text-xs shadow-xs">
                       ✓
                     </div>
-                    <span className="text-emerald-700 block">Received</span>
+                    <span className="text-emerald-700 block truncate">
+                      {selectedOrder.advanceAmount ? 'Advance' : 'Received'}
+                    </span>
                   </div>
 
                   {/* Step 2: Confirmed */}
@@ -315,7 +384,7 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
                           : 'text-slate-400 block'
                       }
                     >
-                      On the Way
+                      On Way
                     </span>
                   </div>
 
@@ -365,11 +434,32 @@ export const CustomerOrderTrackerModal: React.FC<CustomerOrderTrackerModalProps>
                   ))}
                 </div>
 
-                <div className="pt-2 border-t border-amber-200 flex items-baseline justify-between text-xs">
-                  <span className="font-bold text-slate-700">Total Cash on Delivery:</span>
-                  <span className="font-black text-base text-orange-600">
-                    ₹{selectedOrder.finalPayable.toLocaleString('en-IN')}
-                  </span>
+                <div className="pt-2 border-t border-amber-200 space-y-1 text-xs">
+                  {selectedOrder.advanceAmount ? (
+                    <>
+                      <div className="flex items-center justify-between text-slate-500 text-[11px]">
+                        <span>Order Total:</span>
+                        <span>₹{selectedOrder.totalOnlineAmount.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-emerald-700 text-[11px] font-bold">
+                        <span>20% Advance Online (Paid):</span>
+                        <span>-₹{selectedOrder.advanceAmount.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="pt-1 border-t border-dashed border-amber-200 flex items-baseline justify-between">
+                        <span className="font-bold text-slate-900">Balance at Gate (80% COD):</span>
+                        <span className="font-black text-base text-orange-600">
+                          ₹{(selectedOrder.codBalance ?? selectedOrder.finalPayable).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex items-baseline justify-between">
+                      <span className="font-bold text-slate-700">Total Cash on Delivery:</span>
+                      <span className="font-black text-base text-orange-600">
+                        ₹{selectedOrder.finalPayable.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 

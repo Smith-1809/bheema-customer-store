@@ -22,7 +22,8 @@ import {
   ArrowRight, 
   ArrowLeft,
   AlertCircle,
-  AlertTriangle, 
+  AlertTriangle,
+  HelpCircle, 
   Sparkles, 
   Copy, 
   Check, 
@@ -857,11 +858,60 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                         </span>
                       </div>
                     </div>
-                  ) : (
-                    <span className="text-[10px] text-slate-500 block mt-1">
-                      Found under &quot;Transaction Details&quot; in PhonePe, GPay, or Paytm after paying ₹{advanceAmount}
-                    </span>
-                  )}
+                  ) : null}
+
+                  {/* How to copy UTR from payment apps */}
+                  <div className="mt-2.5 p-3 rounded-2xl bg-amber-50/70 border border-amber-200/90 shadow-2xs space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                        <HelpCircle className="w-3.5 h-3.5 text-orange-600" />
+                        <span>How to find &amp; copy your 12-digit UTR:</span>
+                      </span>
+                      <span className="text-[9.5px] font-black text-orange-800 bg-amber-200/60 px-2 py-0.5 rounded-full border border-amber-300">
+                        12 Digits Only
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 text-[10.5px]">
+                      {/* PhonePe */}
+                      <div className="p-2 rounded-xl bg-white border border-purple-200 shadow-2xs">
+                        <div className="flex items-center gap-1 font-bold text-purple-900 mb-0.5 text-[11px]">
+                          <span className="w-2 h-2 rounded-full bg-purple-600 inline-block"></span>
+                          <span>PhonePe</span>
+                        </div>
+                        <p className="text-slate-600 leading-snug text-[10px]">
+                          Go to <strong>History</strong> &rarr; Tap ₹{advanceAmount} payment &rarr; In &quot;Transfer Details&quot;, tap the <strong>Copy 📋</strong> icon next to <strong>UTR: 4xxxxxxxxxxx</strong>.
+                        </p>
+                      </div>
+
+                      {/* Google Pay */}
+                      <div className="p-2 rounded-xl bg-white border border-blue-200 shadow-2xs">
+                        <div className="flex items-center gap-1 font-bold text-blue-900 mb-0.5 text-[11px]">
+                          <span className="w-2 h-2 rounded-full bg-blue-600 inline-block"></span>
+                          <span>Google Pay</span>
+                        </div>
+                        <p className="text-slate-600 leading-snug text-[10px]">
+                          Scroll down to <strong>Show transaction history</strong> &rarr; Tap payment to Smithesh &rarr; Tap copy icon on <strong>UPI transaction ID</strong> (12 digits).
+                        </p>
+                      </div>
+
+                      {/* Paytm */}
+                      <div className="p-2 rounded-xl bg-white border border-sky-200 shadow-2xs">
+                        <div className="flex items-center gap-1 font-bold text-sky-900 mb-0.5 text-[11px]">
+                          <span className="w-2 h-2 rounded-full bg-sky-600 inline-block"></span>
+                          <span>Paytm</span>
+                        </div>
+                        <p className="text-slate-600 leading-snug text-[10px]">
+                          Open <strong>Balance &amp; History</strong> &rarr; Tap payment to Smithesh &rarr; Copy the 12-digit <strong>UPI Ref No / UTR</strong>.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[9.5px] text-slate-500 pt-0.5">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                      <span>The UTR is always a 12-digit numeric code on your bank debit receipt (e.g. 430987123456).</span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Payment Screenshot Upload (Optional) */}

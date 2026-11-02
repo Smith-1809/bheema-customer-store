@@ -1,6 +1,7 @@
 import { Product } from '../data/products';
 
 export type DeliveryOrderStatus = 
+  | 'pending_verification' // 🟡 New Order with 20% advance submitted, awaiting admin UTR verification
   | 'pending'           // 🟡 New COD Order placed by customer, awaiting admin approval
   | 'confirmed'         // 🔵 Accepted by store, packing in progress (estimated 1-2 hours)
   | 'out_for_delivery'  // 🟣 Assigned to rider, out on the road
@@ -54,6 +55,11 @@ export interface DeliveryOrder {
   couponDiscount: number;           // Extra coupon discount amount
   deliveryFee: number;              // Free above ₹999 or ₹0
   finalPayable: number;             // Total COD amount to collect at doorstep
+  advanceAmount?: number;           // 20% advance token amount paid online (e.g. ₹200)
+  codBalance?: number;              // Remaining 80% to collect on delivery (e.g. ₹800)
+  utrNumber?: string;               // 12-digit UPI UTR / Transaction reference
+  paymentScreenshotUrl?: string;    // Optional payment receipt screenshot
+  paymentStatus?: 'advance_pending' | 'advance_verified' | 'advance_rejected';
   paymentMethod: 'COD';
   status: DeliveryOrderStatus;
   statusHistory: StatusHistoryEntry[];

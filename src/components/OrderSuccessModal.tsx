@@ -95,6 +95,29 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             </button>
           </div>
 
+          {/* 20% Advance Token Receipt Box */}
+          {order.advanceAmount && (
+            <div className="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs">
+              <div>
+                <span className="text-[10px] text-emerald-800 font-bold uppercase block">
+                  20% Advance Booking Token
+                </span>
+                <span className="font-black text-emerald-700 text-sm">
+                  ₹{order.advanceAmount.toLocaleString('en-IN')} Paid Online
+                </span>
+                {order.utrNumber && (
+                  <span className="text-[10px] text-slate-500 block font-mono">
+                    UTR: {order.utrNumber}
+                  </span>
+                )}
+              </div>
+              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                <Check className="w-3 h-3 text-emerald-600" />
+                <span>Submitted</span>
+              </span>
+            </div>
+          )}
+
           {/* Expected Delivery & Payment Info */}
           <div className="grid grid-cols-2 gap-2.5">
             <div className="p-3 rounded-2xl bg-white border border-amber-200 shadow-2xs">
@@ -111,12 +134,14 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             <div className="p-3 rounded-2xl bg-white border border-amber-200 shadow-2xs">
               <span className="text-[10px] text-slate-500 font-bold block flex items-center gap-1">
                 <Banknote className="w-3 h-3 text-emerald-600" />
-                <span>Cash to Pay on Delivery</span>
+                <span>{order.advanceAmount ? 'Balance at Gate (80%)' : 'Cash to Pay on Delivery'}</span>
               </span>
               <span className="font-black text-sm sm:text-base text-emerald-700 mt-1 block">
-                ₹{order.finalPayable.toLocaleString('en-IN')}
+                ₹{(order.codBalance ?? order.finalPayable).toLocaleString('en-IN')}
               </span>
-              <span className="text-[9px] text-slate-500">Cash or UPI at doorstep</span>
+              <span className="text-[9px] text-slate-500">
+                {order.advanceAmount ? `Advance ₹${order.advanceAmount} paid` : 'Cash or UPI at doorstep'}
+              </span>
             </div>
           </div>
 

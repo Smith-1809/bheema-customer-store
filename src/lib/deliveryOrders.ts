@@ -34,6 +34,43 @@ export const saveLocalDeliveryOrders = (orders: DeliveryOrder[]) => {
 };
 
 /**
+ * Helper to map Supabase or raw JSON row into strongly-typed DeliveryOrder
+ */
+export const mapRowToDeliveryOrder = (row: any): DeliveryOrder => {
+  const customer = row.customer || {};
+  const advance = customer.advancePayment || {};
+
+  return {
+    id: row.id,
+    orderNumber: row.order_number,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    customer,
+    items: row.items || [],
+    itemCount: row.item_count || 0,
+    totalRetailAmount: Number(row.total_retail_amount || 0),
+    totalOnlineAmount: Number(row.total_online_amount || 0),
+    discountSavings: Number(row.discount_savings || 0),
+    appliedCoupon: row.applied_coupon || undefined,
+    couponDiscount: Number(row.coupon_discount || 0),
+    deliveryFee: Number(row.delivery_fee || 0),
+    finalPayable: Number(row.final_payable || 0),
+    advanceAmount: Number(row.advance_amount ?? advance.advanceAmount ?? 0) || undefined,
+    codBalance: Number(row.cod_balance ?? advance.codBalance ?? (row.final_payable - (advance.advanceAmount || 0))) || undefined,
+    utrNumber: row.utr_number || advance.utrNumber || undefined,
+    paymentScreenshotUrl: row.payment_screenshot_url || advance.paymentScreenshotUrl || undefined,
+    paymentStatus: row.payment_status || advance.paymentStatus || undefined,
+    paymentMethod: 'COD',
+    status: row.status as DeliveryOrderStatus,
+    statusHistory: row.status_history || [],
+    riderName: row.rider_name || undefined,
+    cancellationReason: row.cancellation_reason || undefined,
+    adminNotes: row.admin_notes || undefined,
+    source: 'online_store',
+  };
+};
+
+/**
  * Fetch all delivery orders from Supabase (falling back to localStorage)
  */
 export const fetchDeliveryOrders = async (): Promise<DeliveryOrder[]> => {
@@ -56,29 +93,7 @@ export const fetchDeliveryOrders = async (): Promise<DeliveryOrder[]> => {
     }
 
     if (data && Array.isArray(data)) {
-      const mapped: DeliveryOrder[] = data.map((row: any) => ({
-        id: row.id,
-        orderNumber: row.order_number,
-        createdAt: row.created_at,
-        updatedAt: row.updated_at,
-        customer: row.customer,
-        items: row.items,
-        itemCount: row.item_count,
-        totalRetailAmount: Number(row.total_retail_amount),
-        totalOnlineAmount: Number(row.total_online_amount),
-        discountSavings: Number(row.discount_savings),
-        appliedCoupon: row.applied_coupon || undefined,
-        couponDiscount: Number(row.coupon_discount || 0),
-        deliveryFee: Number(row.delivery_fee || 0),
-        finalPayable: Number(row.final_payable),
-        paymentMethod: 'COD',
-        status: row.status as DeliveryOrderStatus,
-        statusHistory: row.status_history || [],
-        riderName: row.rider_name || undefined,
-        cancellationReason: row.cancellation_reason || undefined,
-        adminNotes: row.admin_notes || undefined,
-        source: 'online_store',
-      }));
+      const mapped: DeliveryOrder[] = data.map(mapRowToDeliveryOrder);
 
       // Merge with any local orders not yet synced
       const remoteIds = new Set(mapped.map((o) => o.id));
@@ -106,15 +121,23 @@ export const generateOrderNumber = (): string => {
   return `BHEEMA-COD-${randomSuffix}`;
 };
 
+export interface OrderAdvanceDetails {
+  advanceAmount: number;
+  codBalance: number;
+  utrNumber: string;
+  paymentScreenshotUrl?: string;
+}
+
 /**
- * Place a new Cash on Delivery Order from Storefront
+ * Place a new Cash on Delivery Order from Storefront (with 20% advance token support)
  */
 export const placeCodOrder = async (
   customer: DeliveryCustomerInfo,
   items: DeliveryOrderItem[],
   appliedCoupon?: string,
   couponDiscount: number = 0,
-  deliveryFee: number = 0
+  deliveryFee: number = 0,
+  advanceDetails?: OrderAdvanceDetails
 ): Promise<DeliveryOrder> => {
   const now = new Date().toISOString();
   const id = `order_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
@@ -126,12 +149,31 @@ export const placeCodOrder = async (
   const finalPayable = Math.max(0, totalOnlineAmount - couponDiscount + deliveryFee);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
+  const advanceAmount = advanceDetails ? advanceDetails.advanceAmount : Math.round(finalPayable * 0.20);
+  const codBalance = advanceDetails ? advanceDetails.codBalance : Math.max(0, finalPayable - advanceAmount);
+  const utrNumber = advanceDetails?.utrNumber || '';
+  const paymentScreenshotUrl = advanceDetails?.paymentScreenshotUrl || '';
+
+  const customerWithAdvance = {
+    ...customer,
+    advancePayment: advanceDetails
+      ? {
+          advanceAmount,
+          codBalance,
+          utrNumber,
+          paymentScreenshotUrl,
+          paymentStatus: 'advance_pending',
+          submittedAt: now,
+        }
+      : undefined,
+  };
+
   const newOrder: DeliveryOrder = {
     id,
     orderNumber,
     createdAt: now,
     updatedAt: now,
-    customer,
+    customer: customerWithAdvance,
     items,
     itemCount,
     totalRetailAmount,
@@ -141,13 +183,20 @@ export const placeCodOrder = async (
     couponDiscount,
     deliveryFee,
     finalPayable,
+    advanceAmount: advanceDetails ? advanceAmount : undefined,
+    codBalance: advanceDetails ? codBalance : undefined,
+    utrNumber: advanceDetails ? utrNumber : undefined,
+    paymentScreenshotUrl: advanceDetails ? paymentScreenshotUrl : undefined,
+    paymentStatus: advanceDetails ? 'advance_pending' : undefined,
     paymentMethod: 'COD',
     status: 'pending',
     statusHistory: [
       {
         status: 'pending',
         timestamp: now,
-        note: 'Order placed by customer via online COD storefront. Awaiting store dispatch approval.',
+        note: advanceDetails
+          ? `Order submitted with 20% advance (₹${advanceAmount.toLocaleString('en-IN')}) via UPI. UTR: ${utrNumber}. Gate Balance: ₹${codBalance}.`
+          : 'Order placed by customer via online COD storefront. Awaiting store dispatch approval.',
       },
     ],
     source: 'online_store',
@@ -166,10 +215,14 @@ export const placeCodOrder = async (
   const supabase = getSupabase();
   if (supabase) {
     try {
+      const adminNotes = advanceDetails
+        ? `[20% ADVANCE: ₹${advanceAmount} | UTR: ${utrNumber} | Gate COD: ₹${codBalance}]`
+        : null;
+
       const { error } = await supabase.from('delivery_orders').insert({
         id: newOrder.id,
         order_number: newOrder.orderNumber,
-        customer: newOrder.customer,
+        customer: customerWithAdvance,
         items: newOrder.items,
         item_count: newOrder.itemCount,
         total_retail_amount: newOrder.totalRetailAmount,
@@ -184,7 +237,7 @@ export const placeCodOrder = async (
         status_history: newOrder.statusHistory,
         rider_name: null,
         cancellation_reason: null,
-        admin_notes: null,
+        admin_notes: adminNotes,
         source: 'online_store',
         created_at: newOrder.createdAt,
         updated_at: newOrder.updatedAt,
@@ -340,29 +393,7 @@ export const subscribeToDeliveryOrders = (
           try {
             const row = payload.new;
             if (!row) return;
-            const mapped: DeliveryOrder = {
-              id: row.id,
-              orderNumber: row.order_number,
-              createdAt: row.created_at,
-              updatedAt: row.updated_at,
-              customer: row.customer,
-              items: row.items,
-              itemCount: row.item_count,
-              totalRetailAmount: Number(row.total_retail_amount),
-              totalOnlineAmount: Number(row.total_online_amount),
-              discountSavings: Number(row.discount_savings),
-              appliedCoupon: row.applied_coupon || undefined,
-              couponDiscount: Number(row.coupon_discount || 0),
-              deliveryFee: Number(row.delivery_fee || 0),
-              finalPayable: Number(row.final_payable),
-              paymentMethod: 'COD',
-              status: row.status as DeliveryOrderStatus,
-              statusHistory: row.status_history || [],
-              riderName: row.rider_name || undefined,
-              cancellationReason: row.cancellation_reason || undefined,
-              adminNotes: row.admin_notes || undefined,
-              source: 'online_store',
-            };
+            const mapped = mapRowToDeliveryOrder(row);
             onOrderAdded(mapped);
           } catch (err) {
             console.error('Error handling realtime insert:', err);
@@ -376,29 +407,7 @@ export const subscribeToDeliveryOrders = (
           try {
             const row = payload.new;
             if (!row) return;
-            const mapped: DeliveryOrder = {
-              id: row.id,
-              orderNumber: row.order_number,
-              createdAt: row.created_at,
-              updatedAt: row.updated_at,
-              customer: row.customer,
-              items: row.items,
-              itemCount: row.item_count,
-              totalRetailAmount: Number(row.total_retail_amount),
-              totalOnlineAmount: Number(row.total_online_amount),
-              discountSavings: Number(row.discount_savings),
-              appliedCoupon: row.applied_coupon || undefined,
-              couponDiscount: Number(row.coupon_discount || 0),
-              deliveryFee: Number(row.delivery_fee || 0),
-              finalPayable: Number(row.final_payable),
-              paymentMethod: 'COD',
-              status: row.status as DeliveryOrderStatus,
-              statusHistory: row.status_history || [],
-              riderName: row.rider_name || undefined,
-              cancellationReason: row.cancellation_reason || undefined,
-              adminNotes: row.admin_notes || undefined,
-              source: 'online_store',
-            };
+            const mapped = mapRowToDeliveryOrder(row);
             onOrderUpdated(mapped);
           } catch (err) {
             console.error('Error handling realtime update:', err);
@@ -506,10 +515,10 @@ ${itemsText}
 *Total Items:* ${order.itemCount}
 *Online Direct Price:* ₹${order.totalOnlineAmount.toLocaleString('en-IN')}
 ${order.couponDiscount > 0 ? `*Coupon Discount:* -₹${order.couponDiscount}\n` : ''}*Delivery Fee:* ${order.deliveryFee === 0 ? 'FREE' : `₹${order.deliveryFee}`}
-*TOTAL COD PAYABLE:* *₹${order.finalPayable.toLocaleString('en-IN')}*
-----------------------------
+*TOTAL CRACKERS BILL:* *₹${order.finalPayable.toLocaleString('en-IN')}*
+${order.advanceAmount ? `*20% Advance Paid (UPI):* ₹${order.advanceAmount.toLocaleString('en-IN')} (UTR: ${order.utrNumber || 'N/A'})\n*BALANCE PAYABLE AT GATE:* *₹${(order.codBalance ?? (order.finalPayable - order.advanceAmount)).toLocaleString('en-IN')}*\n` : ''}----------------------------
 
-Please confirm and dispatch my order. Thank you!`;
+Please verify my 20% advance payment and dispatch my order. Thank you!`;
 
   return `https://api.whatsapp.com/send?phone=${storePhone}&text=${encodeURIComponent(message)}`;
 };

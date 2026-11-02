@@ -32,16 +32,28 @@ export const sendTelegramOrderAlert = async (order: DeliveryOrder): Promise<bool
       .join('\n');
 
     const message = [
-      `🚨 <b>NEW DIWALI ONLINE ORDER!</b> 🚨`,
+      order.advanceAmount
+        ? `🚨 <b>NEW ORDER — 20% ADVANCE TO VERIFY!</b> 🚨`
+        : `🚨 <b>NEW DIWALI ONLINE ORDER!</b> 🚨`,
       ``,
       `📦 <b>Order ID:</b> <code>${escapeHtml(order.orderNumber)}</code>`,
-      `💰 <b>Total COD Payable:</b> <b>₹${order.finalPayable.toLocaleString('en-IN')}</b>`,
+      `💰 <b>Total Bill:</b> <b>₹${order.finalPayable.toLocaleString('en-IN')}</b>`,
+      order.advanceAmount
+        ? `💳 <b>20% Advance Paid (UPI):</b> <b>₹${order.advanceAmount.toLocaleString('en-IN')}</b>`
+        : '',
+      order.utrNumber
+        ? `🧾 <b>UTR / Ref No:</b> <code>${escapeHtml(order.utrNumber)}</code>`
+        : '',
+      order.advanceAmount
+        ? `💵 <b>Balance COD at Gate:</b> <b>₹${(order.codBalance ?? (order.finalPayable - order.advanceAmount)).toLocaleString('en-IN')}</b>`
+        : '',
+      order.paymentScreenshotUrl ? `📸 <i>Payment screenshot attached</i>` : '',
       `🛍️ <b>Total Quantity:</b> ${order.itemCount} items`,
       ``,
       `👤 <b>Customer Details:</b>`,
       `• <b>Name:</b> ${escapeHtml(customer.fullName)}`,
       `• <b>Mobile:</b> 📞 <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a>`,
-      `• <b>Address:</b> ${escapeHtml(address)}`,
+      `• <b>Delivery Address:</b> ${escapeHtml(address)}`,
       customer.pincode ? `• <b>Pincode:</b> ${escapeHtml(customer.pincode)}` : '',
       customer.landmark ? `• <b>Landmark:</b> ${escapeHtml(customer.landmark)}` : '',
       customer.deliverySlot ? `• <b>Delivery Slot:</b> ${escapeHtml(customer.deliverySlot)}` : '',
@@ -51,7 +63,9 @@ export const sendTelegramOrderAlert = async (order: DeliveryOrder): Promise<bool
       itemsPreview,
       ``,
       `⚡ <a href="https://bheema-2.vercel.app/?view=dispatch"><b>👉 OPEN DISPATCH HUB IN COUNTER POS</b></a>`,
-      `<i>Bheema Fireworks • Real-Time Order Dispatch</i>`,
+      order.advanceAmount
+        ? `<i>Check PhonePe for ₹${order.advanceAmount} from ${escapeHtml(customer.fullName)} (UTR: ${escapeHtml(order.utrNumber || '')}) before dispatching!</i>`
+        : `<i>Bheema Fireworks • Real-Time Order Dispatch</i>`,
     ]
       .filter((line) => line !== '')
       .join('\n');

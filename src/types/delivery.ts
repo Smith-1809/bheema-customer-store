@@ -31,6 +31,7 @@ export interface DeliveryCustomerInfo {
   pincode: string;
   deliverySlot: string;    // e.g. "Express (1-2 Hours)", "Evening (6 PM - 9 PM)"
   notes?: string;          // Special instructions
+  advancePayment?: any;
 }
 
 export interface StatusHistoryEntry {

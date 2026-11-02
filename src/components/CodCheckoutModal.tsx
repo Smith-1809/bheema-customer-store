@@ -11,7 +11,7 @@ import {
   FREE_DELIVERY_THRESHOLD, 
   STANDARD_DELIVERY_FEE 
 } from '../types/delivery';
-import { placeCodOrder } from '../lib/deliveryOrders';
+import { placeCodOrder, checkDuplicateUtr } from '../lib/deliveryOrders';
 import { 
   X, 
   MapPin, 
@@ -21,7 +21,8 @@ import {
   Banknote, 
   ArrowRight, 
   ArrowLeft,
-  AlertCircle, 
+  AlertCircle,
+  AlertTriangle, 
   Sparkles, 
   Copy, 
   Check, 
@@ -91,6 +92,8 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   const [copiedField, setCopiedField] = useState<'upi' | 'phone' | 'amount' | null>(null);
   const [showQr, setShowQr] = useState(true);
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
+  const [isCheckingUtr, setIsCheckingUtr] = useState(false);
+  const [duplicateUtrWarning, setDuplicateUtrWarning] = useState<string | null>(null);
 
   // Official Receiver Credentials (Configured for Chanda Smithesh)
   const OFFICIAL_UPI_ID = '9390068197@ptyes';
@@ -103,6 +106,41 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   const streetInputRef = useRef<HTMLInputElement>(null);
   const utrInputRef = useRef<HTMLInputElement>(null);
   const formScrollRef = useRef<HTMLDivElement>(null);
+
+  // Real-time duplicate UTR verification
+  useEffect(() => {
+    const clean = utrNumber.trim().replace(/\D/g, '');
+    if (clean.length === 12) {
+      let isCurrent = true;
+      setIsCheckingUtr(true);
+      const timer = setTimeout(async () => {
+        try {
+          const res = await checkDuplicateUtr(clean);
+          if (isCurrent) {
+            setIsCheckingUtr(false);
+            if (res.isDuplicate) {
+              const msg = `⚠️ This UTR Number (${clean}) has ALREADY been used for Order #${res.existingOrderNumber || ''}! Every order requires a fresh, unique transaction from your bank app. Please check your payment receipt.`;
+              setDuplicateUtrWarning(msg);
+              setErrorMessage(msg);
+            } else {
+              setDuplicateUtrWarning(null);
+              setErrorMessage((prev) => (prev.includes('UTR') ? '' : prev));
+            }
+          }
+        } catch {
+          if (isCurrent) setIsCheckingUtr(false);
+        }
+      }, 350);
+
+      return () => {
+        isCurrent = false;
+        clearTimeout(timer);
+      };
+    } else {
+      setDuplicateUtrWarning(null);
+      setIsCheckingUtr(false);
+    }
+  }, [utrNumber]);
 
   // Safe background scroll lock on mobile
   useEffect(() => {
@@ -299,6 +337,22 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
     }
 
     setIsSubmitting(true);
+    setErrorMessage('');
+
+    // Re-verify duplicate UTR on submit
+    try {
+      const dupCheck = await checkDuplicateUtr(cleanUtr);
+      if (dupCheck.isDuplicate) {
+        const warnMsg = `⚠️ This UTR Number (${cleanUtr}) has ALREADY been used for Order #${dupCheck.existingOrderNumber || ''}. Each order requires a fresh, unique payment reference. Please enter the UTR from your latest transfer.`;
+        setErrorMessage(warnMsg);
+        setDuplicateUtrWarning(warnMsg);
+        utrInputRef.current?.focus();
+        setIsSubmitting(false);
+        return;
+      }
+    } catch (e) {
+      console.warn('UTR check error:', e);
+    }
     try {
       const cleanName = fullName.trim();
       const cleanPhone = phone.trim().replace(/\D/g, '');
@@ -754,9 +808,23 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
 
                 {/* 12-digit UTR Input */}
                 <div>
-                  <label htmlFor="checkout-utr" className="block text-[11px] font-bold text-slate-700 mb-1">
-                    12-Digit UPI Transaction / UTR No. <span className="text-red-500">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="checkout-utr" className="block text-[11px] font-bold text-slate-700">
+                      12-Digit UPI Transaction / UTR No. <span className="text-red-500">*</span>
+                    </label>
+                    {isCheckingUtr && (
+                      <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 animate-pulse">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        Verifying UTR...
+                      </span>
+                    )}
+                    {utrNumber.length === 12 && !isCheckingUtr && !duplicateUtrWarning && (
+                      <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
+                        <Check className="w-3 h-3" />
+                        Valid &amp; Unique
+                      </span>
+                    )}
+                  </div>
                   <input
                     id="checkout-utr"
                     ref={utrInputRef}
@@ -766,11 +834,34 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                     value={utrNumber}
                     onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 12))}
                     placeholder="e.g. 430987123456"
-                    className="w-full py-2.5 px-3 rounded-xl bg-white border border-amber-300 text-[16px] sm:text-xs text-slate-900 font-mono tracking-wider placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 shadow-xs"
+                    className={`w-full py-2.5 px-3 rounded-xl bg-white border text-[16px] sm:text-xs text-slate-900 font-mono tracking-wider placeholder-slate-400 focus:outline-none shadow-xs transition-all ${
+                      duplicateUtrWarning
+                        ? 'border-red-500 bg-red-50/50 text-red-950 focus:border-red-600 focus:ring-2 focus:ring-red-400/20'
+                        : 'border-amber-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20'
+                    }`}
                   />
-                  <span className="text-[10px] text-slate-500 block mt-1">
-                    Found under &quot;Transaction Details&quot; in PhonePe, GPay, or Paytm after paying ₹{advanceAmount}
-                  </span>
+
+                  {/* Duplicate UTR Warning Message */}
+                  {duplicateUtrWarning ? (
+                    <div className="mt-2 p-3 rounded-xl bg-red-50 border-2 border-red-400 text-red-900 text-xs flex items-start gap-2.5 shadow-sm animate-scale-up">
+                      <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <strong className="font-black text-red-950 block text-[11.5px]">
+                          ⚠️ Duplicate UTR Detected!
+                        </strong>
+                        <span className="text-[11px] leading-relaxed block mt-0.5 font-medium text-red-800">
+                          {duplicateUtrWarning}
+                        </span>
+                        <span className="text-[10px] text-red-700 block mt-1 font-semibold">
+                          👉 Please check your payment app and copy the unique UTR from your fresh payment.
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="text-[10px] text-slate-500 block mt-1">
+                      Found under &quot;Transaction Details&quot; in PhonePe, GPay, or Paytm after paying ₹{advanceAmount}
+                    </span>
+                  )}
                 </div>
 
                 {/* Payment Screenshot Upload (Optional) */}
@@ -867,11 +958,15 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
             <button
               type="submit"
               form="advance-form"
-              disabled={isSubmitting || utrNumber.trim().length !== 12}
+              disabled={isSubmitting || utrNumber.trim().length !== 12 || isCheckingUtr || !!duplicateUtrWarning}
               className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-emerald-600/25 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <span>Confirming Order...</span>
+              ) : isCheckingUtr ? (
+                <span>Verifying UTR...</span>
+              ) : duplicateUtrWarning ? (
+                <span>⚠️ Duplicate UTR — Enter Fresh UTR</span>
               ) : (
                 <>
                   <CheckCircle2 className="w-4 h-4 text-white" />

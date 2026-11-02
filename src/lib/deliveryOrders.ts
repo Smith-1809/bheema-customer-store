@@ -128,6 +128,83 @@ export interface OrderAdvanceDetails {
   paymentScreenshotUrl?: string;
 }
 
+export interface UtrCheckResult {
+  isDuplicate: boolean;
+  existingOrderNumber?: string;
+  existingCustomerName?: string;
+  existingDate?: string;
+}
+
+/**
+ * Checks if a 12-digit UTR has already been submitted in previous orders.
+ * Checks both local storage cache and live Supabase database.
+ */
+export const checkDuplicateUtr = async (utr: string): Promise<UtrCheckResult> => {
+  const cleanUtr = utr.trim().replace(/\D/g, '');
+  if (!cleanUtr || cleanUtr.length !== 12) {
+    return { isDuplicate: false };
+  }
+
+  // 1. Check local storage orders first (instant)
+  const localOrders = getLocalDeliveryOrders();
+  const localMatch = localOrders.find(
+    (o) =>
+      (o.utrNumber && o.utrNumber.trim() === cleanUtr) ||
+      (o.customer?.advancePayment?.utrNumber && o.customer.advancePayment.utrNumber.trim() === cleanUtr)
+  );
+
+  if (localMatch) {
+    return {
+      isDuplicate: true,
+      existingOrderNumber: localMatch.orderNumber,
+      existingCustomerName: localMatch.customer?.fullName,
+      existingDate: localMatch.createdAt,
+    };
+  }
+
+  // 2. Query Supabase delivery_orders table
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      // Query JSON path customer->advancePayment->>utrNumber
+      const { data, error } = await supabase
+        .from('delivery_orders')
+        .select('id, order_number, customer, created_at')
+        .filter('customer->advancePayment->>utrNumber', 'eq', cleanUtr)
+        .limit(1);
+
+      if (!error && data && data.length > 0) {
+        return {
+          isDuplicate: true,
+          existingOrderNumber: data[0].order_number,
+          existingCustomerName: data[0].customer?.fullName,
+          existingDate: data[0].created_at,
+        };
+      }
+
+      // Secondary check: query admin_notes containing UTR
+      const { data: noteData, error: noteError } = await supabase
+        .from('delivery_orders')
+        .select('id, order_number, customer, created_at')
+        .ilike('admin_notes', `%${cleanUtr}%`)
+        .limit(1);
+
+      if (!noteError && noteData && noteData.length > 0) {
+        return {
+          isDuplicate: true,
+          existingOrderNumber: noteData[0].order_number,
+          existingCustomerName: noteData[0].customer?.fullName,
+          existingDate: noteData[0].created_at,
+        };
+      }
+    } catch (err) {
+      console.warn('Error checking duplicate UTR in Supabase:', err);
+    }
+  }
+
+  return { isDuplicate: false };
+};
+
 /**
  * Place a new Cash on Delivery Order from Storefront (with 20% advance token support)
  */
@@ -153,6 +230,16 @@ export const placeCodOrder = async (
   const codBalance = advanceDetails ? advanceDetails.codBalance : Math.max(0, finalPayable - advanceAmount);
   const utrNumber = advanceDetails?.utrNumber || '';
   const paymentScreenshotUrl = advanceDetails?.paymentScreenshotUrl || '';
+
+  // Defensive uniqueness check: reject duplicate UTRs
+  if (utrNumber) {
+    const dupCheck = await checkDuplicateUtr(utrNumber);
+    if (dupCheck.isDuplicate) {
+      throw new Error(
+        `⚠️ This UTR Number (${utrNumber}) has already been used for Order ${dupCheck.existingOrderNumber || ''}. Each order requires a fresh, unique 12-digit payment transaction reference.`
+      );
+    }
+  }
 
   const customerWithAdvance = {
     ...customer,

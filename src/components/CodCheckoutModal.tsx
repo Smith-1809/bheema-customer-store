@@ -86,7 +86,7 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   // 20% Advance Payment State
   const [utrNumber, setUtrNumber] = useState('');
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
-  const [copiedField, setCopiedField] = useState<'upi' | 'phone' | null>(null);
+  const [copiedField, setCopiedField] = useState<'upi' | 'phone' | 'amount' | null>(null);
   const [showQr, setShowQr] = useState(true);
 
   // Official Receiver Credentials (Configured for Chanda Smithesh)
@@ -162,12 +162,80 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   const upiIntentUrl = `upi://pay?pa=${encodeURIComponent(OFFICIAL_UPI_ID)}&pn=${encodeURIComponent(OFFICIAL_PAYEE_NAME)}&am=${advanceAmount}&cu=INR&tn=${encodeURIComponent(`Bheema_Advance_${fullName.trim() || 'Order'}`)}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiIntentUrl)}&margin=10`;
 
-  const handleCopy = (text: string, field: 'upi' | 'phone') => {
+  const handleCopy = (text: string, field: 'upi' | 'phone' | 'amount') => {
     try {
       navigator.clipboard.writeText(text);
       setCopiedField(field);
       setTimeout(() => setCopiedField(null), 2000);
     } catch {}
+  };
+
+  // Launch targeted UPI application directly on mobile without random app chooser
+  const handleOpenSpecificUpiApp = (app: 'paytm' | 'gpay' | 'phonepe' | 'cred' | 'generic') => {
+    setErrorMessage('');
+    const ua = navigator.userAgent || '';
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+    const isAndroid = /Android/i.test(ua);
+
+    const clientNote = `Bheema_${fullName.trim().replace(/\s+/g, '_') || 'Order'}`;
+    const upiQuery = `pa=${encodeURIComponent(OFFICIAL_UPI_ID)}&pn=${encodeURIComponent(OFFICIAL_PAYEE_NAME)}&am=${advanceAmount}&cu=INR&tn=${encodeURIComponent(clientNote)}`;
+
+    let targetUrl = '';
+
+    if (app === 'generic') {
+      targetUrl = `upi://pay?${upiQuery}`;
+    } else if (isIOS) {
+      // iOS URL Schemes (Official registered schemes in iOS Safari)
+      switch (app) {
+        case 'phonepe':
+          targetUrl = `phonepe://pay?${upiQuery}`;
+          break;
+        case 'gpay':
+          targetUrl = `tez://upi/pay?${upiQuery}`;
+          break;
+        case 'paytm':
+          targetUrl = `paytmmp://pay?${upiQuery}`;
+          break;
+        case 'cred':
+          targetUrl = `cred://upi/pay?${upiQuery}`;
+          break;
+      }
+    } else if (isAndroid) {
+      // Android package-targeted Intent URLs (Opens exact app directly, bypassing chooser)
+      switch (app) {
+        case 'phonepe':
+          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=com.phonepe.app;end`;
+          break;
+        case 'gpay':
+          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+          break;
+        case 'paytm':
+          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=net.one97.paytm;end`;
+          break;
+        case 'cred':
+          targetUrl = `intent://pay?${upiQuery}#Intent;scheme=upi;package=com.dreamplug.androidapp;end`;
+          break;
+      }
+    } else {
+      // Desktop / Fallback
+      switch (app) {
+        case 'phonepe':
+          targetUrl = `phonepe://pay?${upiQuery}`;
+          break;
+        case 'gpay':
+          targetUrl = `tez://upi/pay?${upiQuery}`;
+          break;
+        case 'paytm':
+          targetUrl = `paytmmp://pay?${upiQuery}`;
+          break;
+        case 'cred':
+          targetUrl = `cred://upi/pay?${upiQuery}`;
+          break;
+      }
+    }
+
+    // Attempt direct navigation to the targeted app
+    window.location.href = targetUrl;
   };
 
   // Compress & preview uploaded payment screenshot (client-side canvas)
@@ -575,22 +643,104 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                 </div>
               </div>
 
-              {/* 1-Tap Mobile UPI Intent Button */}
-              <div className="space-y-2">
-                <span className="text-[10px] uppercase font-bold text-amber-800 tracking-wider block">
-                  Pay ₹{advanceAmount.toLocaleString('en-IN')} via UPI
-                </span>
+              {/* Choose UPI App (2x2 Grid with Official Brand Logos) */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] uppercase font-black text-slate-900 tracking-wider block">
+                    Choose Your App to Pay ₹{advanceAmount.toLocaleString('en-IN')}
+                  </span>
+                  <span className="text-[10px] text-emerald-800 font-black px-2 py-0.5 rounded-full bg-emerald-100 border border-emerald-300">
+                    ⚡ 1-Tap Pre-filled
+                  </span>
+                </div>
 
-                <a
-                  href={upiIntentUrl}
-                  className="w-full py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all text-center"
+                <div className="grid grid-cols-2 gap-2.5">
+                  {/* Paytm */}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenSpecificUpiApp('paytm')}
+                    className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-sky-400 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-[#F4F8FD] p-1 flex items-center justify-center shrink-0 border border-sky-100">
+                      <img src="/icons/paytm-app.svg" alt="Paytm" className="w-8 h-auto object-contain" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-sky-600 transition-colors">
+                        Paytm
+                      </span>
+                      <span className="text-[9.5px] text-emerald-600 font-bold block truncate">
+                        Fast & Direct UPI
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Google Pay */}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenSpecificUpiApp('gpay')}
+                    className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 border border-slate-100 shadow-2xs">
+                      <img src="/icons/gpay-app.svg" alt="G Pay" className="w-7 h-7 object-contain" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-blue-600 transition-colors">
+                        G Pay
+                      </span>
+                      <span className="text-[9.5px] text-slate-500 font-medium block truncate">
+                        Google Pay Instant
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* PhonePe */}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenSpecificUpiApp('phonepe')}
+                    className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-purple-50 p-1 flex items-center justify-center shrink-0 border border-purple-100">
+                      <img src="/icons/phonepe-app.svg" alt="PhonePe" className="w-7 h-7 object-contain" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-purple-700 transition-colors">
+                        PhonePe
+                      </span>
+                      <span className="text-[9.5px] text-purple-700 font-bold block truncate">
+                        Popular in NIT
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* CRED UPI */}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenSpecificUpiApp('cred')}
+                    className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-slate-800 active:scale-95 transition-all text-left flex items-center gap-2.5 shadow-2xs group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-slate-900 p-1 flex items-center justify-center shrink-0">
+                      <img src="/icons/cred-app.svg" alt="CRED" className="w-7 h-7 object-contain" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="font-black text-xs sm:text-sm text-slate-900 block group-hover:text-black transition-colors">
+                        CRED UPI
+                      </span>
+                      <span className="text-[9.5px] text-emerald-600 font-bold block truncate">
+                        CRED Member Pay
+                      </span>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Other UPI Apps button */}
+                <button
+                  type="button"
+                  onClick={() => handleOpenSpecificUpiApp('generic')}
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50/80 hover:bg-amber-100 border border-amber-200 text-amber-950 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all"
                 >
-                  <ExternalLink className="w-4 h-4 shrink-0" />
-                  <span>⚡ Pay ₹{advanceAmount} via Any UPI App (GPay / PhonePe / Paytm)</span>
-                </a>
-                <p className="text-[10px] text-center text-slate-400">
-                  Tapping above directly opens your PhonePe/GPay with amount pre-filled!
-                </p>
+                  <ExternalLink className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                  <span>Other UPI Apps (BHIM, Navi, Amazon Pay, etc.)</span>
+                </button>
               </div>
 
               {/* QR Code and Direct Details Card */}
@@ -652,6 +802,21 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                     >
                       {copiedField === 'phone' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                       <span>{copiedField === 'phone' ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between bg-amber-50/60 p-2 rounded-xl">
+                    <div>
+                      <span className="text-[10px] text-slate-500 block">Exact 20% Amount:</span>
+                      <strong className="text-orange-600 font-black text-sm">₹{advanceAmount}</strong>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(advanceAmount.toString(), 'amount')}
+                      className="px-2.5 py-1 rounded-lg bg-white border border-amber-200 text-orange-700 font-bold text-[10px] flex items-center gap-1 active:scale-95"
+                    >
+                      {copiedField === 'amount' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedField === 'amount' ? 'Copied' : 'Copy ₹'}</span>
                     </button>
                   </div>
                 </div>

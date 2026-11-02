@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" fill="none">
+  <rect width="120" height="70" rx="16" fill="#F4F8FD"/>
+  <!-- Paytm text representation -->
+  <text x="14" y="38" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="28" fill="#002E6E">Pay</text>
+  <text x="68" y="38" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="28" fill="#00BAF2">tm</text>
+  <!-- UPI badge line -->
+  <rect x="14" y="47" width="92" height="13" rx="4" fill="#002E6E"/>
+  <text x="46" y="57" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="9" fill="#00BAF2" letter-spacing="2">UPI</text>
+</svg>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import bheemaLogoCirclePng from '../assets/bheema-logo-circle.png';
 import bheemaLogoCircleWebp from '../assets/bheema-logo-circle.webp';
-import { X, Sparkles, Download, Check, ShieldCheck, MessageCircle, Phone, Award } from 'lucide-react';
+import { X, Sparkles, ShieldCheck, Award } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface BrandLogoModalProps {
@@ -10,8 +10,6 @@ interface BrandLogoModalProps {
 }
 
 export const BrandLogoModal: React.FC<BrandLogoModalProps> = ({ isOpen, onClose }) => {
-  const [downloaded, setDownloaded] = useState(false);
-
   // Keyboard shortcut (Escape to close) & background scroll lock
   useEffect(() => {
     if (!isOpen) return;
@@ -45,22 +43,6 @@ export const BrandLogoModal: React.FC<BrandLogoModalProps> = ({ isOpen, onClose 
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  const handleDownload = () => {
-    const a = document.createElement('a');
-    a.href = bheemaLogoCirclePng || bheemaLogoCircleWebp;
-    a.download = 'Bheema_Fireworks_Brand_Logo.png';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    setDownloaded(true);
-    setTimeout(() => setDownloaded(false), 2500);
-  };
-
-  const whatsappUrl = `https://wa.me/919390068197?text=${encodeURIComponent(
-    'Hi Bheema Fireworks! I am viewing your official brand store and would like to inquire about Diwali cracker orders.'
-  )}`;
 
   return (
     <div
@@ -126,7 +108,7 @@ export const BrandLogoModal: React.FC<BrandLogoModalProps> = ({ isOpen, onClose 
               </picture>
             </div>
 
-            {/* Sparkle Badges */}
+            {/* Sparkle Badge */}
             <div className="absolute top-2 right-2 p-1.5 rounded-full bg-white shadow-md border border-amber-300 text-amber-500 animate-bounce">
               <Sparkles className="w-4 h-4" />
             </div>
@@ -165,35 +147,11 @@ export const BrandLogoModal: React.FC<BrandLogoModalProps> = ({ isOpen, onClose 
           </div>
         </div>
 
-        {/* Modal Actions */}
-        <div className="p-4 sm:p-5 bg-amber-50/60 border-t border-amber-200 flex flex-col sm:flex-row gap-2.5">
-          <button
-            type="button"
-            onClick={handleDownload}
-            className="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-95 transition-all cursor-pointer"
-          >
-            {downloaded ? (
-              <>
-                <Check className="w-4 h-4 text-white" />
-                <span>Logo Saved to Downloads!</span>
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4 text-white" />
-                <span>Save / Download Logo</span>
-              </>
-            )}
-          </button>
-
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all"
-          >
-            <MessageCircle className="w-4 h-4 text-white" />
-            <span>WhatsApp</span>
-          </a>
+        {/* Clean Bottom Bar with subtle dismiss hint */}
+        <div className="p-3 bg-amber-50/80 border-t border-amber-200 text-center">
+          <p className="text-[10.5px] text-slate-500 font-medium">
+            Tap outside or press <kbd className="px-1.5 py-0.5 bg-white border border-amber-200 rounded text-[9.5px] font-mono text-slate-700 shadow-2xs">ESC</kbd> to return to shopping
+          </p>
         </div>
       </div>
     </div>

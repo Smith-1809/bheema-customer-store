@@ -23,6 +23,7 @@ interface StorefrontNavbarProps {
   onUpdateQuantity: (product: Product, newQty: number) => void;
   onOpenProductDetail?: (product: Product) => void;
   onScrollToCatalog?: () => void;
+  onOpenLogoModal?: () => void;
 }
 
 export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
@@ -42,6 +43,7 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
   onUpdateQuantity,
   onOpenProductDetail,
   onScrollToCatalog,
+  onOpenLogoModal,
 }) => {
   // Dropdown visibility states
   const [showDesktopDropdown, setShowDesktopDropdown] = useState(false);
@@ -156,23 +158,43 @@ export const StorefrontNavbar: React.FC<StorefrontNavbarProps> = ({
             <div className="flex items-center gap-2.5 min-w-0">
               <div
                 id="navbar-brand-logo"
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 shadow-md shadow-amber-500/30 shrink-0 bg-gradient-to-tr from-amber-400 via-yellow-300 to-orange-500 border border-amber-300/80 overflow-hidden flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                title="Bheema Fireworks"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 shadow-md shadow-amber-500/30 shrink-0 bg-gradient-to-tr from-amber-400 via-yellow-300 to-orange-500 border border-amber-300/80 overflow-hidden flex items-center justify-center cursor-pointer transition-transform hover:scale-110 active:scale-95 group relative"
+                onClick={() => {
+                  if (onOpenLogoModal) {
+                    onOpenLogoModal();
+                  } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+                title="Tap to view official Bheema Fireworks brand logo"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onOpenLogoModal?.();
+                  }
+                }}
               >
                 <img
                   src={bheemaLogoCircle}
                   alt="Bheema Fireworks"
-                  className="w-full h-full object-contain rounded-full select-none"
+                  className="w-full h-full object-contain rounded-full select-none transition-transform group-hover:scale-105"
                 />
               </div>
 
-              <div className="min-w-0">
+              <div 
+                className="min-w-0 cursor-pointer group"
+                onClick={() => {
+                  if (onOpenLogoModal) onOpenLogoModal();
+                }}
+                title="Tap to view brand logo & details"
+              >
                 <div className="flex items-center gap-1.5">
-                  <h1 className="font-black text-base sm:text-lg tracking-tight text-slate-900 leading-none">
+                  <h1 className="font-black text-base sm:text-lg tracking-tight text-slate-900 leading-none group-hover:text-orange-600 transition-colors">
                     BHEEMA
                   </h1>
-                  <span className="text-[9px] sm:text-[10px] font-black uppercase px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300/80">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300/80 group-hover:bg-orange-500 group-hover:text-white transition-colors">
                     FIREWORKS
                   </span>
                 </div>

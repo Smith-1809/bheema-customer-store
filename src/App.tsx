@@ -18,6 +18,7 @@ import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { CustomerOrderTrackerModal } from './components/CustomerOrderTrackerModal';
 import { FestiveCrackerEffects } from './components/FestiveCrackerEffects';
 import { BrandLogoIntroSplash } from './components/BrandLogoIntroSplash';
+import { BrandLogoModal } from './components/BrandLogoModal';
 import { trackAddToCart, trackBeginCheckout, trackPurchase, trackSearch } from './utils/analytics';
 import { getSupabase } from './lib/supabase';
 import {
@@ -134,6 +135,7 @@ export function App() {
   const [placedOrder, setPlacedOrder] = useState<DeliveryOrder | null>(null);
   const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
   const [selectedProductDetail, setSelectedProductDetail] = useState<Product | null>(null);
   const [selectedBundleId, setSelectedBundleId] = useState<string | null>(null);
 
@@ -333,6 +335,7 @@ export function App() {
       <StorefrontNavbar
         cartCount={totalCartCount}
         cartTotal={totalOnlineAmount}
+        onOpenLogoModal={() => setIsLogoModalOpen(true)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenTracker={() => setIsTrackerOpen(true)}
         searchQuery={searchQuery}
@@ -557,6 +560,12 @@ export function App() {
           setTrackingOrderId(null);
         }}
         initialOrderId={trackingOrderId || undefined}
+      />
+
+      {/* Official Brand Logo Viewer Modal */}
+      <BrandLogoModal
+        isOpen={isLogoModalOpen}
+        onClose={() => setIsLogoModalOpen(false)}
       />
 
       {/* Product Detail Quick View Modal */}
@@ -799,20 +808,31 @@ export function App() {
       {/* Festive Footer (Sunrise Saffron & Marigold Light Theme) */}
       <footer className="mt-auto border-t border-amber-200 bg-amber-50/70 text-slate-600 text-xs py-8 px-4 text-center space-y-3">
         <div className="max-w-md mx-auto space-y-2">
-          <div className="flex items-center justify-center gap-2 text-slate-900 font-black text-sm">
-            <Sparkles className="w-4 h-4 text-orange-500" />
-            <span>BHEEMA FIREWORKS • DIWALI 2026</span>
-          </div>
+          <button
+            type="button"
+            onClick={() => setIsLogoModalOpen(true)}
+            className="flex items-center justify-center gap-2 text-slate-900 font-black text-sm hover:text-orange-600 transition-colors mx-auto cursor-pointer group"
+            title="Tap to view official brand logo & details"
+          >
+            <Sparkles className="w-4 h-4 text-orange-500 group-hover:rotate-12 transition-transform" />
+            <span className="underline decoration-amber-400 decoration-2 underline-offset-4">
+              BHEEMA FIREWORKS • DIWALI 2026
+            </span>
+          </button>
           <p className="text-[11px] text-slate-500 leading-relaxed">
             Fresh Sivakasi standard fireworks with fast local delivery. All products priced at direct online wholesale rates. Cash on Delivery (COD) available at your doorstep.
           </p>
 
-          <div className="flex items-center justify-center gap-3 pt-2 text-[11px] font-bold text-slate-600">
-            <button onClick={() => setIsTrackerOpen(true)} className="hover:text-orange-600 underline flex items-center gap-1.5">
+          <div className="flex items-center justify-center flex-wrap gap-3 pt-2 text-[11px] font-bold text-slate-600">
+            <button onClick={() => setIsLogoModalOpen(true)} className="hover:text-orange-600 underline text-orange-700 cursor-pointer font-extrabold">
+              <span>View Brand Logo</span>
+            </button>
+            <span>•</span>
+            <button onClick={() => setIsTrackerOpen(true)} className="hover:text-orange-600 underline flex items-center gap-1.5 cursor-pointer">
               <span>Track Your Placed Order</span>
             </button>
             <span>•</span>
-            <span className="text-emerald-700 font-bold">100% Cash on Delivery (Doorstep)</span>
+            <span className="text-emerald-700 font-bold">100% Cash on Delivery</span>
           </div>
         </div>
       </footer>

@@ -33,7 +33,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 1,
     "name": "MU 2.75 Bird",
     "category": "Lakshmi / Bird / Jalli Kattu",
-            "sellingPrice": 13.0,
+            "sellingPrice": 15,
         "aliases": [
       "75",
       "mu",
@@ -47,7 +47,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 2,
     "name": "W.G 3\u00bd Lakshmi",
     "category": "Lakshmi / Bird / Jalli Kattu",
-            "sellingPrice": 27.0,
+            "sellingPrice": 31,
         "aliases": [
       "lakshmi",
       "3\u00bd"
@@ -59,7 +59,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 3,
     "name": "MU 4\" Lakshmi",
     "category": "Lakshmi / Bird / Jalli Kattu",
-            "sellingPrice": 35.0,
+            "sellingPrice": 40,
         "aliases": [
       "lakshmi",
       "mu"
@@ -71,7 +71,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 4,
     "name": "MU 4\" Jumbo DLX laksmi",
     "category": "Lakshmi / Bird / Jalli Kattu",
-            "sellingPrice": 55.0,
+            "sellingPrice": 63,
         "aliases": [
       "laksmi",
       "dlx",
@@ -86,7 +86,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 5,
     "name": "W.G 4\" Gold DLX Lakshmi",
     "category": "Lakshmi / Bird / Jalli Kattu",
-            "sellingPrice": 70.0,
+            "sellingPrice": 81,
         "aliases": [
       "dlx",
       "lakshmi",
@@ -99,7 +99,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 6,
     "name": "Mithra\u2019s 5\" Jalli Kattu",
     "category": "Lakshmi / Bird / Jalli Kattu",
-            "sellingPrice": 120.0,
+            "sellingPrice": 138,
         "aliases": [
       "kattu",
       "mithra\u2019s",
@@ -113,7 +113,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 7,
     "name": "DPM FP Big",
     "category": "FP",
-            "sellingPrice": 185.0,
+            "sellingPrice": 213,
         "aliases": [
       "dpm",
       "fp",
@@ -126,7 +126,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 8,
     "name": "Swathik FP SPl",
     "category": "FP",
-            "sellingPrice": 210.0,
+            "sellingPrice": 241,
         "aliases": [
       "swathik",
       "fp",
@@ -139,7 +139,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 9,
     "name": "JRB FP Asoka",
     "category": "FP",
-            "sellingPrice": 250.0,
+            "sellingPrice": 288,
         "aliases": [
       "jrb",
       "asoka",
@@ -152,7 +152,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 10,
     "name": "WG FP Asoka",
     "category": "FP",
-            "sellingPrice": 250.0,
+            "sellingPrice": 288,
         "aliases": [
       "fp",
       "wg",
@@ -165,7 +165,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 11,
     "name": "Kamadhenu FP Asoka",
     "category": "FP",
-            "sellingPrice": 250.0,
+            "sellingPrice": 288,
         "aliases": [
       "kamadhenu",
       "fp",
@@ -178,7 +178,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 12,
     "name": "Lord FP Asoka (Brand)",
     "category": "FP",
-            "sellingPrice": 275.0,
+            "sellingPrice": 316,
         "aliases": [
       "(brand)",
       "lord",
@@ -192,7 +192,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 13,
     "name": "WG Color Koti FP",
     "category": "FP",
-            "sellingPrice": 400.0,
+            "sellingPrice": 460,
         "aliases": [
       "koti",
       "color",
@@ -206,7 +206,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 14,
     "name": "Cat color koti FP (Brand)",
     "category": "FP",
-            "sellingPrice": 550.0,
+            "sellingPrice": 633,
         "aliases": [
       "koti",
       "(brand)",
@@ -221,7 +221,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 15,
     "name": "VML DLX COLOR KOTI FP",
     "category": "FP",
-            "sellingPrice": 675.0,
+            "sellingPrice": 776,
         "aliases": [
       "vml",
       "dlx",
@@ -236,7 +236,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 16,
     "name": "GD GIFT PACK Small FP",
     "category": "FP",
-            "sellingPrice": 500.0,
+            "sellingPrice": 575,
         "aliases": [
       "pack",
       "gift",
@@ -251,7 +251,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 17,
     "name": "GD GIFT PACK Big FP",
     "category": "FP",
-            "sellingPrice": 1150.0,
+            "sellingPrice": 1323,
         "aliases": [
       "pack",
       "gift",
@@ -266,7 +266,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 18,
     "name": "Naraout Big",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 70.0,
+            "sellingPrice": 81,
         "aliases": [
       "naraout",
       "big",
@@ -279,7 +279,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 19,
     "name": "INDHU Mega Bullet Bomb",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 100.0,
+            "sellingPrice": 115,
         "aliases": [
       "mega",
       "bomb",
@@ -294,7 +294,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 20,
     "name": "MU White Tiger Bomb",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 275.0,
+            "sellingPrice": 316,
         "aliases": [
       "bomb",
       "white",
@@ -309,7 +309,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 21,
     "name": "Cat Atom DLX Bomb",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 400.0,
+            "sellingPrice": 460,
         "aliases": [
       "dlx",
       "bomb",
@@ -323,7 +323,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 22,
     "name": "AND Mighty Atom Bomb",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 650.0,
+            "sellingPrice": 747,
         "aliases": [
       "bomb",
       "mighty",
@@ -337,7 +337,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 23,
     "name": "Sethji Aandhi Tufan Atom Bomb",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 700.0,
+            "sellingPrice": 805,
         "aliases": [
       "aandhi",
       "tufan",
@@ -352,7 +352,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 24,
     "name": "1/2 paper Bomb Multicolor (5 pcs) Atom",
     "category": "Atom / Bullet / Naraout",
-            "sellingPrice": 180.0,
+            "sellingPrice": 207,
         "aliases": [
       "pcs)",
       "atom",
@@ -369,7 +369,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 25,
     "name": "Damo Smart Candle Fancy",
     "category": "Fancy",
-            "sellingPrice": 88.0,
+            "sellingPrice": 101,
         "aliases": [
       "damo",
       "smart",
@@ -383,7 +383,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 26,
     "name": "Darbar Angry Birds Fancy",
     "category": "Fancy",
-            "sellingPrice": 160.0,
+            "sellingPrice": 184,
         "aliases": [
       "darbar",
       "birds",
@@ -397,7 +397,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 27,
     "name": "SV Tim Tam Fancy",
     "category": "Fancy",
-            "sellingPrice": 180.0,
+            "sellingPrice": 207,
         "aliases": [
       "tam",
       "sv",
@@ -411,7 +411,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 28,
     "name": "DG GC Special",
     "category": "GC",
-    "sellingPrice": 208.0,
+    "sellingPrice": 239,
     "aliases": [
       "dg",
       "gc",
@@ -430,7 +430,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 29,
     "name": "Ayyan Photo Flash Fancy",
     "category": "Fancy",
-            "sellingPrice": 220.0,
+            "sellingPrice": 253,
         "aliases": [
       "flash",
       "ayyan",
@@ -444,7 +444,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 30,
     "name": "MU Ganga Jamuna Fancy",
     "category": "Fancy",
-            "sellingPrice": 220.0,
+            "sellingPrice": 253,
         "aliases": [
       "jamuna",
       "ganga",
@@ -458,7 +458,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 31,
     "name": "Vetri Helicopter Fancy",
     "category": "Fancy",
-            "sellingPrice": 240.0,
+            "sellingPrice": 276,
         "aliases": [
       "helicopter",
       "vetri",
@@ -471,7 +471,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 32,
     "name": "Lord Butterfly Fancy",
     "category": "Fancy",
-            "sellingPrice": 280.0,
+            "sellingPrice": 322,
         "aliases": [
       "lord",
       "butterfly",
@@ -484,7 +484,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 33,
     "name": "Ayyan Top Tucker Fancy",
     "category": "Fancy",
-            "sellingPrice": 280.0,
+            "sellingPrice": 322,
         "aliases": [
       "fancy",
       "ayyan",
@@ -498,7 +498,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 34,
     "name": "PKF King Of King Atom bomb (small)",
     "category": "Atom / Bullet / Naraout",
-    "sellingPrice": 288.0,
+    "sellingPrice": 331,
     "aliases": [
       "pkf",
       "king",
@@ -517,7 +517,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 35,
     "name": "Kisan C.C Butterfly Fancy",
     "category": "Fancy",
-            "sellingPrice": 320.0,
+            "sellingPrice": 368,
         "aliases": [
       "butterfly",
       "kisan",
@@ -530,7 +530,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 36,
     "name": "Ayyan Lemon Tree Fancy",
     "category": "Fancy",
-            "sellingPrice": 340.0,
+            "sellingPrice": 391,
         "aliases": [
       "lemon",
       "tree",
@@ -544,7 +544,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 37,
     "name": "Thai Drone Fancy",
     "category": "Fancy",
-            "sellingPrice": 340.0,
+            "sellingPrice": 391,
         "aliases": [
       "drone",
       "fancy",
@@ -557,7 +557,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 38,
     "name": "Ayyan Ninja GC Chakkar (2 pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 352.0,
+            "sellingPrice": 405,
         "aliases": [
       "ninja",
       "(2",
@@ -574,7 +574,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 39,
     "name": "Sky King Small Peacock Fancy",
     "category": "Fancy",
-            "sellingPrice": 420.0,
+            "sellingPrice": 483,
         "aliases": [
       "peacock",
       "small",
@@ -589,7 +589,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 40,
     "name": "Cock Whistling Wheel GC Fancy",
     "category": "Fancy",
-            "sellingPrice": 500.0,
+            "sellingPrice": 575,
         "aliases": [
       "gc",
       "whistling",
@@ -604,7 +604,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 41,
     "name": "Cylinder Fancy",
     "category": "Fancy",
-            "sellingPrice": 520.0,
+            "sellingPrice": 598,
         "aliases": [
       "cylinder",
       "fancy"
@@ -616,7 +616,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 42,
     "name": "Kisan Siren (5 pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 520.0,
+            "sellingPrice": 598,
         "aliases": [
       "pcs)",
       "(5",
@@ -631,7 +631,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 43,
     "name": "Sky King Mini Tri Color Fountain Fancy",
     "category": "Fancy",
-            "sellingPrice": 540.0,
+            "sellingPrice": 621,
         "aliases": [
       "fountain",
       "king",
@@ -648,7 +648,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 44,
     "name": "Top Star Super Koti Fancy",
     "category": "Fancy",
-            "sellingPrice": 560.0,
+            "sellingPrice": 644,
         "aliases": [
       "koti",
       "top",
@@ -663,7 +663,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 45,
     "name": "AND Popo (5 pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 600.0,
+            "sellingPrice": 690,
         "aliases": [
       "pcs)",
       "(5",
@@ -678,7 +678,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 46,
     "name": "Starwell Black Money (5 pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 640.0,
+            "sellingPrice": 736,
         "aliases": [
       "pcs)",
       "starwell",
@@ -694,7 +694,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 47,
     "name": "Race Car Fancy",
     "category": "Fancy",
-            "sellingPrice": 700.0,
+            "sellingPrice": 805,
         "aliases": [
       "race",
       "car",
@@ -707,7 +707,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 48,
     "name": "Damo Thunder Fancy",
     "category": "Fancy",
-            "sellingPrice": 880.0,
+            "sellingPrice": 1012,
         "aliases": [
       "damo",
       "fancy",
@@ -720,7 +720,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 49,
     "name": "INF Sunflr wheel Fancy",
     "category": "Fancy",
-            "sellingPrice": 880.0,
+            "sellingPrice": 1012,
         "aliases": [
       "sunflr",
       "wheel",
@@ -734,7 +734,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 50,
     "name": "ARM Snow Crystal Fountain (5pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 960.0,
+            "sellingPrice": 1104,
         "aliases": [
       "fountain",
       "(5pcs)",
@@ -750,7 +750,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 51,
     "name": "Kisan Jadugar (5 pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 960.0,
+            "sellingPrice": 1104,
         "aliases": [
       "jadugar",
       "pcs)",
@@ -765,7 +765,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 52,
     "name": "JRB Bada Peacock Fancy",
     "category": "Fancy",
-            "sellingPrice": 950.0,
+            "sellingPrice": 1093,
         "aliases": [
       "fancy",
       "jrb",
@@ -779,7 +779,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 53,
     "name": "Damo Holi Fruit (2 pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 1096.0,
+            "sellingPrice": 1260,
         "aliases": [
       "(2",
       "pcs)",
@@ -795,7 +795,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 54,
     "name": "Starwell MotuPatlu Fancy",
     "category": "Fancy",
-            "sellingPrice": 1000.0,
+            "sellingPrice": 1150,
         "aliases": [
       "motupatlu",
       "starwell",
@@ -808,7 +808,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 55,
     "name": "Cat Fun Zone (5pcs) Fancy",
     "category": "Fancy",
-            "sellingPrice": 1160.0,
+            "sellingPrice": 1334,
         "aliases": [
       "fun",
       "(5pcs)",
@@ -823,7 +823,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 56,
     "name": "Ayyan Dancing Queen Fancy",
     "category": "Fancy",
-            "sellingPrice": 1200.0,
+            "sellingPrice": 1380,
         "aliases": [
       "queen",
       "ayyan",
@@ -837,7 +837,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 57,
     "name": "AND Cocoemelon Fancy",
     "category": "Fancy",
-            "sellingPrice": 1100.0,
+            "sellingPrice": 1265,
         "aliases": [
       "cocoemelon",
       "fancy",
@@ -850,7 +850,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 58,
     "name": "CR Color Pinjore XXL Fancy",
     "category": "Fancy",
-            "sellingPrice": 1300.0,
+            "sellingPrice": 1495,
         "aliases": [
       "xxl",
       "pinjore",
@@ -865,7 +865,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 59,
     "name": "R.G GC Big (10 pcs)",
     "category": "GC",
-            "sellingPrice": 70.0,
+            "sellingPrice": 81,
         "aliases": [
       "(10",
       "big",
@@ -879,7 +879,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 60,
     "name": "SV GC Big",
     "category": "GC",
-            "sellingPrice": 210.0,
+            "sellingPrice": 241,
         "aliases": [
       "big",
       "sv",
@@ -892,7 +892,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 61,
     "name": "MU GC Big (25 pcs)",
     "category": "GC",
-            "sellingPrice": 210.0,
+            "sellingPrice": 241,
         "aliases": [
       "gc",
       "pcs)",
@@ -907,7 +907,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 62,
     "name": "WG Disco Wheel GC",
     "category": "GC",
-            "sellingPrice": 250.0,
+            "sellingPrice": 288,
         "aliases": [
       "gc",
       "disco",
@@ -921,7 +921,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 63,
     "name": "Vel G.C SPL",
     "category": "GC",
-            "sellingPrice": 220.0,
+            "sellingPrice": 253,
         "aliases": [
       "spl",
       "vel",
@@ -934,7 +934,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 64,
     "name": "YRJ Wire Chakkar GC",
     "category": "GC",
-            "sellingPrice": 300.0,
+            "sellingPrice": 345,
         "aliases": [
       "wire",
       "gc",
@@ -948,7 +948,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 65,
     "name": "DPM GC Dlx",
     "category": "GC",
-            "sellingPrice": 370.0,
+            "sellingPrice": 425,
         "aliases": [
       "dpm",
       "dlx",
@@ -961,7 +961,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 66,
     "name": "St. G.C Butterfly",
     "category": "GC",
-            "sellingPrice": 350.0,
+            "sellingPrice": 402,
         "aliases": [
       "butterfly",
       "st",
@@ -974,7 +974,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 67,
     "name": "CR Wire Chakkar SPL GC",
     "category": "GC",
-            "sellingPrice": 360.0,
+            "sellingPrice": 414,
         "aliases": [
       "wire",
       "gc",
@@ -989,7 +989,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 68,
     "name": "St Zami Chakkar Spl GC",
     "category": "GC",
-            "sellingPrice": 360.0,
+            "sellingPrice": 414,
         "aliases": [
       "gc",
       "spl",
@@ -1004,7 +1004,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 69,
     "name": "V Star Spinner GC Super DLX",
     "category": "GC",
-            "sellingPrice": 600.0,
+            "sellingPrice": 690,
         "aliases": [
       "spinner",
       "dlx",
@@ -1019,7 +1019,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 70,
     "name": "Loose 4F T-Star Thread",
     "category": "T-Star / Thread",
-            "sellingPrice": 12.0,
+            "sellingPrice": 14,
         "aliases": [
       "loose",
       "thread",
@@ -1034,7 +1034,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 71,
     "name": "D.G 1\u00bd T-Star Thread",
     "category": "T-Star / Thread",
-            "sellingPrice": 80.0,
+            "sellingPrice": 92,
         "aliases": [
       "star",
       "1\u00bd",
@@ -1048,7 +1048,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 72,
     "name": "Vel 4f T-Star Thread",
     "category": "T-Star / Thread",
-            "sellingPrice": 160.0,
+            "sellingPrice": 184,
         "aliases": [
       "star",
       "4f",
@@ -1063,7 +1063,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 73,
     "name": "MU 10\" Pencil",
     "category": "Pencil",
-            "sellingPrice": 120.0,
+            "sellingPrice": 138,
         "aliases": [
       "pencil",
       "10",
@@ -1076,7 +1076,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 74,
     "name": "Vel 15\" Pencil",
     "category": "Pencil",
-            "sellingPrice": 220.0,
+            "sellingPrice": 253,
         "aliases": [
       "pencil",
       "vel",
@@ -1089,7 +1089,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 75,
     "name": "1.25 comet (small sky shot)",
     "category": "Comet / Shot",
-            "sellingPrice": 58.0,
+            "sellingPrice": 67,
         "aliases": [
       "(small",
       "shot)",
@@ -1104,7 +1104,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 76,
     "name": "JRM 12 SHOT",
     "category": "Comet / Shot",
-            "sellingPrice": 250.0,
+            "sellingPrice": 288,
         "aliases": [
       "jrm",
       "shot",
@@ -1118,7 +1118,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 77,
     "name": "NSV Tiger 3\" comet 1PC (Medium sky shot)",
     "category": "Comet / Shot",
-            "sellingPrice": 350.0,
+            "sellingPrice": 402,
         "aliases": [
       "tiger",
       "shot)",
@@ -1135,7 +1135,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 78,
     "name": "JRB 4\" Comet (Big Sky shot)",
     "category": "Comet / Shot",
-            "sellingPrice": 550.0,
+            "sellingPrice": 633,
         "aliases": [
       "jrb",
       "(big",
@@ -1150,7 +1150,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 79,
     "name": "St 18 Shot Roman Candle",
     "category": "Comet / Shot",
-            "sellingPrice": 600.0,
+            "sellingPrice": 690,
         "aliases": [
       "roman",
       "18",
@@ -1166,7 +1166,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 80,
     "name": "NSV 30 SHOT",
     "category": "Comet / Shot",
-            "sellingPrice": 550.0,
+            "sellingPrice": 633,
         "aliases": [
       "30",
       "shot",
@@ -1180,7 +1180,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 81,
     "name": "NSV 4\" (2pcs) Comet (Big sky shot)",
     "category": "Comet / Shot",
-            "sellingPrice": 1200.0,
+            "sellingPrice": 1380,
         "aliases": [
       "(big",
       "(2pcs)",
@@ -1196,7 +1196,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 82,
     "name": "NSV 60 SHOT",
     "category": "Comet / Shot",
-            "sellingPrice": 1350.0,
+            "sellingPrice": 1552,
         "aliases": [
       "shot",
       "nsv",
@@ -1210,7 +1210,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 83,
     "name": "NSV Triple Street comet (Ultra Big sky shot)",
     "category": "Comet / Shot",
-            "sellingPrice": 1700.0,
+            "sellingPrice": 1955,
         "aliases": [
       "big",
       "shot)",
@@ -1228,7 +1228,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 84,
     "name": "DPM 120 Shot",
     "category": "Comet / Shot",
-            "sellingPrice": 2900.0,
+            "sellingPrice": 3335,
         "aliases": [
       "dpm",
       "120",
@@ -1242,7 +1242,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 85,
     "name": "Turkey 28 Wala",
     "category": "Wala",
-            "sellingPrice": 20.0,
+            "sellingPrice": 23,
         "aliases": [
       "turkey",
       "28",
@@ -1255,7 +1255,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 86,
     "name": "MU 200 Wala",
     "category": "Wala",
-            "sellingPrice": 100.0,
+            "sellingPrice": 115,
         "aliases": [
       "200",
       "mu",
@@ -1268,7 +1268,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 87,
     "name": "1K C Wala",
     "category": "Wala",
-            "sellingPrice": 220.0,
+            "sellingPrice": 253,
         "aliases": [
       "1k",
       "wala"
@@ -1280,7 +1280,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 88,
     "name": "MU 100 DX wala",
     "category": "Wala",
-            "sellingPrice": 300.0,
+            "sellingPrice": 345,
         "aliases": [
       "100",
       "dx",
@@ -1294,7 +1294,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 89,
     "name": "Goat 1K Wala (A)",
     "category": "Wala",
-            "sellingPrice": 350.0,
+            "sellingPrice": 402,
         "aliases": [
       "(a)",
       "1k",
@@ -1308,7 +1308,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 90,
     "name": "Lord 2K Wala",
     "category": "Wala",
-            "sellingPrice": 480.0,
+            "sellingPrice": 552,
         "aliases": [
       "wala",
       "lord",
@@ -1321,7 +1321,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 91,
     "name": "C 5000 WALA",
     "category": "Wala",
-            "sellingPrice": 1250.0,
+            "sellingPrice": 1438,
         "aliases": [
       "5000",
       "wala"
@@ -1333,7 +1333,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 92,
     "name": "Goat 10K Wala",
     "category": "Wala",
-            "sellingPrice": 3500.0,
+            "sellingPrice": 4025,
         "aliases": [
       "goat",
       "10k",
@@ -1346,7 +1346,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 93,
     "name": "GUN ROCKET",
     "category": "Rocket",
-            "sellingPrice": 65.0,
+            "sellingPrice": 75,
         "aliases": [
       "gun",
       "rocket"
@@ -1358,7 +1358,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 94,
     "name": "W.G Rocket Bomb",
     "category": "Rocket",
-            "sellingPrice": 210.0,
+            "sellingPrice": 241,
         "aliases": [
       "rocket",
       "bomb"
@@ -1370,7 +1370,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 95,
     "name": "Lord Lunik Rocket",
     "category": "Rocket",
-            "sellingPrice": 330.0,
+            "sellingPrice": 379,
         "aliases": [
       "rocket",
       "lord",
@@ -1383,7 +1383,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 96,
     "name": "W.G Lunik Rocket",
     "category": "Rocket",
-            "sellingPrice": 350.0,
+            "sellingPrice": 402,
         "aliases": [
       "rocket",
       "lunik"
@@ -1395,7 +1395,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 97,
     "name": "VEL 3 Sound Rocket",
     "category": "Rocket",
-            "sellingPrice": 450.0,
+            "sellingPrice": 518,
         "aliases": [
       "rocket",
       "vel",
@@ -1408,7 +1408,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 98,
     "name": "DPM 30CM SADA pipe",
     "category": "Pipe",
-            "sellingPrice": 50.0,
+            "sellingPrice": 57,
         "aliases": [
       "dpm",
       "sada",
@@ -1422,7 +1422,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 99,
     "name": "DPM 30CM COLOR pipe",
     "category": "Pipe",
-            "sellingPrice": 65.0,
+            "sellingPrice": 75,
         "aliases": [
       "dpm",
       "pipe",
@@ -1436,7 +1436,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 100,
     "name": "DPM 15CM COLOR pipe",
     "category": "Pipe",
-            "sellingPrice": 55.0,
+            "sellingPrice": 63,
         "aliases": [
       "dpm",
       "pipe",
@@ -1450,7 +1450,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 101,
     "name": "RMS 50cm Sada Pipe",
     "category": "Pipe",
-            "sellingPrice": 150.0,
+            "sellingPrice": 173,
         "aliases": [
       "rms",
       "pipe",
@@ -1464,7 +1464,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 102,
     "name": "RMS 50cm color Pipe",
     "category": "Pipe",
-            "sellingPrice": 300.0,
+            "sellingPrice": 345,
         "aliases": [
       "color",
       "rms",
@@ -1478,7 +1478,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 103,
     "name": "RMS 75cm Color Pipe",
     "category": "Pipe",
-            "sellingPrice": 550.0,
+            "sellingPrice": 633,
         "aliases": [
       "rms",
       "75cm",
@@ -1492,7 +1492,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 104,
     "name": "RMS 15cm Carnival 5 in 1 Pipes single color",
     "category": "Pipe",
-            "sellingPrice": 120.0,
+            "sellingPrice": 138,
         "aliases": [
       "pipes",
       "15cm",
@@ -1510,7 +1510,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 105,
     "name": "Sarajini 2 Sound Bomb",
     "category": "Other / Unclassified",
-            "sellingPrice": 65.0,
+            "sellingPrice": 75,
         "aliases": [
       "bomb",
       "sarajini",
@@ -1524,7 +1524,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 106,
     "name": "CAT 100 BIJILI Green",
     "category": "Other / Unclassified",
-            "sellingPrice": 58.0,
+            "sellingPrice": 67,
         "aliases": [
       "green",
       "cat",
@@ -1539,7 +1539,7 @@ export const MASTER_PRODUCTS: Product[] = [
     "serialNo": 107,
     "name": "POP POP",
     "category": "Other / Unclassified",
-            "sellingPrice": 400.0,
+            "sellingPrice": 460,
         "aliases": [
       "pop",
       "other"

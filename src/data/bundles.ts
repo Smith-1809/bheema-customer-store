@@ -35,10 +35,10 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "FP Asoka (Flower Pot)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-009", name: "JRB FP Asoka (₹250)" },
-          { id: "PRD-010", name: "WG FP Asoka (₹250)" },
-          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹250)" },
-          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹275)" }
+          { id: "PRD-009", name: "JRB FP Asoka (₹288)" },
+          { id: "PRD-010", name: "WG FP Asoka (₹288)" },
+          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹288)" },
+          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹316)" }
         ]
       },
       { productId: "PRD-015", defaultQty: 1, productName: "VML DLX COLOR KOTI FP" },
@@ -50,9 +50,9 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "GC Big (Ground Chakkar)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹70)" },
-          { id: "PRD-060", name: "SV GC Big (₹210)" },
-          { id: "PRD-061", name: "MU GC Big 25 pcs (₹210)" }
+          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹81)" },
+          { id: "PRD-060", name: "SV GC Big (₹242)" },
+          { id: "PRD-061", name: "MU GC Big 25 pcs (₹242)" }
         ]
       },
       { productId: "PRD-065", defaultQty: 1, productName: "DPM GC Dlx" },
@@ -63,8 +63,8 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "Pencil Sparkler",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-073", name: "MU 10\" Pencil (₹120)" },
-          { id: "PRD-074", name: "Vel 15\" Pencil (₹220)" }
+          { id: "PRD-073", name: "MU 10\" Pencil (₹138)" },
+          { id: "PRD-074", name: "Vel 15\" Pencil (₹253)" }
         ]
       },
       { productId: "PRD-075", defaultQty: 1, productName: "1.25 comet (small sky shot)" },
@@ -86,10 +86,10 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "FP Asoka (Flower Pot)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-009", name: "JRB FP Asoka (₹250)" },
-          { id: "PRD-010", name: "WG FP Asoka (₹250)" },
-          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹250)" },
-          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹275)" }
+          { id: "PRD-009", name: "JRB FP Asoka (₹288)" },
+          { id: "PRD-010", name: "WG FP Asoka (₹288)" },
+          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹288)" },
+          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹316)" }
         ]
       },
       {
@@ -98,9 +98,9 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "GC Big (Ground Chakkar)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹70)" },
-          { id: "PRD-060", name: "SV GC Big (₹210)" },
-          { id: "PRD-061", name: "MU GC Big 25 pcs (₹210)" }
+          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹81)" },
+          { id: "PRD-060", name: "SV GC Big (₹242)" },
+          { id: "PRD-061", name: "MU GC Big 25 pcs (₹242)" }
         ]
       },
       { productId: "PRD-001", defaultQty: 5, productName: "MU 2.75 Bird" },

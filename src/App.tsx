@@ -261,7 +261,7 @@ export function App() {
       updateCart(updated);
       setSelectedBundleId(null);
       setIsCartOpen(true);
-      trackAddToCart(bundle.name, bundle.id, bundle.id === 'BUNDLE-SMALL-COMBO-10' ? 1334 : 3565, 1);
+      trackAddToCart(bundle.name, bundle.id, bundle.id === 'BUNDLE-SMALL-COMBO-10' ? 1327 : 3995, 1);
     } else {
       showStockToast('Sorry, this combo cannot be added because items are currently sold out.', 'error');
     }
@@ -774,11 +774,11 @@ export function App() {
               <div className="flex items-center justify-between px-1">
                 <div>
                   <span className="text-[10px] text-stone-500 line-through font-bold block">
-                    {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 'MRP ₹9,338' : 'MRP ₹28,520'}
+                    {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 'MRP ₹10,290' : 'MRP ₹35,424'}
                   </span>
                   <div className="flex items-center gap-1.5">
                     <span className="text-base sm:text-lg font-black text-orange-600">
-                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '₹1,334' : '₹3,565'}
+                      {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '₹1,327' : '₹3,995'}
                     </span>
                     <span className="text-[10px] font-black text-white bg-red-600 px-2 py-0.5 rounded-full">
                       {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? '86% OFF' : '87% OFF'}
@@ -787,7 +787,7 @@ export function App() {
                 </div>
                 <div className="text-right">
                   <span className="text-xs text-emerald-700 font-black block">
-                    {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 'Save ₹8,004' : 'Save ₹24,955'}
+                    {activeBundle.id === 'BUNDLE-SMALL-COMBO-10' ? 'Save ₹8,963' : 'Save ₹31,429'}
                   </span>
                   <span className="text-[9.5px] text-stone-500 font-semibold">Doorstep COD Ready</span>
                 </div>

@@ -35,10 +35,10 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "FP Asoka (Flower Pot)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-009", name: "JRB FP Asoka (₹288)" },
-          { id: "PRD-010", name: "WG FP Asoka (₹288)" },
-          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹288)" },
-          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹316)" }
+          { id: "PRD-009", name: "JRB FP Asoka (₹331)" },
+          { id: "PRD-010", name: "WG FP Asoka (₹331)" },
+          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹331)" },
+          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹363)" }
         ]
       },
       { productId: "PRD-015", defaultQty: 1, productName: "VML DLX COLOR KOTI FP" },
@@ -50,9 +50,9 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "GC Big (Ground Chakkar)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹81)" },
-          { id: "PRD-060", name: "SV GC Big (₹242)" },
-          { id: "PRD-061", name: "MU GC Big 25 pcs (₹242)" }
+          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹93)" },
+          { id: "PRD-060", name: "SV GC Big (₹278)" },
+          { id: "PRD-061", name: "MU GC Big 25 pcs (₹278)" }
         ]
       },
       { productId: "PRD-065", defaultQty: 1, productName: "DPM GC Dlx" },
@@ -86,10 +86,10 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "FP Asoka (Flower Pot)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-009", name: "JRB FP Asoka (₹288)" },
-          { id: "PRD-010", name: "WG FP Asoka (₹288)" },
-          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹288)" },
-          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹316)" }
+          { id: "PRD-009", name: "JRB FP Asoka (₹331)" },
+          { id: "PRD-010", name: "WG FP Asoka (₹331)" },
+          { id: "PRD-011", name: "Kamadhenu FP Asoka (₹331)" },
+          { id: "PRD-012", name: "Lord FP Asoka (Brand) (₹363)" }
         ]
       },
       {
@@ -98,9 +98,9 @@ export const POPULAR_BUNDLES: BundleDef[] = [
         productName: "GC Big (Ground Chakkar)",
         hasVariants: true,
         variantOptions: [
-          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹81)" },
-          { id: "PRD-060", name: "SV GC Big (₹242)" },
-          { id: "PRD-061", name: "MU GC Big 25 pcs (₹242)" }
+          { id: "PRD-059", name: "R.G GC Big 10 pcs (₹93)" },
+          { id: "PRD-060", name: "SV GC Big (₹278)" },
+          { id: "PRD-061", name: "MU GC Big 25 pcs (₹278)" }
         ]
       },
       { productId: "PRD-001", defaultQty: 5, productName: "MU 2.75 Bird" },

@@ -327,9 +327,9 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
             {/* Bottom Pricing & Action */}
             <div className="pt-2 flex items-center justify-between gap-2 relative z-10">
               <div>
-                <span className="text-[10px] text-stone-500 line-through font-bold block leading-tight">MRP ₹9,338</span>
+                <span className="text-[10px] text-stone-500 line-through font-bold block leading-tight">MRP ₹10,290</span>
                 <span className="font-black text-base sm:text-lg text-orange-600 leading-tight">
-                  ₹1,334
+                  ₹1,327
                 </span>
               </div>
 
@@ -393,9 +393,9 @@ export const FestiveHeroBanner: React.FC<FestiveHeroBannerProps> = ({
             {/* Bottom Pricing & Action */}
             <div className="pt-2 flex items-center justify-between gap-2 relative z-10">
               <div>
-                <span className="text-[10px] text-stone-500 line-through font-bold block leading-tight">MRP ₹28,520</span>
+                <span className="text-[10px] text-stone-500 line-through font-bold block leading-tight">MRP ₹35,424</span>
                 <span className="font-black text-base sm:text-lg text-rose-600 leading-tight">
-                  ₹3,565
+                  ₹3,995
                 </span>
               </div>
 

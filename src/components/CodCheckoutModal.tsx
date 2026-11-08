@@ -97,9 +97,9 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   const [duplicateUtrWarning, setDuplicateUtrWarning] = useState<string | null>(null);
 
   // Official Receiver Credentials (Configured for Chanda Smithesh)
-  const OFFICIAL_UPI_ID = '9390068197@ptyes';
+  const OFFICIAL_UPI_ID = '9390042332@okbizaxis';
   const OFFICIAL_PAYEE_NAME = 'Chanda Smithesh';
-  const OFFICIAL_PHONE = '9390068197';
+  const OFFICIAL_PHONE = '9390042332';
 
   // Explicit input refs for auto-focus/scrolling
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -795,7 +795,7 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                   3 Easy Steps to Complete Your Order:
                 </span>
                 <div className="text-[11px] space-y-1 text-slate-600 leading-relaxed">
-                  <p>1. Copy the UPI ID <strong className="text-slate-900 font-mono">9390068197@ptyes</strong> (or scan QR code above).</p>
+                  <p>1. Copy the UPI ID <strong className="text-slate-900 font-mono">9390042332@okbizaxis</strong> (or scan QR code above).</p>
                   <p>2. Open your <strong>PhonePe, Google Pay, or Paytm</strong> and transfer <strong className="text-slate-900">₹{advanceAmount}</strong> to <strong className="text-slate-900">Chanda Smithesh</strong>.</p>
                   <p>3. Enter the <strong>12-digit UTR / Transaction Reference Number</strong> below and tap Confirm Order!</p>
                 </div>

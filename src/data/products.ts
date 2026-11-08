@@ -234,10 +234,14 @@ export const MASTER_PRODUCTS: Product[] = [
   {
     "id": "PRD-016",
     "serialNo": 16,
-    "name": "GD GIFT PACK Small FP",
+    "name": "small kundalu(5pcs)",
     "category": "FP",
     "sellingPrice": 661,
     "aliases": [
+      "small kundalu",
+      "kundalu",
+      "kunda",
+      "5pcs",
       "pack",
       "gift",
       "small",
@@ -249,10 +253,14 @@ export const MASTER_PRODUCTS: Product[] = [
   {
     "id": "PRD-017",
     "serialNo": 17,
-    "name": "GD GIFT PACK Big FP",
+    "name": "big kundalu(2pcs)",
     "category": "FP",
-    "sellingPrice": 1521,
+    "sellingPrice": 800,
     "aliases": [
+      "big kundalu",
+      "kundalu",
+      "kunda",
+      "2pcs",
       "pack",
       "gift",
       "fp",

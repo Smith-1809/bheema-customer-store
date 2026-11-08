@@ -96,9 +96,9 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
   const [isCheckingUtr, setIsCheckingUtr] = useState(false);
   const [duplicateUtrWarning, setDuplicateUtrWarning] = useState<string | null>(null);
 
-  // Official Receiver Credentials (Configured for Chanda Smithesh)
+  // Official Receiver Credentials (Configured for Paladugula Sainandan)
   const OFFICIAL_UPI_ID = '9390042332@okbizaxis';
-  const OFFICIAL_PAYEE_NAME = 'Chanda Smithesh';
+  const OFFICIAL_PAYEE_NAME = 'Paladugula Sainandan';
   const OFFICIAL_PHONE = '9390042332';
 
   // Explicit input refs for auto-focus/scrolling
@@ -796,7 +796,7 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                 </span>
                 <div className="text-[11px] space-y-1 text-slate-600 leading-relaxed">
                   <p>1. Copy the UPI ID <strong className="text-slate-900 font-mono">9390042332@okbizaxis</strong> (or scan QR code above).</p>
-                  <p>2. Open your <strong>PhonePe, Google Pay, or Paytm</strong> and transfer <strong className="text-slate-900">₹{advanceAmount}</strong> to <strong className="text-slate-900">Chanda Smithesh</strong>.</p>
+                  <p>2. Open your <strong>PhonePe, Google Pay, or Paytm</strong> and transfer <strong className="text-slate-900">₹{advanceAmount}</strong> to <strong className="text-slate-900">Paladugula Sainandan</strong>.</p>
                   <p>3. Enter the <strong>12-digit UTR / Transaction Reference Number</strong> below and tap Confirm Order!</p>
                 </div>
               </div>
@@ -891,7 +891,7 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                           <span>Google Pay</span>
                         </div>
                         <p className="text-slate-600 leading-snug text-[10px]">
-                          Scroll down to <strong>Show transaction history</strong> &rarr; Tap payment to Smithesh &rarr; Tap copy icon on <strong>UPI transaction ID</strong> (12 digits).
+                          Scroll down to <strong>Show transaction history</strong> &rarr; Tap payment to Paladugula Sainandan &rarr; Tap copy icon on <strong>UPI transaction ID</strong> (12 digits).
                         </p>
                       </div>
 
@@ -902,7 +902,7 @@ export const CodCheckoutModal: React.FC<CodCheckoutModalProps> = ({
                           <span>Paytm</span>
                         </div>
                         <p className="text-slate-600 leading-snug text-[10px]">
-                          Open <strong>Balance &amp; History</strong> &rarr; Tap payment to Smithesh &rarr; Copy the 12-digit <strong>UPI Ref No / UTR</strong>.
+                          Open <strong>Balance &amp; History</strong> &rarr; Tap payment to Paladugula Sainandan &rarr; Copy the 12-digit <strong>UPI Ref No / UTR</strong>.
                         </p>
                       </div>
                     </div>

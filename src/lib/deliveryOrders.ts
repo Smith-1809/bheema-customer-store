@@ -39,6 +39,13 @@ export const saveLocalDeliveryOrders = (orders: DeliveryOrder[]) => {
 export const mapRowToDeliveryOrder = (row: any): DeliveryOrder => {
   const customer = row.customer || {};
   const advance = customer.advancePayment || {};
+  const totalAmount = Number(row.final_payable || 0);
+  const advanceAmount = Number(row.advance_amount ?? advance.advanceAmount ?? 0);
+  const codBalance = (row.cod_balance !== undefined && row.cod_balance !== null)
+    ? Number(row.cod_balance)
+    : (advance.codBalance !== undefined && advance.codBalance !== null)
+      ? Number(advance.codBalance)
+      : (advanceAmount > 0 ? Math.max(0, totalAmount - advanceAmount) : Math.max(0, Math.round(totalAmount * 0.8)));
 
   return {
     id: row.id,
@@ -47,16 +54,16 @@ export const mapRowToDeliveryOrder = (row: any): DeliveryOrder => {
     updatedAt: row.updated_at,
     customer,
     items: row.items || [],
-    itemCount: row.item_count || 0,
+    itemCount: Number(row.item_count || 0),
     totalRetailAmount: Number(row.total_retail_amount || 0),
     totalOnlineAmount: Number(row.total_online_amount || 0),
     discountSavings: Number(row.discount_savings || 0),
     appliedCoupon: row.applied_coupon || undefined,
     couponDiscount: Number(row.coupon_discount || 0),
     deliveryFee: Number(row.delivery_fee || 0),
-    finalPayable: Number(row.final_payable || 0),
-    advanceAmount: Number(row.advance_amount ?? advance.advanceAmount ?? 0) || undefined,
-    codBalance: Number(row.cod_balance ?? advance.codBalance ?? (row.final_payable - (advance.advanceAmount || 0))) || undefined,
+    finalPayable: totalAmount,
+    advanceAmount: advanceAmount || (totalAmount > 0 ? Math.round(totalAmount * 0.20) : undefined),
+    codBalance: codBalance,
     utrNumber: row.utr_number || advance.utrNumber || undefined,
     paymentScreenshotUrl: row.payment_screenshot_url || advance.paymentScreenshotUrl || undefined,
     paymentStatus: row.payment_status || advance.paymentStatus || undefined,
@@ -527,16 +534,30 @@ export const getWhatsAppCustomerUpdateUrl = (order: DeliveryOrder, type: 'confir
   const cleanPhone = order.customer.phone.replace(/\D/g, '').slice(-10);
   let message = '';
 
+  const totalAmount = order.finalPayable || 0;
+  const advancePaid = Number(
+    order.advanceAmount ??
+    order.customer?.advancePayment?.advanceAmount ??
+    Math.round(totalAmount * 0.20)
+  );
+  const codPayable = (order.codBalance !== undefined && order.codBalance !== null && order.codBalance > 0)
+    ? Number(order.codBalance)
+    : (order.customer?.advancePayment?.codBalance !== undefined && order.customer?.advancePayment?.codBalance !== null && order.customer?.advancePayment?.codBalance > 0)
+      ? Number(order.customer.advancePayment.codBalance)
+      : Math.max(0, totalAmount - advancePaid);
+
   if (type === 'confirm') {
     message = 
 `🎉 *Bheema Fireworks — Order CONFIRMED!* 🪔
 
 Namaste *${order.customer.fullName}*!
-We have confirmed your Diwali Crackers order *#${order.orderNumber}*!
+We have confirmed your Diwali Crackers order *${order.orderNumber}*!
 
 📦 *Delivery Status:* CONFIRMED & PACKING
 ⏱️ *Estimated Delivery:* Within 1 to 2 Hours
-💵 *Cash to Pay on Delivery:* ₹${order.finalPayable.toLocaleString('en-IN')}
+💰 *Total Order Amount:* ₹${totalAmount.toLocaleString('en-IN')}
+✅ *20% Advance Paid:* ₹${advancePaid.toLocaleString('en-IN')}${order.utrNumber ? ` (UTR: ${order.utrNumber})` : ''}
+💵 *Cash to pay on delivery:* ₹${codPayable.toLocaleString('en-IN')}
 📍 *Delivery Address:* ${order.customer.address}, Landmark: ${order.customer.landmark || 'N/A'}
 
 Our packing team is preparing your fresh, premium crackers right now. 
@@ -552,7 +573,7 @@ Your cracker box (*#${order.orderNumber}*) is on the way!
 
 🛵 *Delivery Rider:* ${order.riderName || 'Bheema Express Rider'}
 ⏱️ *Arriving In:* 20 - 30 Minutes
-💵 *COD Payable:* ₹${order.finalPayable.toLocaleString('en-IN')} (Cash / UPI)
+💵 *Cash to pay on delivery:* ₹${codPayable.toLocaleString('en-IN')} (Cash / UPI)
 
 Please be available at: ${order.customer.address}
 
@@ -562,7 +583,7 @@ Get ready to light up your Diwali! 🪔✨`;
 `🪔 *Bheema Fireworks — Order DELIVERED!* ✨
 
 Namaste *${order.customer.fullName}*,
-Your Diwali Crackers order *#${order.orderNumber}* of ₹${order.finalPayable.toLocaleString('en-IN')} has been delivered successfully!
+Your Diwali Crackers order *${order.orderNumber}* of ₹${totalAmount.toLocaleString('en-IN')} has been delivered successfully!
 
 Thank you for choosing Bheema Fireworks for your family celebrations. 
 May the divine lights of Diwali bring abundance, health, and endless joy! 🎆🪔`;
